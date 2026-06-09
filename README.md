@@ -54,13 +54,41 @@ projector, every time. Plug in, present, don't think about it.
 - **The performance layer** — GSAP-driven timed reveals, staggered builds, and an
   `omt` ("one more thing") finale recipe. Optional **sound design**: applause beds,
   swooshes, chimes, and a live waveform — wired through the Web Audio API.
-- **Performance styles** — full design systems (not just themes): typography, palette,
-  motion grammar, and sound palette per style. Loaded progressively.
+- **Performance styles** — four full design systems (not just themes): typography,
+  palette, motion grammar, *and sound palette* per style. Loaded progressively.
 - **The Speaker Playbook** — a built-in *methodology* for what to put on stage: distill to
   one idea, narrative over data, one huge number, build a hero slide worth screenshotting,
   stick the landing. ([`playbook/speaker-playbook.md`](playbook/speaker-playbook.md))
+- **Inline editing** — press `e` in any deck, click any text and type, `Ctrl/Cmd+S`
+  downloads the edited file. Fix a typo at the venue with nothing but a browser.
+- **PPTX conversion** — point it at a `.pptx`; it extracts every slide, note, and image,
+  then re-authors the content as a performance (not a 1:1 port — the playbook applies).
+- **Share scripts** — one command to deploy to a live URL
+  ([`scripts/deploy.sh`](scripts/deploy.sh)) or export a print-faithful PDF
+  ([`scripts/export-pdf.sh`](scripts/export-pdf.sh)).
 - **Zero dependencies** — one HTML file (plus optional audio assets). Works in 10 years.
   No npm, no build step, no framework.
+
+## Performance styles
+
+| Style | Voice | Reach for it when |
+| --- | --- | --- |
+| **Noir** | Black stage, white light, one accent — Apple-keynote theatrics | Product launches, vision talks, founder pitches |
+| **Spotlight** | Electric blue + gold on navy, friendly and loud | Meetups, teaching, lightning talks, hype moments |
+| **Terminal** | GitHub-dark, terminal green, all mono | Dev-tool launches, security talks, hackathons |
+| **Broadsheet** | Ink-dark editorial serif, one crimson accent | Research, strategy, essays-as-talks, policy |
+
+Each is a full `design.md` with motion grammar and sound palette — and the skill always
+offers a custom wildcard when none of these fits the brief.
+
+<p>
+  <img src="demo/shots/flagship-hero.jpg" width="49.5%" alt="Spotlight — the hero chart money slide" />
+  <img src="demo/shots/flagship-eyecandy.jpg" width="49.5%" alt="Spotlight — before/after eye candy slide" />
+</p>
+<p>
+  <img src="demo/shots/noir-90.jpg" width="49.5%" alt="Noir — the 90% black stage stat" />
+  <img src="demo/shots/noir-1file.jpg" width="49.5%" alt="Noir — 1 file, zero dependencies" />
+</p>
 
 ## The demos
 
@@ -107,18 +135,25 @@ Then use it by typing `/better-slides`.
 ### Any other coding agent
 
 Send the agent this repo link and ask it to use the better-slides skill. It should start
-from [`SKILL.md`](SKILL.md) and load only the supporting files it references.
+from [`SKILL.md`](SKILL.md) and load only the referenced support files it needs:
+
+- `playbook/speaker-playbook.md` — the methodology
+- `performance-styles/` — style index, preview cards, design systems
+- `engine/` — the deck template + stage CSS
+- `reference/` — layouts, motion, audio, theming
+- `scripts/` — PPTX extraction, deploy, PDF export
 
 ## How it works
 
 1. **Brief** — purpose, length, and *register* (speaker-led vs. reading), plus your
-   content (or just a topic).
+   content: a topic, rough notes, finished material, or an existing `.pptx` to convert.
 2. **Method pass** — the agent applies the Speaker Playbook: finds your one idea, your
    hero slide, your landing.
 3. **Style** — pick a performance style from generated live previews.
 4. **Build** — one self-contained HTML deck, themed, with the motion and (optionally)
    sound layer wired in.
-5. **Perform / share** — open it, present it, deploy it, or export a PDF.
+5. **Perform / share** — present it (`f` fullscreen, `m` sound), edit inline (`e`, then
+   `Ctrl/Cmd+S` to save), deploy to a URL, or export a PDF.
 
 ## Architecture (progressive disclosure)
 
@@ -135,6 +170,9 @@ from [`SKILL.md`](SKILL.md) and load only the supporting files it references.
 | [`reference/motion.md`](reference/motion.md) | Timed-reveal / GSAP / `omt` patterns | Phase 3 |
 | [`reference/audio.md`](reference/audio.md) | Sound design + Web Audio wiring | Phase 3 (if sound) |
 | [`reference/theming.md`](reference/theming.md) | Token swap | Phase 3 |
+| [`scripts/extract-pptx.py`](scripts/extract-pptx.py) | PPTX content extraction | Phase 0 (conversion) |
+| [`scripts/deploy.sh`](scripts/deploy.sh) | Deploy to a live URL (Vercel) | Phase 4 (share) |
+| [`scripts/export-pdf.sh`](scripts/export-pdf.sh) | Export to PDF | Phase 4 (share) |
 
 ## Philosophy
 

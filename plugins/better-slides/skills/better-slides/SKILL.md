@@ -54,6 +54,11 @@ fails. Build both.
   the motion/sound layer. → Phase 1 (apply the playbook to existing content).
 - **Mode C — Enhance.** Add a performance treatment (sound, an `omt` finale, a hero slide)
   to a deck already on this engine. Skip to Phase 3, edit in place.
+- **Mode D — PPTX conversion.** Convert a PowerPoint file. Run
+  `python3 scripts/extract-pptx.py <input.pptx> <outdir>` (needs `pip install python-pptx`),
+  read the generated `content.md` + extracted `assets/`, confirm the extraction with the
+  user, then continue as Mode B: apply the playbook to the extracted content and re-author
+  it as a performance. Preserve usable images; keep speaker notes as HTML comments.
 
 ---
 
@@ -159,14 +164,25 @@ viewport.
 
 ## Phase 4: Perform & share (optional)
 
-Ask if they want to share. Offer:
+When delivering, tell the user how to drive the deck:
 
-- **Present** — `open index.html`; remind them: arrows/space/swipe to advance, `f`
-  fullscreen, `p` print-to-PDF, the sound toggle, and that `omt`/confetti fire on cue.
-- **Deploy** — a static host (e.g. Vercel free tier); bundle any `assets/` (audio, images)
-  alongside the HTML so relative paths resolve.
-- **PDF** — screenshot each `.slide` at 1920×1080 and combine. Note that motion and sound
-  are not preserved — the PDF is the final visual state.
+- **Present** — `open index.html`; arrows/space/swipe to advance, `f` fullscreen, `m`
+  sound toggle, `p` print-to-PDF; `omt`/confetti fire on cue.
+- **Edit without the agent** — press `e` (or ✎ in the menu), click any text and type,
+  then `Ctrl/Cmd+S` downloads the edited file. `Esc` exits edit mode. Mention this — it
+  lets the user fix a typo at the venue without a laptop full of tooling.
+
+Then ask if they want to share. Offer:
+
+- **Deploy to a live URL** — `bash scripts/deploy.sh <deck-folder-or-html>` (Vercel free
+  tier; walks the user through login on first run). Prefer deploying the deck's *folder*
+  when it has audio/image assets. Re-running updates the same URL. After deploying, open
+  the URL and click through every slide once to confirm assets load.
+- **Export to PDF** — `bash scripts/export-pdf.sh <deck.html> [out.pdf]`. Drives headless
+  Chromium through the deck's print CSS (one slide per 1920×1080 page). First run
+  downloads Chromium (~100MB) — warn the user. Motion and sound are not preserved; the
+  PDF is each slide's final visual state. No-install fallback: press `p` in the deck and
+  use the browser's "Save as PDF".
 
 ---
 
@@ -184,4 +200,8 @@ Ask if they want to share. Offer:
 | [`reference/motion.md`](reference/motion.md) | Timed reveals / `omt` finale | Phase 3 |
 | [`reference/audio.md`](reference/audio.md) | Sound design + Web Audio | Phase 3 (if sound) |
 | [`reference/theming.md`](reference/theming.md) | Token swap | Phase 3 |
-| [`demo/index.html`](demo/index.html) | Flagship: the "Be Unforgettable" talk | Reference example |
+| [`scripts/extract-pptx.py`](scripts/extract-pptx.py) | PPTX content extraction | Phase 0 Mode D |
+| [`scripts/deploy.sh`](scripts/deploy.sh) | Deploy deck to a live URL (Vercel) | Phase 4 |
+| [`scripts/export-pdf.sh`](scripts/export-pdf.sh) | Export deck to PDF | Phase 4 |
+| [`demo/index.html`](demo/index.html) | Flagship: the "Be Unforgettable" talk (Spotlight) | Reference example |
+| [`demo/noir/index.html`](demo/noir/index.html) | "This is not a slideshow" (Noir) | Reference example |

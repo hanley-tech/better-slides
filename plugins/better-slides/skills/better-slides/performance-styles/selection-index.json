@@ -2,7 +2,7 @@
   "schema_version": 1,
   "pack_name": "better-slides — Performance Styles",
   "source_repo": "hanley-tech/better-slides",
-  "style_count": 2,
+  "style_count": 4,
   "usage": {
     "selection": "Read this compact index first to shortlist styles from metadata.",
     "previews": "For title-slide previews, read only the preview.md files for the shortlisted candidates.",
@@ -21,8 +21,18 @@
       "slug": "noir",
       "name": "Noir",
       "tagline": "Black stage, white light, one accent. Apple-keynote theatrics: huge type, held pauses, a 'one more thing' finale.",
-      "mood": ["cinematic", "confident", "premium", "theatrical"],
-      "tone": ["bold", "minimal", "high-stakes", "product-launch"],
+      "mood": [
+        "cinematic",
+        "confident",
+        "premium",
+        "theatrical"
+      ],
+      "tone": [
+        "bold",
+        "minimal",
+        "high-stakes",
+        "product-launch"
+      ],
       "formality": "medium-high",
       "register": "speaker-led",
       "density": "low",
@@ -38,8 +48,18 @@
       "slug": "spotlight",
       "name": "Spotlight",
       "tagline": "Electric blue + gold on deep navy, friendly and high-energy. The LunaTechs stage voice — playful, human, loud.",
-      "mood": ["energetic", "friendly", "human", "playful"],
-      "tone": ["warm", "irreverent", "community", "upbeat"],
+      "mood": [
+        "energetic",
+        "friendly",
+        "human",
+        "playful"
+      ],
+      "tone": [
+        "warm",
+        "irreverent",
+        "community",
+        "upbeat"
+      ],
       "formality": "low-medium",
       "register": "speaker-led",
       "density": "low",
@@ -50,6 +70,60 @@
       "avoid_for": "Sober institutional finance/legal contexts where the energy would undercut the message.",
       "preview_md": "performance-styles/spotlight/preview.md",
       "design_md": "performance-styles/spotlight/design.md"
+    },
+    {
+      "slug": "terminal",
+      "name": "Terminal",
+      "tagline": "GitHub-dark stage, terminal green, all mono. A live coding session that learned stagecraft.",
+      "mood": [
+        "technical",
+        "focused",
+        "underground",
+        "precise"
+      ],
+      "tone": [
+        "geeky",
+        "credible",
+        "dry",
+        "insider"
+      ],
+      "formality": "low",
+      "register": "speaker-led",
+      "density": "low-medium",
+      "scheme": "dark",
+      "motion": "instant-ish entrances, type-on title with blinking cursor, slam on the hero number only",
+      "sound": "mechanical tick on beats, square-wave chime on the hero number, no music",
+      "best_for": "Dev-tool launches, security talks, API demos, hackathons, infra postmortems — audiences that live in a shell.",
+      "avoid_for": "Non-technical audiences, executive settings, warm community talks.",
+      "preview_md": "performance-styles/terminal/preview.md",
+      "design_md": "performance-styles/terminal/design.md"
+    },
+    {
+      "slug": "broadsheet",
+      "name": "Broadsheet",
+      "tagline": "Ink-dark editorial stage, cream serif, one crimson accent. A magazine essay that learned to hold a room.",
+      "mood": [
+        "literary",
+        "considered",
+        "authoritative",
+        "warm"
+      ],
+      "tone": [
+        "thoughtful",
+        "serious",
+        "editorial",
+        "unhurried"
+      ],
+      "formality": "medium-high",
+      "register": "speaker-led",
+      "density": "low-medium",
+      "scheme": "dark",
+      "motion": "slow editorial fades, crimson rule-draw before headlines, quiet omt as a turned page",
+      "sound": "page-turn swoosh on section breaks, one low chime on the hero figure, no music",
+      "best_for": "Research talks, strategy briefings, essays-as-talks, policy, design critiques — arguments that should feel thought-through rather than sold.",
+      "avoid_for": "Hype launches, hackathons, audiences expecting energy over gravity.",
+      "preview_md": "performance-styles/broadsheet/preview.md",
+      "design_md": "performance-styles/broadsheet/design.md"
     }
   ]
 }

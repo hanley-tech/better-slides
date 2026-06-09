@@ -103,6 +103,13 @@ faded). Default music off, cues on-but-quiet, mute toggle always present.
 Font: `Poppins` (400–900) via Google Fonts. (This is the worked LunaTechs theme from
 `reference/theming.md`.)
 
+## CJK note
+
+Poppins has no CJK glyphs — stack `Noto Sans SC` after it in every role. Drop
+letter-spacing to 0 on CJK, skip uppercase transforms on kickers, and open body
+line-height to ~1.75. Highlight pills (`.hl`/`.wink`) work beautifully around CJK
+runs; keep the gold pop and confetti exactly as in Latin decks.
+
 ## Do / Don't
 
 **Do:** keep copy conversational; one gold pop per slide; use highlight pills not color

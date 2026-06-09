@@ -140,6 +140,14 @@ change `--accent` only — the rest of the system is grayscale by design.
 Fonts: `Inter Tight` (display) via Google Fonts; mono via `SF Mono`/system. Keep the swirl
 palette (`--p0…--p5`) near-black so the ambient background never lifts off the stage.
 
+## CJK note
+
+Inter Tight has no CJK glyphs — stack `Noto Sans SC` after it in every font role so
+Chinese/Japanese/Korean decks render in one coherent face. Drop the negative display
+tracking to 0 on CJK runs (tight tracking breaks CJK rendering), skip uppercase
+transforms, keep stats in Latin numerals, and open body line-height to ~1.7. The black
+stage, single accent, and held-pause pacing are glyph-agnostic and carry unchanged.
+
 ## Do / Don't
 
 **Do:** keep ~90% of the stage black; one idea per slide; one accent word per headline; hold
