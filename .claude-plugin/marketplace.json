@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "better-keynote",
+  "name": "better-slides",
   "description": "Build presentations that perform — HTML keynotes with big type, timed reveals, sound design, and a built-in speaking methodology.",
   "owner": {
     "name": "hanley-tech",
@@ -8,9 +8,9 @@
   },
   "plugins": [
     {
-      "name": "better-keynote",
-      "description": "Keynote, but a single HTML file an agent writes for you — and it actually performs. Theatrics of Keynote, openness of the web, plus a methodology for what to say.",
-      "source": "./plugins/better-keynote",
+      "name": "better-slides",
+      "description": "Slides that perform — Apple-keynote theatrics in a single HTML file your coding agent writes for you, plus a methodology for what to say.",
+      "source": "./plugins/better-slides",
       "category": "productivity",
       "tags": ["presentations", "keynote", "slides", "html", "talks", "speaking", "animation", "audio"]
     }

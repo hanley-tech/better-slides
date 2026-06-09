@@ -1,9 +1,9 @@
-# Keynote Noir — preview card
+# Noir — preview card
 
 Use this small file for title-slide previews only. Read `design.md` for full generation.
 
 ## Selection metadata
-- Slug: `keynote-noir`
+- Slug: `noir`
 - Tagline: Black stage, white light, one accent. Apple-keynote theatrics — huge type, held pauses, a "one more thing" finale.
 - Mood: cinematic, confident, premium, theatrical
 - Register: speaker-led · Density: low · Scheme: dark · Formality: medium-high

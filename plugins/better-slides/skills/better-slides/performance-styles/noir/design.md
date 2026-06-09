@@ -1,6 +1,6 @@
 ---
 version: alpha
-name: Keynote Noir
+name: Noir
 description: A black-stage, white-light performance system in the spirit of an Apple keynote — a darkened auditorium where a few enormous words carry all the weight. One restrained accent, one idea per slide, theatrical pacing, and a "one more thing" finale. The screen is mostly black on purpose; the lit type is the spotlight.
 
 colors:
@@ -22,7 +22,7 @@ typography:
   stat:     { family: "Inter Tight, Helvetica Neue, sans-serif",                size: "20cqmin",  weight: 900, line: 0.85, tracking: "-0.04em" }
 ---
 
-## Stage policy (better-keynote)
+## Stage policy (better-slides)
 
 Generate the deck as a fixed 1920×1080 stage scaled uniformly to the viewport (see
 `engine/stage.css`). Preserve 16:9 on every screen; letterbox/pillarbox, never reflow.
@@ -30,7 +30,7 @@ All sizes below use `cqmin` so they scale with the stage.
 
 ## Overview
 
-Keynote Noir is the **default better-keynote look** and the one to reach for when a talk
+Noir is the **default better-slides look** and the one to reach for when a talk
 should feel like a *stage*. The visual premise is a darkened auditorium: the screen is
 ~90% black, and the few words that are lit read as a spotlight. Because there is so little
 on screen, every word is enormous and every entrance is an event.
@@ -124,7 +124,7 @@ Default music off, cues on-but-quiet, always a mute toggle. The deck must read f
 
 ## Theme block
 
-Drop this `<style id="theme">` into the engine template to render Keynote Noir. To rebrand,
+Drop this `<style id="theme">` into the engine template to render Noir. To rebrand,
 change `--accent` only — the rest of the system is grayscale by design.
 
 ```css

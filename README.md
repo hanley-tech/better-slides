@@ -1,15 +1,17 @@
-# better-keynote
+# better-slides
 
-**Keynote, but it's a single HTML file an agent writes for you — and it actually *performs*.**
+**Slides that *perform* — Apple-keynote theatrics in a single HTML file your coding agent writes for you.**
 
-Most slide tools make a *document*. better-keynote makes a *performance*: big type, timed
+Most slide tools make a *document*. better-slides makes a *performance*: big type, timed
 reveals, sound design, and a "one more thing" finale — the theatrics of an Apple keynote,
 the openness of the web, authored by a coding agent, with a built-in methodology that
 tells you **what to actually say**.
 
 > Don't be boring. Be unforgettable.
 
-![The "Be Unforgettable" flagship deck, built with better-keynote](demo/preview.jpg)
+![better-slides — the "Be Unforgettable" flagship deck and the Noir style, performing](demo/demo.gif)
+
+**Live demos:** [Be Unforgettable (Spotlight)](https://hanley-tech.github.io/better-slides/demo/) · [This is not a slideshow (Noir)](https://hanley-tech.github.io/better-slides/demo/noir/) — arrow keys to advance, `m` for sound, `f` for fullscreen.
 
 This is an agent skill (works with Claude Code and any coding agent that can read a repo
 and run a shell). Point it at your talk; get back one portable `.html` file that opens in
@@ -26,17 +28,17 @@ There's a gap nobody fills:
 | **Apple Keynote**   |     ✅     |     ❌      |      ❌      |           ❌           |
 | **reveal.js**       |     ~     |     ✅      |      ❌      |           ❌           |
 | **AI slide tools**  |     ❌     |     ✅      |      ✅      |           ❌           |
-| **better-keynote**  |     ✅     |     ✅      |      ✅      |           ✅           |
+| **better-slides**  |     ✅     |     ✅      |      ✅      |           ✅           |
 
 Most AI slide generators optimize for *removing friction* and ship a static, pretty
-document. better-keynote optimizes for the opposite: a deck that's **felt** — that
+document. better-slides optimizes for the opposite: a deck that's **felt** — that
 applauds, swooshes, lands a reveal, and leaves the room itching to act.
 
 ## Built for the podium
 
 Conference screens are a graveyard of mismatched resolutions and aspect ratios. Most decks
 were authored for one screen and break on the rest — text reflows, a chart slips off the
-edge, the hero number wraps. better-keynote sidesteps the whole class of problem: the deck
+edge, the hero number wraps. better-slides sidesteps the whole class of problem: the deck
 is a **fixed composition** that scales and letterboxes, so it is pixel-identical on every
 projector, every time. Plug in, present, don't think about it.
 
@@ -58,14 +60,22 @@ projector, every time. Plug in, present, don't think about it.
 - **Zero dependencies** — one HTML file (plus optional audio assets). Works in 10 years.
   No npm, no build step, no framework.
 
-## The flagship demo
+## The demos
 
 [`demo/`](demo/) is the **"Be Unforgettable" talk** — the Speaker Playbook itself, rebuilt
-on the better-keynote engine with the full performance treatment. It's the worked example
-*and* the marketing: a talk about being unforgettable that is itself unforgettable.
+on the better-slides engine with the full performance treatment (Spotlight style). It's the
+worked example *and* the marketing: a talk about being unforgettable that is itself
+unforgettable. ([live](https://hanley-tech.github.io/better-slides/demo/))
+
+[`demo/noir/`](demo/noir/) is **"This is not a slideshow"** — a short launch keynote in the
+**Noir** style: black stage, white light, one accent, held pauses, and the "one more thing"
+finale. ([live](https://hanley-tech.github.io/better-slides/demo/noir/))
+
+![The Noir style — black stage, white light, one accent](demo/noir/preview.jpg)
 
 ```bash
-open demo/index.html
+open demo/index.html        # Be Unforgettable (Spotlight)
+open demo/noir/index.html   # This is not a slideshow (Noir)
 ```
 
 ## Install
@@ -73,28 +83,28 @@ open demo/index.html
 ### Claude Code — marketplace
 
 ```text
-/plugin marketplace add https://github.com/hanley-tech/better-keynote
+/plugin marketplace add https://github.com/hanley-tech/better-slides
 ```
 
 then, as a separate message:
 
 ```text
-/plugin install better-keynote@better-keynote
+/plugin install better-slides@better-slides
 ```
 
-Use it with `/better-keynote:better-keynote`.
+Use it with `/better-slides:better-slides`.
 
 ### Claude Code — manual skill
 
 ```bash
-git clone https://github.com/hanley-tech/better-keynote.git ~/.claude/skills/better-keynote
+git clone https://github.com/hanley-tech/better-slides.git ~/.claude/skills/better-slides
 ```
 
-Then use it by typing `/better-keynote`.
+Then use it by typing `/better-slides`.
 
 ### Any other coding agent
 
-Send the agent this repo link and ask it to use the better-keynote skill. It should start
+Send the agent this repo link and ask it to use the better-slides skill. It should start
 from [`SKILL.md`](SKILL.md) and load only the supporting files it references.
 
 ## How it works

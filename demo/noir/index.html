@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Be Unforgettable · Speaker Playbook</title>
-<meta name="description" content="Don't be boring. Be unforgettable. The Speaker Playbook, performed — built with better-slides.">
+<title>Noir · a better-slides style</title>
+<meta name="description" content="The Noir performance style — black stage, white light, one accent. Built with better-slides.">
 <link rel="canonical" href="https://github.com/hanley-tech/better-slides">
 <!-- Open Graph / WhatsApp / iMessage / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="better-slides">
 <meta property="og:url" content="https://github.com/hanley-tech/better-slides">
-<meta property="og:title" content="Be Unforgettable · Speaker Playbook">
-<meta property="og:description" content="Don't be boring. Be unforgettable. Built with better-slides.">
+<meta property="og:title" content="Noir · a better-slides style">
+<meta property="og:description" content="Black stage, white light, one accent. Built with better-slides.">
 <meta property="og:image" content="https://opengraph.githubassets.com/1/hanley-tech/better-slides">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="720">
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Be Unforgettable · Speaker Playbook">
-<meta name="twitter:description" content="Don't be boring. Be unforgettable. Built with better-slides.">
+<meta name="twitter:title" content="Noir · a better-slides style">
+<meta name="twitter:description" content="Black stage, white light, one accent. Built with better-slides.">
 <meta name="twitter:image" content="https://opengraph.githubassets.com/1/hanley-tech/better-slides">
 
 <!-- ════════════════════════════════════════════════════════════════════
@@ -31,22 +31,32 @@
      ════════════════════════════════════════════════════════════════════ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style id="theme">
-  /* Spotlight style (LunaTechs stage voice) — see performance-styles/spotlight/design.md */
+  /* Noir style — black stage, one accent, no gold. See performance-styles/noir/design.md */
   :root{
-    --ink:#fff;            /* primary text */
-    --bg:#0B1B30;          /* stage base — deep navy */
-    --black:#14161C;
-    --blue:#1090E0;        /* brand primary */
-    --cyan:#00B0F0;        /* brand accent / highlights */
-    --deep:#0050B0;        /* brand deep (gradients) */
-    --gold:#FCD830;        /* pop accent */
-    --amber:#F2960B;
-    --mono:"Poppins","Helvetica Neue",Arial,sans-serif;
-    /* background swirl palette — 6 tones used by the animated gradient */
-    --p0:#0e3b66; --p1:#0a5a86; --p2:#0050B0; --p3:#0a2f52; --p4:#0e3b66; --p5:#0a5a86;
+    --ink:#F5F5F7;         /* near-white primary text (never pure #fff) */
+    --bg:#0B0C12;          /* the black stage */
+    --black:#000000;
+    --blue:#2997FF;        /* the single accent */
+    --cyan:#5AC8FA;        /* lighter tint of accent — glow only */
+    --deep:#0A2540;        /* dark accent end for gradients */
+    --gold:#2997FF;        /* Noir has no gold — reuse the accent so pops stay on-palette */
+    --amber:#5AC8FA;
+    --mono:"Inter Tight","Helvetica Neue",-apple-system,Arial,sans-serif;
+    /* background swirl palette — near-black so the stage never lifts */
+    --p0:#0B0C12; --p1:#0E1018; --p2:#0A2540; --p3:#08080C; --p4:#0B0C12; --p5:#0E1018;
   }
+</style>
+<style id="noir-overrides">
+  /* Noir: cool the title glow to the single blue accent; kill the warm gold radials */
+  .title-hero .bgimg{background:
+    radial-gradient(70% 50% at 50% -6%, rgba(41,151,255,.16), transparent 60%),
+    radial-gradient(90% 70% at 84% 108%, rgba(10,37,64,.8), transparent 62%),
+    linear-gradient(160deg, #0E1018 0%, #000 60%, #0B0C12 100%)}
+  .title-hero .bgimg::before{display:none}
+  .title-hero .glow{text-shadow:0 0 26px rgba(41,151,255,.8),0 0 60px rgba(41,151,255,.45),0 0 120px rgba(41,151,255,.3)}
+  .mega{text-shadow:0 0 80px rgba(41,151,255,.35)}
 </style>
 <!-- ═══════════════════════ END THEME ═══════════════════════ -->
 
@@ -378,191 +388,65 @@
        Delete the showcase slides you don't need.
        ════════════════════════════════════════════════════════════ -->
 
-  <!-- 1 · TITLE (showstopper) -->
+  <!-- 1 · TITLE — the held black open -->
   <section class="slide active hasbg title-hero" data-nav="Title">
     <div class="bgimg"></div>
     <div class="brandlock pop">
-      <span class="lockwm">▸ better<b>slides</b></span>
+      <span class="lockwm">better<b>slides</b></span>
     </div>
     <h1 class="pop">
-      <span class="t-sm">Don't be <span class="strike">boring.</span></span>
-      <span class="t-mega">Be <span class="glow jit">unforgettable.</span></span>
+      <span class="t-sm">This is not</span>
+      <span class="t-mega">a <span class="glow">slideshow.</span></span>
     </h1>
-    <div class="title-foot pop">Be Unforgettable · a better-slides demo</div>
+    <div class="title-foot pop">Noir · a better-slides performance style</div>
   </section>
 
-  <!-- 2 · FUNNEL — cut it down to one idea -->
+  <!-- 2 · THE PREMISE -->
+  <section class="slide" data-nav="The premise">
+    <span class="badge pop">the premise</span>
+    <h2 class="slam">A deck is a <span class="hl">performance.</span></h2>
+    <div class="sub pop" style="max-width:30ch">Not a document. The room should feel it.</div>
+  </section>
+
+  <!-- 3 · ONE IDEA -->
   <section class="slide" data-nav="One idea">
-    <span class="badge pop">the whole job</span>
-    <h2 class="pop" style="margin-bottom:.3cqmin">Cut it to <span class="hl">one idea.</span></h2>
-    <div class="funnel3">
-      <div class="tier t1 pop"><span class="tl">everything you could say</span>point · point · point · point · point</div>
-      <div class="fdown pop">▼</div>
-      <div class="tier t2 pop"><span class="tl">what you choose to say</span>your 2–3 strongest points</div>
-      <div class="fdown pop">▼</div>
-      <div class="tier t3 pop"><span class="tl">what they'll remember</span>★ THE one</div>
-    </div>
-    <div class="sub pop" style="max-width:38ch;margin-top:3cqmin">Can't say it in one breath? It's not one idea yet.</div>
+    <span class="badge pop">one idea per slide</span>
+    <h2 class="pop">Say it in <span class="hl">one breath.</span></h2>
   </section>
 
-  <!-- 3 · STORY — be human -->
-  <section class="slide split" data-nav="Tell your story">
-    <span class="badge pop">be human</span>
-    <h2 class="pop">Tell <span class="jit">YOUR</span> story.</h2>
-    <div class="sub pop" style="margin-top:2.4cqmin">They came for the topic — they stay for you. Human first, no jargon.</div>
-    <div class="swap pop">
-      <span class="bad">"15 years in distributed systems…" 😴</span>
-      <span class="arr">↓</span>
-      <span class="good">"I took down prod at 2am — here's what it taught me." 🔥</span>
-    </div>
-    <div class="photo-wrap"><div class="photo-card ph"></div></div>
+  <!-- 4 · THE BLACK (the Noir signature stat) -->
+  <section class="slide" style="align-items:center;text-align:center" data-nav="The black">
+    <div class="mega slam">90%</div>
+    <div class="sub pop" style="max-width:34ch;align-self:center">of this screen is black. The few lit words carry all the weight.</div>
   </section>
 
-  <!-- 4 · BEFORE / AFTER — slides are eye candy -->
-  <section class="slide" data-nav="Eye candy">
-    <span class="badge pop">your slides are eye candy</span>
-    <h2 class="pop" style="font-size:clamp(30px,6.6cqmin,104px);margin-bottom:.3cqmin">Same point. <span class="wink">One sticks.</span></h2>
-    <div class="bca">
-      <div class="mock bad">
-        <span class="tag">❌ a reading assignment</span>
-        <h4>Our Q3 Platform Strategy &amp; Roadmap</h4>
-        <ul><li>twelve initiatives across four pillars</li><li>each with sub-bullets and owners</li><li>dense paragraph of context</li><li>and one more dense line…</li></ul>
-      </div>
-      <div class="mock good">
-        <span class="tag">✅ eye candy</span>
-        <div class="big">10× <span class="gd">faster.</span></div>
-        <div class="cap2">one number. one breath.</div>
-      </div>
-    </div>
-    <div class="sub pop" style="max-width:46ch;margin-top:3cqmin">Huge type, few words, one visual. Can't read it on your phone at arm's length? Too small.</div>
+  <!-- 5 · PACING -->
+  <section class="slide" data-nav="The pause">
+    <span class="badge pop">theatrical time</span>
+    <h2 class="pop">The pause is <span class="hl">the drama.</span></h2>
+    <div class="sub pop" style="max-width:32ch">Every line lands on a beat — not on slide entry.</div>
   </section>
 
-  <!-- 5 · HERO CHART (the money slide — screenshot-gorgeous SVG) -->
-  <section class="slide" data-nav="The money slide">
-    <span class="badge pop">the money slide 📸</span>
-    <h2 class="pop" style="font-size:clamp(30px,6.6cqmin,104px);margin-bottom:.3cqmin">Build <span class="hl">1–2 hero slides.</span></h2>
-    <div class="herowrap" style="margin-top:6cqmin">
-      <div class="herochart">
-        <span class="photolbl" style="top:-5cqmin">📸 they'll photograph this</span>
-        <svg viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet" aria-label="hero chart: follow-ups over the month after a talk">
-          <defs><linearGradient id="hcg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00B0F0" stop-opacity=".5"></stop><stop offset="1" stop-color="#00B0F0" stop-opacity="0"></stop></linearGradient></defs>
-          <line class="hc-grid" x1="40" y1="70" x2="540" y2="70"></line>
-          <line class="hc-grid" x1="40" y1="150" x2="540" y2="150"></line>
-          <line class="hc-grid" x1="40" y1="230" x2="540" y2="230"></line>
-          <path class="hc-area" fill="url(#hcg)" d="M40,250 C130,242 170,205 230,192 C300,176 340,128 400,98 C460,68 500,52 540,40 L540,280 L40,280 Z"></path>
-          <path class="hc-line" d="M40,250 C130,242 170,205 230,192 C300,176 340,128 400,98 C460,68 500,52 540,40"></path>
-          <circle class="hc-dot" cx="540" cy="40" r="8"></circle>
-          <text class="hc-stat" x="44" y="92">3.2×</text>
-          <text class="hc-sub" x="46" y="120">more follow-ups, a month later</text>
-          <text class="hc-x" x="40" y="305">your talk</text>
-          <text class="hc-x" x="430" y="305">a month later →</text>
-        </svg>
-      </div>
-      <div class="hmeta">
-        <div class="qt pop">One <span class="wink">unforgettable</span> visual.</div>
-        <div class="ql2 pop">A bold chart, diagram or table — <b>screenshot-gorgeous.</b> It's the slide that walks out the door and spreads your idea without you.</div>
-      </div>
-    </div>
+  <!-- 6 · ONE FILE (the money stat) -->
+  <section class="slide" style="align-items:center;text-align:center" data-nav="One file">
+    <span class="badge pop" style="align-self:center">zero dependencies</span>
+    <div class="mega slam">1 file.</div>
+    <div class="sub pop" style="max-width:34ch;align-self:center">No build. No framework. Opens anywhere, scales to any projector, works in 10 years.</div>
   </section>
 
-  <!-- 6 · CLOCK — know your slot -->
-  <section class="slide" data-nav="Know your time">
-    <span class="badge pop">your slot ⏱</span>
-    <h2 class="pop">Know your <span class="jit">time.</span></h2>
-    <div class="clock"><div class="c-a">Keynote · 20–25 min</div><div class="c-b">+ 5–10 Q&amp;A</div></div>
-    <div class="clock"><div class="c-a">Talk · aim for 10 min</div><div class="c-b">+ 5 Q&amp;A</div></div>
-    <div class="sub pop" style="max-width:44ch">Exact timing varies by event — check with your organizer.</div>
-  </section>
-
-  <!-- 7 · STATEMENT — rehearse on the clock -->
-  <section class="slide" data-nav="Rehearse">
-    <span class="badge pop">rehearse on the clock</span>
-    <h2 class="slam">Say it out loud. <span class="hl">On a timer.</span></h2>
-    <div class="duo">
-      <div class="pop"><div class="tiny">practiced</div><p>10:00</p></div>
-      <div class="pop"><div class="tiny">live 😬 +30%</div><p class="gold">~13:00</p></div>
-    </div>
-    <div class="sub pop" style="max-width:44ch">Reading it in your head is a lie. Rehearse standing up — then plan for ~30% longer on the day.</div>
-  </section>
-
-  <!-- 8 · CARDS — on the day, watch for the signals -->
-  <section class="slide" data-nav="Watch the signals">
-    <span class="badge pop">on the day — we signal you</span>
-    <h2 class="pop" style="font-size:clamp(30px,6.6cqmin,104px);margin-bottom:.4cqmin">Watch for our <span class="wink">hands.</span></h2>
-    <div class="cards c3 big">
-      <div class="card"><div class="ic">✋</div><div class="ct">Every 5 min</div><div class="cd">Time-remaining flash.</div></div>
-      <div class="card"><div class="ic">✊</div><div class="ct">Closed fist</div><div class="cd">Wrap it up — land the plane now.</div></div>
-      <div class="card"><div class="ic">🤝</div><div class="ct">Need help?</div><div class="cd">Look to your teammate. We've got you.</div></div>
-    </div>
-  </section>
-
-  <!-- 9 · STORY/swap — Q&A judo -->
-  <section class="slide" data-nav="Q&amp;A judo">
-    <span class="badge pop">q&amp;a judo</span>
-    <h2 class="pop">You may cut off <span class="jit">the rambler.</span></h2>
-    <div class="swap pop" style="max-width:40ch">
-      <span class="bad">🙋 the 90-second "question"…</span>
-      <span class="arr">↓</span>
-      <span class="good">✅ your crisp answer</span>
-    </div>
-    <div class="sub pop" style="max-width:46ch">Speed them up, or politely answer what you think they're asking.</div>
-  </section>
-
-  <!-- 10 · ACTCARD — stick the landing -->
-  <section class="slide" data-nav="Stick the landing">
-    <span class="badge pop">stick the landing</span>
-    <h2 class="pop" style="font-size:clamp(30px,6.6cqmin,104px)">Make them act <span class="hl">tonight.</span></h2>
-    <div class="actcard">
-      <div class="actbtn"><span class="play">▶</span> Do this one thing</div>
-      <div class="actsteps">
-        <div class="actstep"><b>1</b> the one tool</div>
-        <div class="actstep"><b>2</b> the first 5 min</div>
-        <div class="actstep"><b>3</b> what "done" looks like</div>
-      </div>
-    </div>
-    <div class="sub pop" style="max-width:48ch">Don't end on "thanks." End on one thing they can do right now — so they leave itching to try it.</div>
-  </section>
-
-  <!-- 11 · QR — don't vanish -->
-  <section class="slide" data-nav="Don't vanish">
-    <span class="badge pop">don't vanish 🔗</span>
-    <div class="qrwrap">
-      <div class="qr pop"><svg id="qr" viewBox="0 0 100 100" aria-label="example QR code"></svg></div>
-      <div class="qmeta">
-        <div class="qt pop">End on a <span class="wink">big QR.</span></div>
-        <div class="ql pop">One scan to your <b>Linktree, email, LinkedIn or site</b> — so the room can find you after.</div>
-        <div class="tag pop">↑ drop your own QR here</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 12 · CHIPS — turn it up -->
-  <section class="slide" data-nav="Turn it up">
-    <span class="badge pop">turn it up 🔊</span>
-    <h2 class="pop">Make it an <span class="jit">experience.</span></h2>
-    <div class="chips">
-      <span class="chip pop">🔊 Audio</span>
-      <span class="chip pop">🎵 Music</span>
-      <span class="chip pop">✨ Animation</span>
-      <span class="chip pop">💥 FX</span>
-      <span class="chip pop">🙌 Interactive</span>
-    </div>
-    <div class="sub pop" style="max-width:46ch">We love audio-visual energy. Don't be scared — it's part of the message.</div>
-  </section>
-
-  <!-- 13 · OMT — one more thing (the finale turn) -->
+  <!-- 7 · OMT — the finale turn -->
   <section class="slide omt-slide" data-nav="One more thing" data-omt>
     <span class="badge omt-kicker" style="opacity:0">one more thing…</span>
-    <h2 class="omt-line" style="opacity:0">The room can feel it when <span class="hl">you're enjoying this.</span></h2>
+    <h2 class="omt-line" style="opacity:0">Your agent <span class="hl">writes it for you.</span></h2>
   </section>
 
-  <!-- 14 · CLOSE (full-bleed photo) -->
-  <section class="slide photo" data-nav="Now go">
-    <div class="pic"></div>
+  <!-- 8 · CLOSE -->
+  <section class="slide photo" data-nav="Go">
+    <div class="pic" style="background:radial-gradient(70% 60% at 50% 30%, #0A2540, #000)"></div>
     <div class="cap">
-      <span class="badge pop">now go 🚀</span>
-      <h1 class="pop">Good luck.<br>Have <span class="hl">fun.</span></h1>
-      <div class="sub pop">So enjoy it — we've got your back up there.</div>
+      <span class="badge pop">github.com/hanley-tech/better-slides</span>
+      <h1 class="pop">Go build <span class="hl">one.</span></h1>
+      <div class="sub pop">Don't be boring. Be unforgettable.</div>
     </div>
   </section>
 
@@ -573,7 +457,7 @@
 
 <button class="fab" id="fab" aria-label="Deck controls"></button>
 <div class="menu" id="menu">
-  <div class="wm">better<b>slides</b> · Be Unforgettable</div>
+  <div class="wm">better<b>slides</b> · Noir</div>
   <div class="prog"><div class="bar"><span id="barfill"></span></div><div class="count" id="count">1 / 1</div></div>
   <div class="acts">
     <button class="act" data-act="prev" aria-label="Previous">‹</button>

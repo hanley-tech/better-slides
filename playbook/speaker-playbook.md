@@ -2,7 +2,7 @@
 
 > Don't be boring. Be unforgettable.
 
-This is the **"what to say" layer** of better-keynote. Read it during content work (Phase 1)
+This is the **"what to say" layer** of better-slides. Read it during content work (Phase 1)
 *before* any design decision. It governs structure and message; the engine and styles
 govern how it lands. A beautiful deck with no thesis is slop — this playbook is the thesis.
 
@@ -98,7 +98,7 @@ End on a **big QR** → Linktree / email / LinkedIn / site, so the room can find
 🔊 Audio · 🎵 Music · ✨ Animation · 💥 FX · 🙌 Interactive.
 
 Audio-visual energy is **part of the message** — don't be scared of it. (This is the layer
-better-keynote's engine, `motion.md`, and `audio.md` exist to deliver.)
+better-slides's engine, `motion.md`, and `audio.md` exist to deliver.)
 
 ## 12. Now go
 

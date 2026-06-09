@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Spotlight
-description: A high-energy, friendly performance system — the LunaTechs stage voice. Deep navy stage with an animated electric-blue glow, big bold-but-rounded Poppins type, a gold pop accent for the moments that matter, tinted highlight pills, and a confetti finish. Warmer and louder than Keynote Noir; a party with a point.
+description: A high-energy, friendly performance system — the LunaTechs stage voice. Deep navy stage with an animated electric-blue glow, big bold-but-rounded Poppins type, a gold pop accent for the moments that matter, tinted highlight pills, and a confetti finish. Warmer and louder than Noir; a party with a point.
 
 colors:
   stage:   "#0B1B30"   # deep navy base
@@ -22,7 +22,7 @@ typography:
   sub:     { family: "Poppins, sans-serif",                size: "3.7cqmin", weight: 600, line: 1.42 }
 ---
 
-## Stage policy (better-keynote)
+## Stage policy (better-slides)
 
 Fixed 1920×1080 stage scaled uniformly to the viewport (see `engine/stage.css`). Preserve
 16:9 on every screen; letterbox/pillarbox, never reflow. Sizes use `cqmin`.
@@ -30,7 +30,7 @@ Fixed 1920×1080 stage scaled uniformly to the viewport (see `engine/stage.css`)
 ## Overview
 
 Spotlight is the **Speaker Playbook's native voice** — the look the "Be Unforgettable" talk
-wears. Where Keynote Noir is a darkened auditorium, Spotlight is a lit, friendly stage: deep
+wears. Where Noir is a darkened auditorium, Spotlight is a lit, friendly stage: deep
 navy with a living electric-blue glow, type that is bold but rounded (Poppins), and a single
 gold pop for the punchlines. It is loud and human on purpose. The energy *is* the message
 (playbook §11: turn it up).
@@ -57,7 +57,7 @@ Commitments:
 
 ## Typography
 
-Poppins throughout (geometric, friendly, ships every weight). Ladder mirrors Keynote Noir's
+Poppins throughout (geometric, friendly, ships every weight). Ladder mirrors Noir's
 sizes (`mega` 22 / `display` 11 / `h2` 8.4 / `sub` 3.7 / `kicker` 3.5 cqmin) but at heavier,
 rounder weights. Headlines are `ink`; emphasize key words with a `.hl` blue pill or `.wink`
 tilt rather than a color change; the hero number is gold.

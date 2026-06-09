@@ -12,7 +12,7 @@ Use this small file for title-slide previews only. Read `design.md` for full gen
 
 ## Visual snapshot
 A deep navy stage with an animated electric-blue glow, big rounded-but-bold type, and a
-gold pop accent for the moments that matter. Warmer and louder than Keynote Noir — this is a
+gold pop accent for the moments that matter. Warmer and louder than Noir — this is a
 party with a point. Highlights sit in tinted pills, a hero word can wiggle, and the deck ends
 in confetti.
 

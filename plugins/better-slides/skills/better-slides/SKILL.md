@@ -1,9 +1,9 @@
 ---
-name: better-keynote
-description: Build a presentation that performs — a self-contained HTML keynote with big type, timed reveals, sound design, and a "one more thing" finale, plus a built-in methodology for what to say. Use when the user wants a talk, keynote, pitch, or conference deck that should feel like an experience, not a document — or wants to upgrade an existing deck into a performance. Theatrics of Keynote, openness of the web.
+name: better-slides
+description: Build a presentation that performs — a self-contained HTML keynote with big type, timed reveals, sound design, and a "one more thing" finale, plus a built-in methodology for what to say. Use when the user wants a talk, keynote, pitch, or conference deck that should feel like an experience, not a document — or wants to upgrade an existing deck into a performance. Theatrics of a launch keynote, openness of the web.
 ---
 
-# better-keynote
+# better-slides
 
 Build presentations as ONE portable, self-contained `.html` file that **performs**: fixed
 1920×1080 stage scaled to any screen, big type, timed reveals, optional sound design, and a
@@ -32,7 +32,7 @@ slop; this skill refuses it.
 
 ## The two layers
 
-better-keynote always builds **both**:
+better-slides always builds **both**:
 
 - **The "what to say" layer** — the [Speaker Playbook](playbook/speaker-playbook.md). Read
   it during content work. It governs structure: distill, lead with story, one number,
@@ -99,7 +99,7 @@ and let them point.
    style): typically 1 restrained, 1 expressive, 1 wildcard. Each must look like a genuine
    first slide — never render style names, "Option A", file paths, or brief notes on the
    slide itself.
-5. Save to `.better-keynote/previews/` and open them. Ask which they prefer (or "mix").
+5. Save to `.better-slides/previews/` and open them. Ask which they prefer (or "mix").
 
 Only after the user picks does the full `design.md` for that one style get read.
 

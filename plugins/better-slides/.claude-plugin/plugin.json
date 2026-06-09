@@ -1,0 +1,14 @@
+{
+  "name": "better-slides",
+  "version": "0.1.0",
+  "description": "Slides that perform — Apple-keynote theatrics in a single HTML file your coding agent writes for you, plus a methodology for what to say.",
+  "skills": "./skills/",
+  "author": {
+    "name": "Hanley Leung",
+    "url": "https://github.com/hanley-tech"
+  },
+  "homepage": "https://github.com/hanley-tech/better-slides",
+  "repository": "https://github.com/hanley-tech/better-slides",
+  "license": "MIT",
+  "keywords": ["presentations", "keynote", "slides", "html", "talks", "speaking", "animation", "audio"]
+}
