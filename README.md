@@ -2,6 +2,8 @@
 
 **Slides that *perform* — Apple-keynote theatrics in a single HTML file your coding agent writes for you.**
 
+<sup>by <a href="https://github.com/hanley-tech">Hanley Leung</a> · <a href="https://hanley.world">hanley.world</a> · born from the LunaTechs Speaker Playbook</sup>
+
 Most slide tools make a *document*. better-slides makes a *performance*: big type, timed
 reveals, sound design, and a "one more thing" finale — the theatrics of an Apple keynote,
 the openness of the web, authored by a coding agent, with a built-in methodology that
@@ -144,7 +146,7 @@ from [`SKILL.md`](SKILL.md) and load only the supporting files it references.
 
 ## Credits
 
-By [Hanley Leung](https://github.com/hanley-tech) / [LunaTechs](https://lunatechs.social).
+By [Hanley Leung](https://github.com/hanley-tech) ([hanley.world](https://hanley.world)) / [LunaTechs](https://lunatechs.social).
 Engine extracted from the LunaTechs Speaker Playbook deck.
 
 ## License
