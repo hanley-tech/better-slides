@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "pack_name": "better-keynote — Performance Styles",
+  "source_repo": "hanley-tech/better-keynote",
+  "style_count": 2,
+  "usage": {
+    "selection": "Read this compact index first to shortlist styles from metadata.",
+    "previews": "For title-slide previews, read only the preview.md files for the shortlisted candidates.",
+    "final_generation": "After the user picks one style, read exactly that style's design.md before generating the full deck.",
+    "never": "Do not bulk-read every design.md."
+  },
+  "stage_policy": {
+    "layout_model": "fixed-stage",
+    "canvas_width": 1920,
+    "canvas_height": 1080,
+    "scaling": "scale-whole-stage-to-viewport",
+    "device_behavior": "preserve 16:9 stage on every resolution/aspect ratio; letterbox or pillarbox, never reflow slide content"
+  },
+  "styles": [
+    {
+      "slug": "keynote-noir",
+      "name": "Keynote Noir",
+      "tagline": "Black stage, white light, one accent. Apple-keynote theatrics: huge type, held pauses, a 'one more thing' finale.",
+      "mood": ["cinematic", "confident", "premium", "theatrical"],
+      "tone": ["bold", "minimal", "high-stakes", "product-launch"],
+      "formality": "medium-high",
+      "register": "speaker-led",
+      "density": "low",
+      "scheme": "dark",
+      "motion": "held pauses + single decisive reveals; slam on hero; full omt finale",
+      "sound": "swoosh on section breaks, chime on the hero number, applause bed under omt",
+      "best_for": "Product launches, conference keynotes, vision talks, founder pitches, any moment that should feel like a stage and a spotlight. The default better-keynote look.",
+      "avoid_for": "Dense reading decks, data-heavy internal reviews meant to be read async without a speaker.",
+      "preview_md": "performance-styles/keynote-noir/preview.md",
+      "design_md": "performance-styles/keynote-noir/design.md"
+    },
+    {
+      "slug": "spotlight",
+      "name": "Spotlight",
+      "tagline": "Electric blue + gold on deep navy, friendly and high-energy. The LunaTechs stage voice — playful, human, loud.",
+      "mood": ["energetic", "friendly", "human", "playful"],
+      "tone": ["warm", "irreverent", "community", "upbeat"],
+      "formality": "low-medium",
+      "register": "speaker-led",
+      "density": "low",
+      "scheme": "dark",
+      "motion": "bouncy staggered builds, jit on a hero word, confetti finish",
+      "sound": "playful blips on beats, power-up on the hero number, applause + music bed",
+      "best_for": "Community talks, meetups, teaching, lightning talks, hype/launch moments, anything that wants to feel like a party with a point. The Speaker Playbook's native voice.",
+      "avoid_for": "Sober institutional finance/legal contexts where the energy would undercut the message.",
+      "preview_md": "performance-styles/spotlight/preview.md",
+      "design_md": "performance-styles/spotlight/design.md"
+    }
+  ]
+}

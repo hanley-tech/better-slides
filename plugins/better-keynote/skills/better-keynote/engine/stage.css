@@ -1,0 +1,86 @@
+/* ============================================================================
+   better-keynote — STAGE ENGINE (mandatory, include in full in every deck)
+   ----------------------------------------------------------------------------
+   THE ONE JOB OF THIS FILE: make a deck look identical on every screen a
+   speaker gets handed at an event — 1080p laptop, a 4:3 hall projector, a
+   16:10 conference panel, an ultrawide, a tiny confidence monitor, a phone.
+
+   How: author every slide once at a FIXED 1920×1080 stage, then scale the
+   WHOLE stage by a single transform to fit the viewport, and letterbox /
+   pillarbox the leftover space. Slide content NEVER reflows, re-wraps, or
+   re-lays-out per device. What you designed is what shows, everywhere — the
+   only thing that changes is the black bars around it.
+
+   This is the opposite of responsive web design, and it is deliberate: a
+   talk is a fixed composition. Reflowing it at the podium is how decks break.
+   ============================================================================ */
+
+/* The stage: a fixed 1920×1080 canvas pinned to viewport center and scaled as
+   one unit. `container-type:size` makes `cqmin`/`cqh` units below resolve
+   against the 1920×1080 box (not the viewport), so ALL type and spacing scale
+   together with the stage — no media queries, no per-breakpoint font sizes. */
+#stage{
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 1920px; height: 1080px;
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  transform-origin: center center;
+  container-type: size;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* Letterbox/pillarbox backdrop — the area around the stage on mismatched
+   aspect ratios. Keep it deep/neutral so the bars read as intentional. */
+html, body{ height: 100%; margin: 0; background: var(--black, #000); overflow: hidden; }
+
+/* Slides stack in the same 1920×1080 box; only the active one shows. Visibility
+   is driven by `.active` (opacity/visibility), never display toggling that a
+   later layout rule could override and make every slide paint at once. */
+.slide{
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 7cqmin 9cqmin;
+  opacity: 0; visibility: hidden;
+}
+.slide.active{ opacity: 1; visibility: visible; }
+
+/* Type scale uses cqmin so it scales with the stage, with clamp() floors/ceils
+   purely as a safety net at extreme stage sizes (it is the stage that scales,
+   not the breakpoint). Example tokens — see engine/template.html for the full set. */
+h1{ font-size: clamp(46px, 11cqmin, 190px); line-height: .95; font-weight: 900; letter-spacing: -.03em; }
+h2{ font-size: clamp(38px, 8.4cqmin, 140px); line-height: 1;   font-weight: 900; letter-spacing: -.03em; }
+.sub{ font-size: clamp(20px, 3.7cqmin, 48px); line-height: 1.42; max-width: 24ch; }
+
+/* Accessibility: motion off → show final state instantly. Always honored. */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+
+/* Print / PDF export: unwind the scaled overlay into one slide per page so a
+   screenshot/PDF pipeline captures every slide at full 1920×1080 fidelity. */
+@media print{
+  html, body{ overflow: visible; }
+  #stage{ position: static; transform: none; width: auto; height: auto; }
+  .slide{ position: relative; opacity: 1 !important; visibility: visible !important;
+          width: 1920px; height: 1080px; page-break-after: always; break-after: page; }
+}
+
+/* ----------------------------------------------------------------------------
+   THE SCALER (JS) — pair this with the CSS above. Compute the largest uniform
+   scale that fits 1920×1080 inside the current viewport, on load and on every
+   resize / orientation change / projector hot-plug. This single line is what
+   makes the deck event-proof:
+
+     const stage = document.getElementById('stage');
+     function fit(){
+       const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+       stage.style.setProperty('--scale', s);
+     }
+     addEventListener('resize', fit);
+     addEventListener('orientationchange', fit);
+     fit();
+
+   Math.min (never Math.max) guarantees the stage always FITS — it letterboxes
+   on tall/odd ratios and pillarboxes on wide ones, but never crops content.
+   ---------------------------------------------------------------------------- */
