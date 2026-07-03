@@ -178,6 +178,27 @@ Then ask if they want to share. Offer:
   tier; walks the user through login on first run). Prefer deploying the deck's *folder*
   when it has audio/image assets. Re-running updates the same URL. After deploying, open
   the URL and click through every slide once to confirm assets load.
+
+  Before any deploy, run the **web-friendly asset checklist**:
+  - Video: h264 + `yuv420p` + `-movflags +faststart`, `-an` for bg loops, every
+    `<video>` gets a `poster`. Re-encode HEVC/anything else.
+  - Images: photos = JPEG (~88–92), PNG only for transparency. Audit bloat:
+    `find assets \( -name "*.png" -o -name "*.jpg" \) -exec du -k {} + | sort -rn | head`.
+  - `chmod 644` everything (image tools write mode-600; servers 403 them). Spot-check
+    live URLs with `curl -o /dev/null -w "%{http_code}"`.
+  - Copy ONLY referenced assets (`grep -o "assets/[^\"')]*" index.html | sort -u`) —
+    never the whole assets dir (private source photos, working files).
+
+  A published deck also needs (both REQUIRED):
+  - **Social share card** — an `og.jpg` (1280×720) captured from the *rendered first
+    slide* (Playwright screenshot after entrance animations, letterbox trimmed), with
+    `canonical`/`og:url` pointing at the deck's URL and `og:image`/`twitter:image` at
+    the og.jpg as ABSOLUTE URLs, `twitter:card` = `summary_large_image`. Re-capture
+    when the title slide changes.
+  - **Asset preloader gate** (media-heavy decks) — see
+    [`reference/preloader.md`](reference/preloader.md): progress bar that downloads
+    every asset into the browser disk cache, then a Start button gated on the first
+    video's `canplaythrough` (the click also unlocks video autoplay).
 - **Export to PDF** — `bash scripts/export-pdf.sh <deck.html> [out.pdf]`. Drives headless
   Chromium through the deck's print CSS (one slide per 1920×1080 page). First run
   downloads Chromium (~100MB) — warn the user. Motion and sound are not preserved; the
@@ -200,6 +221,7 @@ Then ask if they want to share. Offer:
 | [`reference/motion.md`](reference/motion.md) | Timed reveals / `omt` finale | Phase 3 |
 | [`reference/audio.md`](reference/audio.md) | Sound design + Web Audio | Phase 3 (if sound) |
 | [`reference/theming.md`](reference/theming.md) | Token swap | Phase 3 |
+| [`reference/preloader.md`](reference/preloader.md) | Asset preloader gate + share-card pattern | Phase 4 (publish) |
 | [`scripts/extract-pptx.py`](scripts/extract-pptx.py) | PPTX content extraction | Phase 0 Mode D |
 | [`scripts/deploy.sh`](scripts/deploy.sh) | Deploy deck to a live URL (Vercel) | Phase 4 |
 | [`scripts/export-pdf.sh`](scripts/export-pdf.sh) | Export deck to PDF | Phase 4 |
