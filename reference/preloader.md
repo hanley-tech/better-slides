@@ -65,8 +65,18 @@ Live example: `hanley.world/apple-10-things` (54 assets, ~55 MB).
   }
   function dismiss(){ov.style.opacity='0';setTimeout(()=>ov.remove(),520);
     document.querySelectorAll('video[autoplay]').forEach(v=>v.play().catch(()=>{}));}
-  btn.addEventListener('click',dismiss);
-  addEventListener('keydown',e=>{if(e.key==='Enter'&&btn.style.display==='block'&&document.body.contains(ov))dismiss();});
+  // swallow all input at the overlay so the deck's click-half / key nav never sees
+  // the Start interaction (otherwise the same click ALSO advances a slide)
+  ['click','pointerdown','pointerup','touchstart','touchend'].forEach(t=>
+    ov.addEventListener(t,e=>{
+      e.stopPropagation();
+      if(t==='click'&&(e.target===btn||btn.contains(e.target)))dismiss();
+    },true));
+  addEventListener('keydown',e=>{
+    if(!document.body.contains(ov))return;
+    e.stopImmediatePropagation();
+    if(e.key==='Enter'&&btn.style.display==='block'){e.preventDefault();dismiss();}
+  },true);
   const queue=ASSETS.slice();
   async function worker(){while(queue.length){const url=queue.shift();
     try{const r=await fetch(url,{cache:'force-cache'});await r.blob();if(!r.ok){failed++;console.warn('preload failed',url,r.status);}}
