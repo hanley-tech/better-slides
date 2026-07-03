@@ -117,3 +117,10 @@ Live example: `hanley.world/apple-10-things` (54 assets, ~55 MB).
 - Server must send 200s for every asset: after deploying, spot-check with
   `curl -o /dev/null -w "%{http_code}" <url>` — image tools often write mode-600 files
   which rsync preserves and Nginx then 403s. `chmod 644` before deploy.
+- **The server must also send `Cache-Control`** or the preloader is half-defeated: with
+  no caching header the browser revalidates (or refetches) each CSS background image
+  over the network the first time its slide shows — a visible per-slide delay on slow
+  links even though everything was preloaded. Check with `curl -sI <asset-url> | grep -i
+  cache-control`; if absent, add to the site's Nginx config:
+  `location ~ ^/<deck>/assets/ { expires 7d; add_header Cache-Control "public, max-age=604800"; }`
+  (Vercel/CDN hosts usually set this automatically; self-hosted Nginx does NOT.)
