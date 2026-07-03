@@ -42,15 +42,25 @@ Live example: `hanley.world/apple-10-things` (54 assets, ~55 MB).
     if(done===ASSETS.length){
       // fetch() warms the HTTP cache but <video> still buffers via range requests on
       // demand — without this gate, Start clicks land on an unbuffered first video.
+      // Warm EVERY video from the now-hot disk cache, then gate Start on the CURRENT
+      // slide AND the NEXT slide being fully ready (videos canplaythrough, images
+      // decoded) so both the opening and the first advance are instant.
       label.textContent='preparing playback…';
-      const tv=document.querySelector('video[autoplay]');
+      document.querySelectorAll('video').forEach(v=>{try{v.load();}catch(e){}});
+      const sl=[...document.querySelectorAll('.slide')];
+      const idx=Math.max(0,sl.findIndex(s=>s.classList.contains('active')));
+      const waits=[];
+      sl.slice(idx,idx+2).forEach(s=>{
+        s.querySelectorAll('video').forEach(v=>{
+          if(v.readyState<4)waits.push(new Promise(r=>v.addEventListener('canplaythrough',r,{once:true})));
+        });
+        s.querySelectorAll('img').forEach(im=>{if(im.decode)waits.push(im.decode().catch(()=>{}));});
+      });
       const ready=()=>{if(btn.style.display==='block')return;
         label.textContent=failed?`ready (${failed} failed — see console)`:'all assets cached · ready';
         btn.style.display='block';btn.focus();};
-      if(tv){try{tv.load();}catch(e){}
-        if(tv.readyState>=4)ready();
-        else{tv.addEventListener('canplaythrough',ready,{once:true});setTimeout(ready,5000);}}
-      else ready();
+      Promise.all(waits).then(ready);
+      setTimeout(ready,6000);   // failsafe — never hang the gate
     }
   }
   function dismiss(){ov.style.opacity='0';setTimeout(()=>ov.remove(),520);
