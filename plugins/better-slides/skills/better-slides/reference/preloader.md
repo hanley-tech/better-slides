@@ -63,8 +63,27 @@ Live example: `hanley.world/apple-10-things` (54 assets, ~55 MB).
       setTimeout(ready,6000);   // failsafe — never hang the gate
     }
   }
-  function dismiss(){ov.style.opacity='0';setTimeout(()=>ov.remove(),520);
-    document.querySelectorAll('video[autoplay]').forEach(v=>v.play().catch(()=>{}));}
+  function dismiss(){ov.style.opacity='0';setTimeout(()=>ov.remove(),520);syncSlideVideos();}
+  // Only the ACTIVE slide's videos play, restarting from 0 each time the slide is
+  // entered — otherwise every bg video runs from page load and slide arrivals land
+  // mid-loop at a random point.
+  function syncSlideVideos(){
+    document.querySelectorAll('.slide').forEach(s=>{
+      const on=s.classList.contains('active');
+      s.querySelectorAll('video').forEach(v=>{
+        if(on){try{v.currentTime=0;}catch(e){} v.play().catch(()=>{});}
+        else v.pause();
+      });
+    });
+  }
+  const vidCtl=new MutationObserver(ms=>{
+    ms.forEach(m=>{
+      const s=m.target,was=(m.oldValue||'').split(/\s+/).includes('active'),is=s.classList.contains('active');
+      if(is&&!was)s.querySelectorAll('video').forEach(v=>{try{v.currentTime=0;}catch(e){} v.play().catch(()=>{});});
+      else if(!is&&was)s.querySelectorAll('video').forEach(v=>v.pause());
+    });
+  });
+  document.querySelectorAll('.slide').forEach(s=>vidCtl.observe(s,{attributes:true,attributeFilter:['class'],attributeOldValue:true}));
   // swallow all input at the overlay so the deck's click-half / key nav never sees
   // the Start interaction (otherwise the same click ALSO advances a slide)
   ['click','pointerdown','pointerup','touchstart','touchend'].forEach(t=>
