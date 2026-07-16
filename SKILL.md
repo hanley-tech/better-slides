@@ -230,7 +230,7 @@ Then ask if they want to share. Offer:
 | [`scripts/deploy.sh`](scripts/deploy.sh) | Deploy deck to a live URL (Vercel) | Phase 4 |
 | [`scripts/export-pdf.sh`](scripts/export-pdf.sh) | Export deck to PDF | Phase 4 |
 | [`scripts/capture-shots.sh`](scripts/capture-shots.sh) | Capture `og.jpg` share card / slide stills | Phase 4 (publish) |
-| [`index.html`](index.html) | The project landing page — itself a deck (Noir) | Reference example |
+| [`keynote/index.html`](keynote/index.html) | The project pitch keynote, embedded in the landing page (Noir) | Reference example |
 | [`demo/index.html`](demo/index.html) | Flagship: the "Be Unforgettable" talk (Spotlight) | Reference example |
 | [`demo/noir/index.html`](demo/noir/index.html) | "This is not a slideshow" (Noir) | Reference example |
 | [`demo/obsidian/index.html`](demo/obsidian/index.html) | "Subtraction is the work" (Obsidian) | Reference example |

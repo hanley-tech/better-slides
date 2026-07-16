@@ -15,7 +15,7 @@ tells you **what to actually say**.
 
 ### ▸ [**See it perform → hanley-tech.github.io/better-slides**](https://hanley-tech.github.io/better-slides/)
 
-*(The landing page is itself a better-slides deck. Of course it is.)*
+*(The keynote on that page — [`/keynote/`](https://hanley-tech.github.io/better-slides/keynote/) — is itself a better-slides deck. Of course it is.)*
 
 **Six live demos**, one per performance style — arrow keys to advance, `m` for sound, `f` for fullscreen:
 [Noir](https://hanley-tech.github.io/better-slides/demo/noir/) ·
@@ -162,7 +162,8 @@ demo that has nothing to say isn't demonstrating the point:
 | [`demo/broadsheet/`](demo/broadsheet/) | Broadsheet | *Attention is rented. Memory is owned.* |
 
 ```bash
-open index.html                  # the landing page (Noir) — itself a deck
+open index.html                  # the landing page
+open keynote/index.html          # the pitch keynote (Noir) — embedded in the landing hero
 open demo/index.html             # Be Unforgettable (Spotlight)
 open demo/noir/index.html        # This is not a slideshow (Noir)
 open demo/obsidian/index.html    # Subtraction is the work (Obsidian)

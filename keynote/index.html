@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>better-slides — slides that perform</title>
+<meta name="description" content="Most slide tools make a document. better-slides makes a performance: big type, timed reveals, sound design, and a &quot;one more thing&quot; finale — one HTML file your coding agent writes for you.">
+<link rel="canonical" href="https://hanley-tech.github.io/better-slides/keynote/">
+<!-- Open Graph / WhatsApp / iMessage / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="better-slides">
+<meta property="og:url" content="https://hanley-tech.github.io/better-slides/keynote/">
+<meta property="og:title" content="better-slides — slides that perform">
+<meta property="og:description" content="Most slide tools make a document. This one makes a performance. One HTML file, zero dependencies, written by your coding agent.">
+<meta property="og:image" content="https://hanley-tech.github.io/better-slides/keynote/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="better-slides — slides that perform">
+<meta name="twitter:description" content="Most slide tools make a document. This one makes a performance. One HTML file, zero dependencies, written by your coding agent.">
+<meta name="twitter:image" content="https://hanley-tech.github.io/better-slides/keynote/og.jpg">
+
+<!-- ════════════════════════════════════════════════════════════════════
+     THEME · Noir — black stage, white light, one accent.
+     See performance-styles/noir/design.md
+     ════════════════════════════════════════════════════════════════════ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- one fonts request: Inter Tight is the deck's face; the other three render the
+     style swatches on the "six styles" slide in their real typefaces. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Poppins:wght@700;900&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+<style id="theme">
+  :root{
+    --ink:#F5F5F7;         /* near-white primary text (never pure #fff) */
+    --muted:#8A8A8E;       /* supporting type */
+    --hint:#48484C;        /* captions, chrome */
+    --bg:#0B0C12;          /* the black stage */
+    --black:#000000;
+    --blue:#2997FF;        /* the single accent */
+    --cyan:#5AC8FA;        /* lighter tint of accent — glow only */
+    --deep:#0A2540;        /* dark accent end for gradients */
+    --gold:#2997FF;        /* Noir has no gold — reuse the accent */
+    --amber:#5AC8FA;
+    --line:#1C1C22;        /* hairline dividers */
+    --mono:"Inter Tight","Helvetica Neue",-apple-system,Arial,sans-serif;
+    --code:"JetBrains Mono","SF Mono",ui-monospace,Menlo,monospace;
+    /* background swirl palette — near-black so the stage never lifts */
+    --p0:#0B0C12; --p1:#0E1018; --p2:#0A2540; --p3:#08080C; --p4:#0B0C12; --p5:#0E1018;
+  }
+</style>
+<!-- ═══════════════════════ END THEME ═══════════════════════ -->
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{font-family:var(--mono);color:var(--ink);background:#000;-webkit-font-smoothing:antialiased}
+  /* fixed 1920×1080 stage, scaled to fit, letterboxed */
+  #stage{position:fixed;top:50%;left:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--scale,1));transform-origin:center center;container-type:size;overflow:hidden;background:var(--bg)}
+  .bg{position:fixed;inset:-20%;z-index:0;filter:blur(70px);opacity:.42;transition:background 1.2s ease}
+  .bg::after{content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(40% 50% at 18% 22%, var(--g1), transparent 60%),
+      radial-gradient(45% 55% at 82% 30%, var(--g2), transparent 60%),
+      radial-gradient(55% 60% at 50% 88%, var(--g3), transparent 62%);
+    animation:swirl 18s ease-in-out infinite alternate}
+  @keyframes swirl{0%{transform:translate3d(0,0,0) scale(1) rotate(0)}100%{transform:translate3d(3%,-3%,0) scale(1.1) rotate(6deg)}}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='80' height='80' filter='url(%23n)'/></svg>")}
+  .deck{position:relative;z-index:2;height:100cqh;width:100cqw}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:7cqmin 9cqmin}
+  .slide.active{display:flex}
+  .slide.center{align-items:center;text-align:center}
+
+  /* ── entrances ───────────────────────────────────────────── */
+  .slide.active .pop{animation:pop .7s cubic-bezier(.2,1,.3,1) backwards}
+  .slide.active .pop:nth-child(1){animation-delay:.35s}   /* the held beat before the line */
+  .slide.active .pop:nth-child(2){animation-delay:.5s}
+  .slide.active .pop:nth-child(3){animation-delay:.62s}
+  .slide.active .pop:nth-child(4){animation-delay:.74s}
+  .slide.active .pop:nth-child(5){animation-delay:.86s}
+  @keyframes pop{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+  .slide.active .slam{animation:slam .55s cubic-bezier(.2,1.15,.3,1) .45s backwards}
+  @keyframes slam{0%{opacity:0;transform:scale(1.22)}60%{opacity:1;transform:scale(.99)}80%{transform:scale(1.01)}100%{transform:scale(1)}}
+
+  /* ── type ladder (noir/design.md) ────────────────────────── */
+  .badge{display:inline-flex;align-self:flex-start;font-family:var(--code);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:clamp(11px,2.4cqmin,26px);color:var(--blue);margin-bottom:3.4cqmin}
+  .center .badge{align-self:center}
+  .badge::after{content:"";display:block}
+  h1{font-size:clamp(46px,11cqmin,190px);line-height:.95;font-weight:900;letter-spacing:-.03em}
+  h2{font-size:clamp(38px,8.4cqmin,140px);line-height:1;font-weight:900;letter-spacing:-.03em}
+  h2.sm{font-size:clamp(30px,6.4cqmin,108px)}
+  .mega{font-size:clamp(70px,22cqmin,420px);font-weight:900;line-height:.82;letter-spacing:-.05em}
+  .sub{font-size:clamp(18px,3.7cqmin,48px);font-weight:500;line-height:1.42;margin-top:3.4cqmin;max-width:24ch;color:var(--muted)}
+  .center .sub{align-self:center}
+  .tiny{font-family:var(--code);font-size:clamp(11px,2cqmin,22px);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--hint)}
+  .hl{color:var(--blue)}
+  .glow{text-shadow:0 0 26px rgba(41,151,255,.75),0 0 70px rgba(41,151,255,.4),0 0 140px rgba(41,151,255,.25)}
+  .rule{width:8cqmin;height:2px;background:var(--blue);margin-bottom:3.2cqmin;align-self:flex-start}
+  .center .rule{align-self:center}
+
+  /* ── title slide ─────────────────────────────────────────── */
+  .title-hero{align-items:center;justify-content:center;text-align:center}
+  .title-hero .bgimg{position:absolute;inset:0;z-index:0;background:
+    radial-gradient(66% 46% at 50% -8%, rgba(41,151,255,.18), transparent 62%),
+    radial-gradient(80% 60% at 50% 118%, rgba(10,37,64,.75), transparent 64%),
+    linear-gradient(170deg,#0E1018 0%,#000 58%,#0B0C12 100%)}
+  .title-hero .bgimg::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 42%, transparent, rgba(0,0,0,.5) 96%)}
+  .title-hero>:not(.bgimg){position:relative;z-index:1}
+  .title-hero .lockwm{font-family:var(--code);font-weight:700;font-size:clamp(13px,2.4cqmin,26px);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .title-hero .lockwm b{color:var(--blue);font-weight:700}
+  .title-hero h1{margin-top:3.4cqmin}
+  .title-hero .t-sm{display:block;font-size:clamp(24px,5.6cqmin,74px);font-weight:700;line-height:1;color:var(--muted);letter-spacing:-.01em}
+  .title-hero .t-mega{display:block;font-size:clamp(48px,13cqmin,190px);font-weight:900;line-height:.92;letter-spacing:-.04em;margin-top:.1em}
+  .title-hero .tagline{margin-top:5cqmin;font-size:clamp(15px,2.9cqmin,34px);font-weight:500;color:var(--muted);letter-spacing:.01em}
+  /* .title-hero .drive — specificity must beat `.title-hero>:not(.bgimg)` above,
+     which would otherwise force this out of `position:absolute` and into the flow. */
+  .title-hero .drive{position:absolute;left:0;right:0;bottom:5cqmin;z-index:2;display:flex;justify-content:center;gap:2.4cqmin;
+    font-family:var(--code);font-size:clamp(10px,1.7cqmin,18px);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--hint)}
+  .drive span{display:inline-flex;align-items:center;gap:.7ch}
+  .drive kbd{font-family:var(--code);font-size:1em;color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:.25em .6em;background:rgba(255,255,255,.04)}
+  .drive .k1 kbd{color:var(--blue);border-color:rgba(41,151,255,.4);animation:nudge 2.6s ease-in-out infinite}
+  @keyframes nudge{0%,72%,100%{transform:translateX(0);opacity:.9}80%{transform:translateX(4px);opacity:1}88%{transform:translateX(0)}}
+  .slide.active .drive{animation:pop .8s ease 1.6s backwards}
+
+  /* ── the gap matrix ──────────────────────────────────────── */
+  .matrix{width:100%;max-width:1560px;margin-top:4cqmin;font-size:clamp(11px,2.1cqmin,23px)}
+  .mrow{display:grid;grid-template-columns:1.5fr repeat(4,1fr);align-items:center;
+    border-bottom:1px solid var(--line);padding:1.7cqmin 0}
+  .mrow.mhead{border-bottom-color:rgba(255,255,255,.16);padding-bottom:1.2cqmin}
+  .mrow.mhead span{font-family:var(--code);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--hint);font-size:.82em;text-align:center}
+  .mrow.mhead .mlab{text-align:left}
+  .mrow.us{border-bottom:none;border-top:1px solid rgba(41,151,255,.35);margin-top:.8cqmin;padding-top:2.4cqmin}
+  .mlab{font-weight:700;font-size:1.35em;letter-spacing:-.02em;color:var(--muted)}
+  .us .mlab{color:var(--ink);font-weight:900}
+  .us .mlab b{color:var(--blue);font-weight:900}
+  .mk{text-align:center;font-weight:700;font-size:1.5em;color:var(--hint)}
+  .mk.y{color:var(--ink)}
+  .mk.p{color:var(--muted)}
+  .mk svg{width:clamp(18px,3.4cqmin,40px);height:auto;display:inline-block;vertical-align:middle;overflow:visible}
+  .ck{fill:none;stroke:var(--blue);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(41,151,255,.6))}
+
+  /* ── one file / zero dependencies (the hero) ─────────────── */
+  .mass{display:flex;align-items:center;justify-content:center;gap:6cqmin;width:100%;margin-top:1cqmin}
+  .mcol{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;max-width:44%}
+  .mrule{width:1px;align-self:stretch;background:linear-gradient(180deg,transparent,var(--line) 22%,var(--line) 78%,transparent)}
+  /* both columns get an identical-height visual slot so the captions share a baseline */
+  .swarm,.massnum{height:clamp(80px,26cqmin,300px);display:flex;align-items:center;justify-content:center}
+  .swarm{width:clamp(150px,34cqmin,380px);display:block;overflow:visible}
+  .swarm circle{fill:#6E6E75}
+  .massnum .mega{font-size:clamp(70px,24cqmin,280px)}
+  .mcap{font-family:var(--code);font-size:clamp(11px,2.1cqmin,23px);font-weight:600;letter-spacing:.08em;color:var(--muted);margin-top:2.6cqmin}
+  .mcap.on{color:var(--blue)}
+  .msub{font-size:clamp(11px,1.9cqmin,21px);font-weight:500;color:var(--hint);margin-top:1.2cqmin;max-width:26ch;line-height:1.45}
+  .massfoot{margin-top:5cqmin;font-size:clamp(16px,3.4cqmin,44px);font-weight:700;color:var(--ink);letter-spacing:-.02em}
+  .massfoot b{color:var(--blue);font-weight:900}
+
+  /* ── event-proof screens ─────────────────────────────────── */
+  .screens{display:flex;align-items:flex-start;justify-content:center;gap:7cqmin;width:100%;margin-top:3.4cqmin}
+  .scol{display:flex;flex-direction:column;align-items:center;gap:2cqmin}
+  .scap{font-family:var(--code);font-size:clamp(10px,1.8cqmin,19px);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--hint)}
+  .scap.on{color:var(--blue)}
+  .sbox{width:clamp(180px,54cqmin,620px);height:clamp(100px,30cqmin,340px);display:flex;align-items:center;justify-content:center}
+  .frame{position:relative;background:#000;border:1px solid var(--line);overflow:hidden;border-radius:4px}
+  .frame.good{border-color:rgba(41,151,255,.45)}
+  .ministage{position:absolute;top:50%;left:50%;width:480px;height:270px;transform:translate(-50%,-50%) scale(var(--ms,1));transform-origin:center;background:var(--bg);
+    display:flex;flex-direction:column;justify-content:center;padding:0 30px;gap:12px}
+  .reflow{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:0 26px;gap:12px;overflow:hidden}
+  .mk-k{font-family:var(--code);font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue)}
+  .reflow .mk-k{color:#6E6E75}
+  .mk-h{font-size:33px;font-weight:900;line-height:.94;letter-spacing:-.03em;color:var(--ink);white-space:nowrap}
+  .reflow .mk-h{white-space:normal;color:#B6B6BC}
+  .mk-s{font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap}
+  .reflow .mk-s{white-space:normal}
+  .rchips{display:flex;justify-content:center;gap:1.2cqmin;margin-top:4cqmin;flex-wrap:wrap}
+  .rchip{font-family:var(--code);font-size:clamp(9px,1.7cqmin,19px);font-weight:600;letter-spacing:.06em;color:var(--muted);
+    background:transparent;border:1px solid var(--line);border-radius:999px;padding:.75em 1.5em;cursor:pointer;transition:.25s ease}
+  .rchip:hover{color:var(--ink);border-color:rgba(255,255,255,.28)}
+  .rchip.on{color:var(--blue);border-color:rgba(41,151,255,.55);background:rgba(41,151,255,.07)}
+  .rchip:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  .dims{margin-top:2.4cqmin;text-align:center;font-family:var(--code);font-size:clamp(10px,1.8cqmin,20px);font-weight:600;letter-spacing:.1em;color:var(--hint)}
+  .dims b{color:var(--muted);font-weight:600}
+
+  /* ── agent workflow ──────────────────────────────────────── */
+  .flowwrap{width:100%;max-width:1620px;margin-top:4cqmin;align-self:center}
+  .flowwrap svg{width:100%;height:auto;display:block;overflow:visible}
+  .fl-track{fill:none;stroke:var(--line);stroke-width:2}
+  .fl-live{fill:none;stroke:var(--blue);stroke-width:2;filter:drop-shadow(0 0 6px rgba(41,151,255,.5))}
+  .fl-ring{fill:#08080C;stroke:rgba(255,255,255,.2);stroke-width:2}
+  .fl-ring.key{stroke:var(--blue);stroke-width:2.5;filter:drop-shadow(0 0 12px rgba(41,151,255,.45))}
+  .fl-n{font:700 22px var(--code);fill:#8A8A8E;text-anchor:middle}
+  .fl-n.key{fill:#2997FF}
+  .fl-t{font:900 30px var(--mono);fill:#F5F5F7;text-anchor:middle;letter-spacing:-.02em}
+  .fl-d{font:500 18px var(--mono);fill:#6E6E75;text-anchor:middle}
+
+  /* ── style swatches ──────────────────────────────────────── */
+  .swgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:3cqmin 3cqmin;width:100%;max-width:1600px;margin-top:3.4cqmin;align-self:center}
+  .sw{display:flex;flex-direction:column;gap:1.4cqmin;text-decoration:none;color:inherit;transition:transform .3s cubic-bezier(.2,1,.3,1)}
+  .sw:hover,.sw:focus-visible{transform:translateY(-6px)}
+  .sw:focus-visible{outline:2px solid var(--blue);outline-offset:8px;border-radius:8px}
+  .swchip{position:relative;aspect-ratio:16/9;border-radius:8px;border:1px solid rgba(255,255,255,.12);overflow:hidden;
+    background:var(--sbg);display:flex;flex-direction:column;justify-content:center;gap:.6cqmin;padding:0 2.4cqmin;transition:border-color .3s}
+  .sw:hover .swchip,.sw:focus-visible .swchip{border-color:rgba(255,255,255,.4)}
+  .swchip::after{content:"";position:absolute;inset:0;background:var(--sglow);pointer-events:none}
+  .swk{position:relative;z-index:1;font-family:var(--sfam);font-size:clamp(6px,1.15cqmin,13px);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--sac)}
+  .swh{position:relative;z-index:1;font-family:var(--sfam);font-size:clamp(15px,3.4cqmin,38px);font-weight:900;line-height:.95;letter-spacing:-.03em;color:var(--sink)}
+  .swbar{position:relative;z-index:1;width:3.4cqmin;height:2px;background:var(--sac);margin-top:.5cqmin}
+  .swmeta{display:flex;align-items:baseline;gap:1ch}
+  .swmeta b{font-size:clamp(13px,2.5cqmin,28px);font-weight:900;letter-spacing:-.02em;color:var(--ink);transition:color .25s}
+  .sw:hover .swmeta b,.sw:focus-visible .swmeta b{color:var(--blue)}
+  .swmeta i{flex:1;font-style:normal;font-size:clamp(9px,1.6cqmin,18px);font-weight:500;color:var(--hint);line-height:1.3}
+  .swmeta em{font-style:normal;font-size:clamp(9px,1.6cqmin,18px);color:var(--hint);transition:.25s}
+  .sw:hover .swmeta em{color:var(--blue);transform:translate(2px,-2px)}
+
+  /* ── install CTA ─────────────────────────────────────────── */
+  .cmds{display:flex;flex-direction:column;gap:1.8cqmin;width:100%;max-width:1420px;margin-top:4cqmin}
+  .cmd{display:flex;align-items:center;gap:2.2cqmin;border:1px solid var(--line);border-radius:12px;padding:2.2cqmin 2.4cqmin;background:rgba(255,255,255,.02)}
+  .cmd .cn{font-family:var(--code);font-size:clamp(10px,1.7cqmin,19px);font-weight:700;color:var(--hint);flex:none}
+  .cmd code{flex:1;font-family:var(--code);font-size:clamp(11px,2.5cqmin,30px);font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cmd code .p{color:var(--blue)}
+  .cpy{flex:none;font-family:var(--code);font-size:clamp(9px,1.6cqmin,18px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:.7em 1.4em;cursor:pointer;transition:.2s;min-width:9ch}
+  .cpy:hover{color:var(--ink);border-color:rgba(255,255,255,.3)}
+  .cpy.done{color:var(--blue);border-color:rgba(41,151,255,.5)}
+  .cpy:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  .inl{font-family:var(--code);font-size:.9em;color:var(--blue)}
+
+  /* ── omt finale ──────────────────────────────────────────── */
+  .omt-slide{align-items:center;text-align:center;justify-content:center}
+  .omt-slide .omt-kicker{align-self:center;margin-bottom:3cqmin}
+  .omt-slide .omt-line{font-size:clamp(34px,7.6cqmin,124px);max-width:20ch}
+  .omt-slide .omt-sub{align-self:center;max-width:34ch}
+
+  /* ── close ───────────────────────────────────────────────── */
+  .closelink{color:var(--ink);text-decoration:none;border-bottom:1px solid rgba(41,151,255,.5);transition:color .2s}
+  .closelink:hover{color:var(--blue)}
+  .closelink:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
+
+  /* ── chrome ──────────────────────────────────────────────── */
+  .fab{position:fixed;bottom:2.6cqmin;right:2.6cqmin;z-index:7;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;
+    background:rgba(255,255,255,.09);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);
+    border:1px solid rgba(255,255,255,.22);
+    box-shadow:0 8px 28px rgba(0,0,0,.4),inset 0 1px 1px rgba(255,255,255,.45),inset 0 -3px 8px rgba(0,0,0,.22);
+    transition:transform .3s cubic-bezier(.2,1,.3,1),background .3s}
+  .fab::before{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(155deg,rgba(255,255,255,.4),transparent 48%);pointer-events:none}
+  .fab:hover{transform:scale(1.08);background:rgba(255,255,255,.14)}
+  .fab:active{transform:scale(.95)}
+  .fab.on{background:rgba(41,151,255,.2);border-color:rgba(41,151,255,.5)}
+  .menu{position:fixed;bottom:7cqmin;right:2.6cqmin;z-index:7;display:flex;flex-direction:column;min-width:274px;max-height:80cqh;padding:12px;border-radius:22px;font-family:var(--mono);color:var(--ink);
+    background:rgba(16,18,28,.55);-webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 20px 54px rgba(0,0,0,.55),inset 0 1px 1px rgba(255,255,255,.28);
+    opacity:0;transform:translateY(12px) scale(.95);transform-origin:bottom right;pointer-events:none;transition:.3s cubic-bezier(.2,1,.3,1)}
+  .menu.open{opacity:1;transform:none;pointer-events:auto}
+  .menu .wm{font-size:13px;font-weight:600;letter-spacing:-.02em;opacity:.85;padding:4px 8px 2px}
+  .menu .wm b{color:var(--blue)}
+  .menu .prog{display:flex;align-items:center;gap:10px;padding:10px 8px 12px}
+  .menu .bar{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden}
+  .menu .bar span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--blue));transition:width .35s ease}
+  .menu .count{font-size:12px;font-weight:600;opacity:.7;min-width:48px;text-align:right}
+  .menu .acts{display:flex;gap:6px;margin:6px 0 2px}
+  .menu .act{flex:1;display:flex;align-items:center;justify-content:center;padding:9px 0;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--ink);font-size:16px;line-height:1;cursor:pointer;transition:background .15s}
+  .menu .act:hover{background:rgba(255,255,255,.14)}
+  .menu .nav{flex:1;min-height:0;overflow-y:auto;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:1px}
+  .menu .nav::-webkit-scrollbar{width:6px}
+  .menu .nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:3px}
+  .menu .navi{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:9px;border:none;background:transparent;color:var(--ink);font-family:var(--mono);font-weight:600;font-size:11.5px;cursor:pointer;text-align:left;transition:background .15s}
+  .menu .navi:hover{background:rgba(255,255,255,.1)}
+  .menu .navi.on{background:rgba(41,151,255,.16)}
+  .menu .navi .n{opacity:.45;min-width:20px}
+  .menu .navi.on .n{opacity:1;color:var(--blue)}
+  .menu .navi .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brandmark{position:fixed;top:3cqmin;left:3.6cqmin;z-index:5;display:flex;align-items:center;gap:9px;pointer-events:none;opacity:.9;transition:opacity .4s}
+  .brandmark .wm{font-family:var(--code);font-weight:700;font-size:clamp(9px,1.6cqmin,17px);letter-spacing:.2em;text-transform:uppercase;color:var(--hint)}
+  .brandmark .wm b{color:var(--blue);font-weight:700}
+  body.first .brandmark{opacity:0}
+  .confetti{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden;display:none}
+  .confetti.go{display:block}
+  .confetti b{position:absolute;top:-12cqh;width:8px;height:14px;border-radius:2px;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(125cqh) rotate(720deg)}}
+  body.muted .fab.sounding,#soundbtn.off{opacity:.5}
+  /* inline edit mode — press E, click any text, Ctrl/Cmd+S to save the file */
+  body.editing .slide.active{outline:2px dashed rgba(255,255,255,.28);outline-offset:-10px;cursor:text}
+  body.editing .fab{background:rgba(41,151,255,.25);border-color:rgba(41,151,255,.5)}
+
+  @media (prefers-reduced-motion: reduce){
+    .bg::after,.slide.active .pop,.slide.active .slam,.slide.active .drive,.drive .k1 kbd{animation:none!important}
+    .bg{transition:none}
+    .sw:hover{transform:none}
+    .omt-kicker,.omt-line,.omt-sub{opacity:1!important}
+  }
+  @media print{
+    html,body{height:auto;overflow:visible;background:var(--bg)}
+    .bg,.grain,.confetti,.fab,.menu,.brandmark{display:none!important}
+    .deck{height:auto}
+    .slide{position:static!important;display:flex!important;min-height:90cqh;page-break-after:always;padding:8cqmin}
+    .slide .pop,.slide .slam{animation:none!important}
+    .omt-kicker,.omt-line,.omt-sub{opacity:1!important}
+    .bg::after{display:none}
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<div class="bg" id="bg"></div>
+<div class="grain"></div>
+<div class="confetti" id="confetti"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · TITLE — the held black open + the drive affordance -->
+  <section class="slide active title-hero" data-nav="Title">
+    <div class="bgimg"></div>
+    <div class="lockwm pop">better<b>slides</b></div>
+    <h1 class="pop">
+      <span class="t-sm">Slides that</span>
+      <span class="t-mega"><span class="glow">perform.</span></span>
+    </h1>
+    <div class="tagline pop">Don't be boring. Be unforgettable.</div>
+    <div class="drive">
+      <span class="k1"><kbd>→</kbd> to advance</span>
+      <span><kbd>M</kbd> sound</span>
+      <span><kbd>F</kbd> fullscreen</span>
+    </div>
+  </section>
+
+  <!-- 2 · THE PROBLEM -->
+  <section class="slide" data-nav="The problem" data-cue="swoosh">
+    <span class="badge pop">the room</span>
+    <h2 class="pop">They forget your deck<br>before you <span class="hl">sit down.</span></h2>
+    <div class="sub pop" style="max-width:30ch">You made a document. Documents don't get remembered — moments do.</div>
+  </section>
+
+  <!-- 3 · THE GAP — matrix infographic -->
+  <section class="slide" data-nav="The gap" data-fx="matrix">
+    <span class="badge pop">the gap</span>
+    <h2 class="pop sm">Nobody fills <span class="hl">all four.</span></h2>
+    <div class="matrix">
+      <div class="mrow mhead"><span class="mlab"></span><span>Theatrics</span><span>Open / web</span><span>AI-authored</span><span>Tells you what to say</span></div>
+      <div class="mrow"><span class="mlab">Apple Keynote</span><span class="mk y">✓</span><span class="mk">✕</span><span class="mk">✕</span><span class="mk">✕</span></div>
+      <div class="mrow"><span class="mlab">reveal.js</span><span class="mk p">~</span><span class="mk y">✓</span><span class="mk">✕</span><span class="mk">✕</span></div>
+      <div class="mrow"><span class="mlab">AI slide tools</span><span class="mk">✕</span><span class="mk y">✓</span><span class="mk y">✓</span><span class="mk">✕</span></div>
+      <div class="mrow us">
+        <span class="mlab">better<b>-slides</b></span>
+        <span class="mk"><svg viewBox="0 0 24 24"><path class="ck" d="M3.5 12.6 L9.3 18.4 L20.5 5.6"/></svg></span>
+        <span class="mk"><svg viewBox="0 0 24 24"><path class="ck" d="M3.5 12.6 L9.3 18.4 L20.5 5.6"/></svg></span>
+        <span class="mk"><svg viewBox="0 0 24 24"><path class="ck" d="M3.5 12.6 L9.3 18.4 L20.5 5.6"/></svg></span>
+        <span class="mk"><svg viewBox="0 0 24 24"><path class="ck" d="M3.5 12.6 L9.3 18.4 L20.5 5.6"/></svg></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · THE ONE IDEA -->
+  <section class="slide center" data-nav="One idea" data-cue="swoosh">
+    <span class="badge pop">the one idea</span>
+    <h2 class="slam">A deck is a <span class="hl glow">performance.</span></h2>
+    <div class="sub pop" style="max-width:32ch">Not a document. Optimize for what the room feels.</div>
+  </section>
+
+  <!-- 5 · HERO — 1 file, 0 dependencies (the money slide) -->
+  <section class="slide center" data-nav="1 file, 0 deps" data-fx="onefile">
+    <span class="badge pop">what you ship</span>
+    <div class="mass">
+      <div class="mcol">
+        <svg class="swarm" id="swarm" viewBox="0 0 300 220" aria-label="A dense swarm of dependency packages"></svg>
+        <div class="mcap">node_modules</div>
+        <div class="msub">a build step, a framework, and a folder you never read</div>
+      </div>
+      <div class="mrule"></div>
+      <div class="mcol">
+        <div class="massnum"><span class="mega glow" id="megaone">1</span></div>
+        <div class="mcap on">index.html</div>
+        <div class="msub">no build, no framework, no npm — it just opens</div>
+      </div>
+    </div>
+    <div class="massfoot"><b>1 file. 0 dependencies.</b> It will still open in 10 years.</div>
+  </section>
+
+  <!-- 6 · EVENT-PROOF — the interactive fixed-stage diagram -->
+  <section class="slide" data-nav="Event-proof" data-fx="screens" data-cue="swoosh">
+    <span class="badge pop">built for the podium</span>
+    <h2 class="pop sm">One composition. <span class="hl">Every screen.</span></h2>
+    <div class="screens">
+      <div class="scol">
+        <div class="scap">a deck that reflows</div>
+        <div class="sbox"><div class="frame" id="fbad">
+          <div class="reflow">
+            <div class="mk-k">the premise</div>
+            <div class="mk-h">A deck is a performance.</div>
+            <div class="mk-s">Not a document. The room should feel it.</div>
+          </div>
+        </div></div>
+      </div>
+      <div class="scol">
+        <div class="scap on">better-slides</div>
+        <div class="sbox"><div class="frame good" id="fgood">
+          <div class="ministage" id="mstage">
+            <div class="mk-k">the premise</div>
+            <div class="mk-h">A deck is a performance.</div>
+            <div class="mk-s">Not a document. The room should feel it.</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <div class="rchips" id="rchips">
+      <button class="rchip on" data-w="1920" data-h="1080">Laptop 16:9</button>
+      <button class="rchip" data-w="1024" data-h="768">Hall 4:3</button>
+      <button class="rchip" data-w="1680" data-h="1050">Panel 16:10</button>
+      <button class="rchip" data-w="2560" data-h="1080">Ultrawide 21:9</button>
+      <button class="rchip" data-w="390" data-h="844">Phone</button>
+    </div>
+    <div class="dims">Pick a screen · the 1920×1080 stage letterboxes into <b id="dims">1920 × 1080</b> — it never reflows</div>
+  </section>
+
+  <!-- 7 · WHAT IT IS — the agent workflow diagram -->
+  <section class="slide" data-nav="How it works" data-fx="flow">
+    <span class="badge pop">an agent skill</span>
+    <h2 class="pop sm">Point your agent at it.</h2>
+    <div class="flowwrap">
+      <svg viewBox="0 0 1560 300" id="flowsvg" aria-label="Brief, method pass, style, build, perform">
+        <path class="fl-track" d="M120 96 H1440"/>
+        <path class="fl-live" id="flline" d="M120 96 H1440"/>
+        <g id="flnodes">
+          <g class="flnode"><circle class="fl-ring" cx="120" cy="96" r="46"/><text class="fl-n" x="120" y="104">01</text><text class="fl-t" x="120" y="196">Brief</text><text class="fl-d" x="120" y="228">topic · notes · .pptx</text></g>
+          <g class="flnode"><circle class="fl-ring key" cx="450" cy="96" r="46"/><text class="fl-n key" x="450" y="104">02</text><text class="fl-t" x="450" y="196">Method</text><text class="fl-d" x="450" y="228">the Speaker Playbook</text></g>
+          <g class="flnode"><circle class="fl-ring" cx="780" cy="96" r="46"/><text class="fl-n" x="780" y="104">03</text><text class="fl-t" x="780" y="196">Style</text><text class="fl-d" x="780" y="228">pick from live previews</text></g>
+          <g class="flnode"><circle class="fl-ring" cx="1110" cy="96" r="46"/><text class="fl-n" x="1110" y="104">04</text><text class="fl-t" x="1110" y="196">Build</text><text class="fl-d" x="1110" y="228">one self-contained .html</text></g>
+          <g class="flnode"><circle class="fl-ring" cx="1440" cy="96" r="46"/><text class="fl-n" x="1440" y="104">05</text><text class="fl-t" x="1440" y="196">Perform</text><text class="fl-d" x="1440" y="228">present · deploy · PDF</text></g>
+        </g>
+      </svg>
+    </div>
+    <div class="sub pop" style="max-width:46ch;align-self:center;text-align:center">Motion, sound, inline editing and a PDF export come with it.</div>
+  </section>
+
+  <!-- 8 · THE SIX STYLES — swatches, each a live demo link -->
+  <section class="slide" data-nav="Six styles" data-fx="styles" data-cue="swoosh">
+    <span class="badge pop">six performance styles</span>
+    <h2 class="pop sm">Not themes. <span class="hl">Design systems.</span></h2>
+    <div class="swgrid" id="swgrid">
+      <a class="sw" href="https://hanley-tech.github.io/better-slides/demo/noir/" target="_blank" rel="noopener"
+         style="--sbg:#0B0C12;--sac:#2997FF;--sink:#F5F5F7;--sfam:'Inter Tight',sans-serif;--sglow:radial-gradient(70% 60% at 50% 0%, rgba(41,151,255,.14), transparent 62%)">
+        <span class="swchip"><span class="swk">one more thing</span><span class="swh">Black stage.<br>White light.</span><span class="swbar"></span></span>
+        <span class="swmeta"><b>Noir</b><i>Launches, vision talks, founder pitches</i><em>↗</em></span>
+      </a>
+      <a class="sw" href="https://hanley-tech.github.io/better-slides/demo/obsidian/" target="_blank" rel="noopener"
+         style="--sbg:#000000;--sac:#8E8E93;--sink:#F5F5F7;--sfam:'SF Pro Display',-apple-system,'Inter Tight',sans-serif;--sglow:radial-gradient(60% 55% at 50% 28%, rgba(255,255,255,.07), transparent 68%)">
+        <span class="swchip"><span class="swk">restraint</span><span class="swh">No color.<br>Just air.</span><span class="swbar"></span></span>
+        <span class="swmeta"><b>Obsidian</b><i>Monochrome apple.com on black</i><em>↗</em></span>
+      </a>
+      <a class="sw" href="https://hanley-tech.github.io/better-slides/demo/cupertino/" target="_blank" rel="noopener"
+         style="--sbg:#000000;--sac:#2997FF;--sink:#F5F5F7;--sfam:'SF Pro Display',-apple-system,'Inter Tight',sans-serif;--sglow:radial-gradient(80% 70% at 78% 100%, rgba(41,151,255,.16), transparent 60%)">
+        <span class="swchip"><span class="swk">chapter 01</span><span class="swh">Photo-forward.<br>Personal.</span><span class="swbar"></span></span>
+        <span class="swmeta"><b>Cupertino</b><i>Your story, told in full bleed</i><em>↗</em></span>
+      </a>
+      <a class="sw" href="https://hanley-tech.github.io/better-slides/demo/" target="_blank" rel="noopener"
+         style="--sbg:#0B1B30;--sac:#FCD830;--sink:#FFFFFF;--sfam:'Poppins',sans-serif;--sglow:radial-gradient(75% 70% at 20% 0%, rgba(16,144,224,.35), transparent 62%)">
+        <span class="swchip"><span class="swk">let's go</span><span class="swh">Loud. Warm.<br>A party.</span><span class="swbar"></span></span>
+        <span class="swmeta"><b>Spotlight</b><i>Meetups, teaching, hype moments</i><em>↗</em></span>
+      </a>
+      <a class="sw" href="https://hanley-tech.github.io/better-slides/demo/terminal/" target="_blank" rel="noopener"
+         style="--sbg:#0D1117;--sac:#39D353;--sink:#E6EDF3;--sfam:'JetBrains Mono',ui-monospace,monospace;--sglow:radial-gradient(70% 60% at 50% 100%, rgba(57,211,83,.1), transparent 62%)">
+        <span class="swchip"><span class="swk"># ship it</span><span class="swh">$ all mono,<br>all green.</span><span class="swbar"></span></span>
+        <span class="swmeta"><b>Terminal</b><i>Dev-tool launches, security, hackathons</i><em>↗</em></span>
+      </a>
+      <a class="sw" href="https://hanley-tech.github.io/better-slides/demo/broadsheet/" target="_blank" rel="noopener"
+         style="--sbg:#14181F;--sac:#C8553D;--sink:#EDE6D6;--sfam:'Fraunces',Georgia,serif;--sglow:radial-gradient(70% 60% at 50% 0%, rgba(200,85,61,.1), transparent 62%)">
+        <span class="swchip"><span class="swk">an essay</span><span class="swh">Ink, cream,<br>one crimson.</span><span class="swbar"></span></span>
+        <span class="swmeta"><b>Broadsheet</b><i>Research, strategy, essays-as-talks</i><em>↗</em></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 9 · THE LANDING — install it -->
+  <section class="slide" data-nav="Install" data-fx="cta">
+    <span class="badge pop">install</span>
+    <h2 class="pop sm">Two lines in <span class="hl">Claude Code.</span></h2>
+    <div class="cmds">
+      <div class="cmd"><span class="cn">01</span><code id="c1"><span class="p">/plugin</span> marketplace add https://github.com/hanley-tech/better-slides</code><button class="cpy" data-copy="c1">Copy</button></div>
+      <div class="cmd"><span class="cn">02</span><code id="c2"><span class="p">/plugin</span> install better-slides@better-slides</code><button class="cpy" data-copy="c2">Copy</button></div>
+    </div>
+    <div class="sub pop" style="max-width:none">Then run <code class="inl">/better-slides:better-slides</code> and tell it what your talk is about.</div>
+  </section>
+
+  <!-- 10 · OMT — the finale turn -->
+  <section class="slide omt-slide" data-nav="One more thing" data-omt>
+    <span class="badge omt-kicker" style="opacity:0">one more thing…</span>
+    <h2 class="omt-line" style="opacity:0">It tells you <span class="hl glow">what to say.</span></h2>
+    <div class="sub omt-sub" style="opacity:0">The Speaker Playbook is built in: one idea, one hero slide, a landing that makes them act tonight.</div>
+  </section>
+
+  <!-- 11 · CLOSE — don't vanish -->
+  <section class="slide center" data-nav="Go">
+    <span class="badge pop">go build one</span>
+    <h1 class="pop">Don't be boring.<br><span class="hl glow">Be unforgettable.</span></h1>
+    <div class="sub pop" style="max-width:40ch">
+      <a class="closelink" href="https://github.com/hanley-tech/better-slides" target="_blank" rel="noopener">github.com/hanley-tech/better-slides</a>
+    </div>
+    <div class="tiny pop" style="margin-top:4cqmin">better-slides · by Hanley Leung · <a class="closelink" href="https://hanley.world" target="_blank" rel="noopener">hanley.world</a></div>
+  </section>
+
+</div>
+
+<div class="brandmark"><span class="wm">better<b>slides</b></span></div>
+
+<button class="fab" id="fab" aria-label="Deck controls"></button>
+<div class="menu" id="menu">
+  <div class="wm">better<b>slides</b> · Noir</div>
+  <div class="prog"><div class="bar"><span id="barfill"></span></div><div class="count" id="count">1 / 1</div></div>
+  <div class="acts">
+    <button class="act" data-act="prev" aria-label="Previous">‹</button>
+    <button class="act" data-act="next" aria-label="Next">›</button>
+    <button class="act" data-act="sound" id="soundbtn" aria-label="Toggle sound" title="Sound on/off">🔊</button>
+    <button class="act" data-act="edit" aria-label="Edit text" title="Edit text (E)">✎</button>
+    <button class="act" data-act="full" aria-label="Fullscreen">⛶</button>
+    <button class="act" data-act="print" aria-label="Print">⎙</button>
+  </div>
+  <div class="nav" id="nav"></div>
+</div>
+</div>
+
+<!-- GSAP choreographs the diagram builds and the omt finale.
+     The deck degrades gracefully to its final state if it fails to load. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const stage=document.getElementById('stage');
+  function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.setProperty('--scale',s);}
+  addEventListener('resize',fit);addEventListener('orientationchange',fit);fit();
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const G=()=>(window.gsap&&!reducedMotion)?window.gsap:null;   // null ⇒ jump to final state
+
+  /* ── SOUND DESIGN (noir cue palette) ───────────────────────────
+     Synthesized via Web Audio — zero asset files. Opt-in, gesture-gated,
+     never required to follow the talk. Toggle with 🔊 or the M key. */
+  let actx=null, soundOn=true;
+  function audio(){ try{ return actx || (actx=new (window.AudioContext||window.webkitAudioContext)()); }catch(e){ return null; } }
+  function resumeAudio(){ const a=audio(); if(a&&a.state==='suspended') a.resume(); }
+  function blip(freq,dur,type,gain){
+    if(!soundOn) return; const a=audio(); if(!a) return;
+    const o=a.createOscillator(),g=a.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    g.gain.setValueAtTime(0,a.currentTime);
+    g.gain.linearRampToValueAtTime(gain||0.16,a.currentTime+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+dur);
+    o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime+dur);
+  }
+  const CUES={
+    swoosh(){ if(!soundOn) return; const a=audio(); if(!a) return;         // section breaks only
+      const o=a.createOscillator(),g=a.createGain(); o.type='sawtooth';
+      o.frequency.setValueAtTime(900,a.currentTime); o.frequency.exponentialRampToValueAtTime(120,a.currentTime+0.25);
+      g.gain.setValueAtTime(0.08,a.currentTime); g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+0.28);
+      o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime+0.3); },
+    chime(){ blip(880,0.5,'sine',0.15); blip(1320,0.6,'sine',0.09); },      // the hero number lands
+    tick(){ blip(1500,0.05,'sine',0.05); },                                 // diagram assembly
+    omt(){ blip(196,0.7,'sine',0.20); blip(294,0.85,'triangle',0.12); }     // the turn
+  };
+  function beat(name){ (CUES[name]||function(){})(); }
+  /* applause bed — fades up under the omt, peaks on the final slide */
+  function applause(gain,dur){
+    if(!soundOn) return; const a=audio(); if(!a) return;
+    dur=dur||2.4;
+    const buf=a.createBuffer(1,Math.floor(a.sampleRate*dur),a.sampleRate), d=buf.getChannelData(0);
+    for(let n=0;n<d.length;n++){ const t=n/d.length; d[n]=(Math.random()*2-1)*Math.pow(1-t,1.4)*(0.55+0.45*Math.sin(t*70)); }
+    const src=a.createBufferSource(); src.buffer=buf;
+    const f=a.createBiquadFilter(); f.type='bandpass'; f.frequency.value=2100; f.Q.value=0.5;
+    const g=a.createGain();
+    g.gain.setValueAtTime(0.0001,a.currentTime);
+    g.gain.linearRampToValueAtTime(gain||0.22,a.currentTime+0.5);
+    g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+dur);
+    src.connect(f).connect(g).connect(a.destination); src.start();
+  }
+
+  /* ── the dependency swarm (hero slide) ─────────────────────── */
+  const SWARM=(function(){
+    const svg=document.getElementById('swarm'); if(!svg) return [];
+    let out='',seed=7;
+    const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+    for(let k=0;k<210;k++){
+      // poisson-ish blue-noise-free cluster: polar with jitter
+      const ang=rnd()*Math.PI*2, rad=Math.pow(rnd(),.62)*104;
+      const cx=(150+Math.cos(ang)*rad*1.28).toFixed(1), cy=(110+Math.sin(ang)*rad).toFixed(1);
+      const r=(1.7+rnd()*2.6).toFixed(2);
+      out+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" opacity="'+(0.4+rnd()*0.55).toFixed(2)+'"/>';
+    }
+    svg.innerHTML=out;
+    return [...svg.querySelectorAll('circle')];
+  })();
+
+  /* ── the event-proof screen diagram (interactive) ──────────── */
+  const SCREENS=(function(){
+    const bad=document.getElementById('fbad'), good=document.getElementById('fgood');
+    const ms=document.getElementById('mstage'), dims=document.getElementById('dims');
+    const chips=[...document.querySelectorAll('#rchips .rchip')];
+    if(!bad||!good) return null;
+    const BOX={w:620,h:340};
+    let cur={w:1920,h:1080};
+    function frameSize(w,h){ const s=Math.min(BOX.w/w,BOX.h/h); return {w:w*s,h:h*s}; }
+    function apply(w,h,animate){
+      const f=frameSize(w,h);
+      const set=el=>{ el.style.width=f.w+'px'; el.style.height=f.h+'px'; };
+      const g=G();
+      if(animate&&g){ g.to([bad,good],{width:f.w,height:f.h,duration:.55,ease:'power3.inOut'}); }
+      else { set(bad); set(good); }
+      // the real better-slides math: the fixed stage scaled as one unit, letterboxed
+      const scale=Math.min(f.w/480,f.h/270);
+      const prev=parseFloat(ms.style.getPropertyValue('--ms'))||1;
+      if(animate&&g){ const o={s:prev};
+        g.to(o,{s:scale,duration:.55,ease:'power3.inOut',onUpdate(){ms.style.setProperty('--ms',o.s);}}); }
+      else ms.style.setProperty('--ms',scale);
+      if(dims){
+        if(animate&&g){ const o={w:cur.w,h:cur.h};
+          g.to(o,{w:w,h:h,duration:.55,ease:'power3.inOut',onUpdate(){dims.textContent=Math.round(o.w)+' × '+Math.round(o.h);}}); }
+        else dims.textContent=w+' × '+h;
+      }
+      cur={w,h};
+    }
+    chips.forEach(c=>c.addEventListener('click',e=>{
+      e.stopPropagation();
+      chips.forEach(x=>x.classList.toggle('on',x===c));
+      apply(+c.dataset.w,+c.dataset.h,true); beat('tick');
+    }));
+    apply(1920,1080,false);
+    return {reset(){ chips.forEach((x,n)=>x.classList.toggle('on',n===0)); apply(1920,1080,false); }};
+  })();
+
+  /* ── per-slide GSAP choreography ───────────────────────────
+     Each fx hides its own elements then builds them. With no GSAP (or
+     prefers-reduced-motion) nothing is ever hidden — the final state stands.
+     Every build uses fromTo() with an explicit end state — never from() — so a
+     slide you navigate back into always resolves to the same final composition. */
+  const IN={autoAlpha:1,x:0,y:0,scale:1};                        // the canonical end state
+  const FX={
+    matrix(s){
+      const g=G(); const rows=[...s.querySelectorAll('.mrow:not(.mhead)')], ck=[...s.querySelectorAll('.ck')];
+      ck.forEach(p=>{ const L=p.getTotalLength(); p.style.strokeDasharray=L; });
+      if(!g){ ck.forEach(p=>p.style.strokeDashoffset=0); rows.forEach(r=>r.style.opacity=1); return; }
+      g.set(ck,{strokeDashoffset:(i,t)=>t.getTotalLength()});
+      g.timeline({delay:.7})
+       .fromTo(rows,{autoAlpha:0,y:14},{...IN,duration:.45,stagger:.13,ease:'power2.out'})
+       .to(ck,{strokeDashoffset:0,duration:.32,stagger:.11,ease:'power2.out',onStart:()=>beat('tick')},'+=0.15');
+    },
+    onefile(s){
+      const g=G(); const one=s.querySelector('#megaone');
+      const dim=[...s.querySelectorAll('.mcol:first-child .mcap,.mcol:first-child .msub')];
+      const lit=[...s.querySelectorAll('.mcol:last-child .mcap,.mcol:last-child .msub')];
+      const foot=s.querySelector('.massfoot'), rule=s.querySelector('.mrule');
+      if(!g) return;                                             // CSS already shows the final state
+      g.timeline({delay:.5})
+       .fromTo(SWARM,{scale:0},{scale:1,transformOrigin:'center',duration:.5,stagger:{amount:.9,from:'random'},ease:'power2.out'})
+       .fromTo(dim,{autoAlpha:0},{...IN,duration:.4},'-=0.3')
+       .fromTo(rule,{scaleY:0},{scaleY:1,transformOrigin:'center',duration:.4},'-=0.2')
+       .fromTo(one,{autoAlpha:0,scale:1.5},{...IN,duration:.55,ease:'back.out(1.7)',onStart:()=>beat('chime')})
+       .fromTo(lit,{autoAlpha:0},{...IN,duration:.4},'-=0.2')
+       .fromTo(foot,{autoAlpha:0,y:16},{...IN,duration:.5},'-=0.1');
+    },
+    screens(s){
+      if(SCREENS) SCREENS.reset();
+      const g=G(); if(!g) return;
+      g.timeline({delay:.5})
+       .fromTo(s.querySelectorAll('.scol'),{autoAlpha:0,y:22},{...IN,duration:.55,stagger:.14,ease:'power3.out'})
+       .fromTo(s.querySelectorAll('.rchip'),{autoAlpha:0,y:10},{...IN,duration:.35,stagger:.06},'-=0.15')
+       .fromTo(s.querySelector('.dims'),{autoAlpha:0},{...IN,duration:.4},'-=0.1');
+    },
+    flow(s){
+      const g=G(); const line=s.querySelector('#flline'); const nodes=[...s.querySelectorAll('.flnode')];
+      const L=line.getTotalLength(); line.style.strokeDasharray=L;
+      if(!g){ line.style.strokeDashoffset=0; return; }
+      g.set(line,{strokeDashoffset:L});
+      g.timeline({delay:.55})
+       .fromTo(nodes,{autoAlpha:0,scale:.6},{...IN,transformOrigin:'center 96px',duration:.4,stagger:.16,ease:'back.out(2)',onStart:()=>beat('tick')})
+       .to(line,{strokeDashoffset:0,duration:1.1,ease:'power2.inOut'},'-=0.7');
+    },
+    styles(s){
+      const g=G(); if(!g) return;
+      g.fromTo(s.querySelectorAll('.sw'),{autoAlpha:0,y:26},{...IN,duration:.55,stagger:.08,ease:'power3.out',delay:.55});
+    },
+    cta(s){
+      const g=G(); if(!g) return;
+      g.fromTo(s.querySelectorAll('.cmd'),{autoAlpha:0,x:-22},{...IN,duration:.5,stagger:.16,ease:'power3.out',delay:.55});
+    }
+  };
+
+  const slides=[...document.querySelectorAll('.slide')];
+  const cs=getComputedStyle(document.documentElement);
+  const palette=['--p0','--p1','--p2','--p3','--p4','--p5'].map(v=>cs.getPropertyValue(v).trim()||'#0B0C12');
+  const themes=slides.map((_,n)=>[palette[n%6],palette[(n+2)%6],palette[(n+4)%6]]);
+  const bg=document.getElementById('bg');
+  const barfill=document.getElementById('barfill');
+  const count=document.getElementById('count');
+  const fab=document.getElementById('fab');
+  const menu=document.getElementById('menu');
+  const nav=document.getElementById('nav');
+  const navTitle=s=>{
+    if(s.dataset.nav) return s.dataset.nav;
+    const b=s.querySelector('.badge'); if(b) return b.textContent.trim();
+    const h=s.querySelector('h1,h2'); return h?h.textContent.replace(/\s+/g,' ').trim().slice(0,26):'Slide';
+  };
+  const navItems=slides.map((s,n)=>{
+    const btn=document.createElement('button');
+    btn.className='navi'; btn.dataset.go=n;
+    btn.innerHTML='<span class="n"></span><span class="t"></span>';
+    btn.querySelector('.n').textContent=String(n+1).padStart(2,'0');
+    btn.querySelector('.t').textContent=navTitle(s);
+    nav.appendChild(btn); return btn;
+  });
+  let i=0, entered=false;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,x)=>s.classList.toggle('active',x===i));
+    document.body.classList.toggle('first',i===0);
+    barfill.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+    navItems.forEach((b,x)=>b.classList.toggle('on',x===i));
+    if(navItems[i]) navItems[i].scrollIntoView({block:'nearest'});
+    const t=themes[i];
+    bg.style.setProperty('--g1',t[0]);bg.style.setProperty('--g2',t[1]);bg.style.setProperty('--g3',t[2]);
+    const hash='#'+(i+1);
+    if(location.hash!==hash){try{history.replaceState(null,'',hash);}catch(e){location.hash=hash;}}
+    const cur=slides[i];
+    if(entered&&cur.dataset.cue) beat(cur.dataset.cue);
+    const fx=cur.dataset.fx; if(fx&&FX[fx]) FX[fx](cur);
+    if(cur.hasAttribute('data-omt')) playOMT(cur);
+    if(i===slides.length-1) party();
+    entered=true;
+  }
+  /* The "one more thing" finale: a held pause, the turn, then the payoff slams in. */
+  function playOMT(slide){
+    const k=slide.querySelector('.omt-kicker'), line=slide.querySelector('.omt-line'), sb=slide.querySelector('.omt-sub');
+    if(!k||!line) return;
+    const g=G();
+    if(!g){ [k,line,sb].forEach(el=>{if(el)el.style.opacity=1}); return; }
+    g.set([k,line,sb],{clearProps:'all'}); k.style.opacity=0; line.style.opacity=0; if(sb) sb.style.opacity=0;
+    g.timeline()
+      .to(k,{autoAlpha:1,duration:.6,delay:1.1})                   // the held pause, then the turn
+      .add(()=>{beat('omt');applause(.06,5.5);},'<')               // applause bed fades up under it
+      .fromTo(line,{autoAlpha:0,scale:.9,y:18},{autoAlpha:1,scale:1,y:0,duration:.75,ease:'back.out(1.6)'},'+=0.45')
+      .fromTo(sb,{autoAlpha:0,y:12},{autoAlpha:1,y:0,duration:.6},'+=0.25');
+  }
+  function party(){
+    applause(.22,2.6);                                             // the bed peaks on the final slide
+    const c=document.getElementById('confetti');c.classList.add('go');c.innerHTML='';
+    const cols=['#F5F5F7','#F5F5F7','#2997FF','#5AC8FA'];
+    for(let k=0;k<110;k++){
+      const b=document.createElement('b');
+      b.style.left=Math.random()*100+'%';
+      b.style.background=cols[k%cols.length];
+      b.style.opacity=(.5+Math.random()*.5).toFixed(2);
+      b.style.animationDuration=(2.6+Math.random()*2.8)+'s';
+      b.style.animationDelay=(Math.random()*.9)+'s';
+      b.style.transform='scale('+(.5+Math.random())+')';
+      c.appendChild(b);
+    }
+    setTimeout(()=>c.classList.remove('go'),5600);
+  }
+  function toggleFull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+  function closeMenu(){menu.classList.remove('open');fab.classList.remove('on')}
+  const soundbtn=document.getElementById('soundbtn');
+  function toggleSound(){
+    soundOn=!soundOn;
+    document.body.classList.toggle('muted',!soundOn);
+    if(soundbtn){ soundbtn.textContent=soundOn?'🔊':'🔇'; soundbtn.classList.toggle('off',!soundOn); }
+    if(soundOn){ resumeAudio(); beat('swoosh'); }
+  }
+  /* copy-to-clipboard on the install commands */
+  document.querySelectorAll('.cpy').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();
+    const src=document.getElementById(b.dataset.copy); if(!src) return;
+    const txt=src.textContent.trim();
+    const done=()=>{ b.textContent='Copied'; b.classList.add('done'); beat('tick'); setTimeout(()=>{b.textContent='Copy';b.classList.remove('done')},1600); };
+    const legacy=()=>{ try{ const ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity=0;
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done(); }catch(err){} };
+    // the async API is blocked without focus/permission in some contexts — fall back, don't fail silently
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done,legacy);
+    else legacy();
+  }));
+  /* ── INLINE EDITING — E toggles, Ctrl/Cmd+S downloads the file ── */
+  let editing=false;
+  function toggleEdit(){
+    editing=!editing;
+    document.body.classList.toggle('editing',editing);
+    document.querySelectorAll('.slide').forEach(s=>{
+      if(editing) s.setAttribute('contenteditable','true');
+      else s.removeAttribute('contenteditable');
+    });
+  }
+  function saveDeck(){
+    const doc=document.documentElement.cloneNode(true);
+    doc.querySelectorAll('#nav,#confetti,#swarm').forEach(n=>n.innerHTML='');
+    doc.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+    const b=doc.querySelector('body'); if(b) b.classList.remove('editing');
+    const html='<!DOCTYPE html>\n'+doc.outerHTML;
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+    a.download=(location.pathname.split('/').pop())||'index.html';
+    a.click();
+  }
+  document.addEventListener('keydown',e=>{
+    if((e.metaKey||e.ctrlKey)&&(e.key==='s'||e.key==='S')){e.preventDefault();saveDeck();return;}
+    if(editing){if(e.key==='Escape')toggleEdit();return;}
+    if(e.key==='e'||e.key==='E'){toggleEdit();return;}
+    resumeAudio();
+    if(['ArrowRight','ArrowDown','PageDown'].includes(e.key)){e.preventDefault();show(i+1);return}
+    if(e.key===' '&&!e.target.closest('a,button')){e.preventDefault();show(i+1);return}
+    if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();show(i-1);return}
+    if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);
+    if(e.key==='f'||e.key==='F')toggleFull();
+    if(e.key==='m'||e.key==='M')toggleSound();
+    if(e.key==='p'||e.key==='P'){e.preventDefault();window.print()}
+    if(e.key==='Escape')closeMenu();
+  });
+  fab.addEventListener('click',e=>{e.stopPropagation();const o=menu.classList.toggle('open');fab.classList.toggle('on',o)});
+  menu.addEventListener('click',e=>{
+    const g=e.target.closest('.navi');
+    if(g){show(+g.dataset.go);closeMenu();return;}
+    const b=e.target.closest('.act');if(!b)return;
+    const a=b.dataset.act;
+    if(a==='prev')show(i-1);
+    else if(a==='next')show(i+1);
+    else if(a==='sound')toggleSound();
+    else if(a==='edit'){toggleEdit();closeMenu();}
+    else if(a==='full')toggleFull();
+    else if(a==='print')window.print();
+  });
+  let sx=null;
+  addEventListener('touchstart',e=>sx=e.touches[0].clientX);
+  addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)show(i+(dx<0?1:-1));sx=null});
+  addEventListener('click',e=>{
+    resumeAudio();
+    if(editing)return;
+    // links, buttons and the interactive diagram own their clicks — never advance on them
+    if(e.target.closest('a,button,.rchips,.cmd,.fab,.menu'))return;
+    if(menu.classList.contains('open')){closeMenu();return;}
+    show(i+(e.clientX>innerWidth*.5?1:-1));
+  });
+  const slideFromHash=()=>{const n=parseInt((location.hash||'').slice(1),10);return (n>=1&&n<=slides.length)?n-1:0;};
+  window.addEventListener('hashchange',()=>{const n=slideFromHash();if(n!==i)show(n);});
+  show(slideFromHash());
+</script>
+</body>
+</html>
