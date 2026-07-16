@@ -13,7 +13,17 @@ tells you **what to actually say**.
 
 ![better-slides — the "Be Unforgettable" flagship deck and the Noir style, performing](demo/demo.gif)
 
-**Live demos:** [Be Unforgettable (Spotlight)](https://hanley-tech.github.io/better-slides/demo/) · [This is not a slideshow (Noir)](https://hanley-tech.github.io/better-slides/demo/noir/) — arrow keys to advance, `m` for sound, `f` for fullscreen.
+### ▸ [**See it perform → hanley-tech.github.io/better-slides**](https://hanley-tech.github.io/better-slides/)
+
+*(The landing page is itself a better-slides deck. Of course it is.)*
+
+**Six live demos**, one per performance style — arrow keys to advance, `m` for sound, `f` for fullscreen:
+[Noir](https://hanley-tech.github.io/better-slides/demo/noir/) ·
+[Obsidian](https://hanley-tech.github.io/better-slides/demo/obsidian/) ·
+[Cupertino](https://hanley-tech.github.io/better-slides/demo/cupertino/) ·
+[Spotlight](https://hanley-tech.github.io/better-slides/demo/) ·
+[Terminal](https://hanley-tech.github.io/better-slides/demo/terminal/) ·
+[Broadsheet](https://hanley-tech.github.io/better-slides/demo/broadsheet/)
 
 This is an agent skill (works with Claude Code and any coding agent that can read a repo
 and run a shell). Point it at your talk; get back one portable `.html` file that opens in
@@ -54,7 +64,7 @@ projector, every time. Plug in, present, don't think about it.
 - **The performance layer** — GSAP-driven timed reveals, staggered builds, and an
   `omt` ("one more thing") finale recipe. Optional **sound design**: applause beds,
   swooshes, chimes, and a live waveform — wired through the Web Audio API.
-- **Performance styles** — four full design systems (not just themes): typography,
+- **Performance styles** — six full design systems (not just themes): typography,
   palette, motion grammar, *and sound palette* per style. Loaded progressively.
 - **The Speaker Playbook** — a built-in *methodology* for what to put on stage: distill to
   one idea, narrative over data, one huge number, build a hero slide worth screenshotting,
@@ -64,26 +74,69 @@ projector, every time. Plug in, present, don't think about it.
 - **PPTX conversion** — point it at a `.pptx`; it extracts every slide, note, and image,
   then re-authors the content as a performance (not a 1:1 port — the playbook applies).
 - **Share scripts** — one command to deploy to a live URL
-  ([`scripts/deploy.sh`](scripts/deploy.sh)) or export a print-faithful PDF
-  ([`scripts/export-pdf.sh`](scripts/export-pdf.sh)).
+  ([`scripts/deploy.sh`](scripts/deploy.sh)), export a print-faithful PDF
+  ([`scripts/export-pdf.sh`](scripts/export-pdf.sh)), or capture the social share
+  card straight from the rendered title slide ([`scripts/capture-shots.sh`](scripts/capture-shots.sh)).
 - **Zero dependencies** — one HTML file (plus optional audio assets). Works in 10 years.
   No npm, no build step, no framework.
 
 ## Performance styles
 
-| Style | Voice | Reach for it when |
-| --- | --- | --- |
-| **Noir** | Black stage, white light, one accent — Apple-keynote theatrics | Product launches, vision talks, founder pitches |
-| **Spotlight** | Electric blue + gold on navy, friendly and loud | Meetups, teaching, lightning talks, hype moments |
-| **Terminal** | GitHub-dark, terminal green, all mono | Dev-tool launches, security talks, hackathons |
-| **Broadsheet** | Ink-dark editorial serif, one crimson accent | Research, strategy, essays-as-talks, policy |
+Six styles, each a full design system — typography, palette, **motion grammar**, and
+**sound palette**. Every one has a live demo: press → to advance, `m` for sound.
+
+| Style | Voice | Reach for it when | |
+| --- | --- | --- | --- |
+| **Noir** | Black stage, white light, one accent — Apple-keynote theatrics | Product launches, vision talks, founder pitches | [live ▸](https://hanley-tech.github.io/better-slides/demo/noir/) |
+| **Obsidian** | apple.com after dark — true black, monochrome, zero accent | Brand/vision talks that should feel expensive and considered | [live ▸](https://hanley-tech.github.io/better-slides/demo/obsidian/) |
+| **Cupertino** | Photo-forward personal keynote — full-bleed imagery, one blue word | "N things I learned" story talks, career retrospectives | [live ▸](https://hanley-tech.github.io/better-slides/demo/cupertino/) |
+| **Spotlight** | Electric blue + gold on navy, friendly and loud | Meetups, teaching, lightning talks, hype moments | [live ▸](https://hanley-tech.github.io/better-slides/demo/) |
+| **Terminal** | GitHub-dark, terminal green, all mono | Dev-tool launches, security talks, hackathons | [live ▸](https://hanley-tech.github.io/better-slides/demo/terminal/) |
+| **Broadsheet** | Ink-dark editorial serif, one crimson accent | Research, strategy, essays-as-talks, policy | [live ▸](https://hanley-tech.github.io/better-slides/demo/broadsheet/) |
 
 Each is a full `design.md` with motion grammar and sound palette — and the skill always
 offers a custom wildcard when none of these fits the brief.
 
+**Click any style to watch it perform.** These are real title slides, captured from the
+running decks — not mockups.
+
+<table>
+<tr>
+<td width="33%" align="center">
+  <a href="https://hanley-tech.github.io/better-slides/demo/noir/"><img src="demo/noir/preview.jpg" alt="Noir — black stage, white light, one accent" /></a>
+  <br /><b>Noir</b><br /><sub>Keynote theatrics</sub>
+</td>
+<td width="33%" align="center">
+  <a href="https://hanley-tech.github.io/better-slides/demo/obsidian/"><img src="demo/obsidian/preview.jpg" alt="Obsidian — true black, monochrome, zero accent" /></a>
+  <br /><b>Obsidian</b><br /><sub>apple.com after dark</sub>
+</td>
+<td width="33%" align="center">
+  <a href="https://hanley-tech.github.io/better-slides/demo/cupertino/"><img src="demo/cupertino/preview.jpg" alt="Cupertino — photo-forward personal keynote" /></a>
+  <br /><b>Cupertino</b><br /><sub>The photo-forward story talk</sub>
+</td>
+</tr>
+<tr>
+<td width="33%" align="center">
+  <a href="https://hanley-tech.github.io/better-slides/demo/"><img src="demo/preview.jpg" alt="Spotlight — electric blue and gold on navy" /></a>
+  <br /><b>Spotlight</b><br /><sub>Loud, friendly, human</sub>
+</td>
+<td width="33%" align="center">
+  <a href="https://hanley-tech.github.io/better-slides/demo/terminal/"><img src="demo/terminal/preview.jpg" alt="Terminal — GitHub-dark, terminal green, all mono" /></a>
+  <br /><b>Terminal</b><br /><sub>A shell that learned stagecraft</sub>
+</td>
+<td width="33%" align="center">
+  <a href="https://hanley-tech.github.io/better-slides/demo/broadsheet/"><img src="demo/broadsheet/preview.jpg" alt="Broadsheet — ink-dark editorial serif, one crimson accent" /></a>
+  <br /><b>Broadsheet</b><br /><sub>A magazine essay, out loud</sub>
+</td>
+</tr>
+</table>
+
+Each demo is a genuine short talk with its own argument — the styles are shown doing the
+job, not posing for a swatch.
+
 <p>
+  <img src="demo/cupertino/shots/shot-3.jpg" width="49.5%" alt="Cupertino — the giant counting numeral over a full-bleed photo" />
   <img src="demo/shots/flagship-hero.jpg" width="49.5%" alt="Spotlight — the hero chart money slide" />
-  <img src="demo/shots/flagship-eyecandy.jpg" width="49.5%" alt="Spotlight — before/after eye candy slide" />
 </p>
 <p>
   <img src="demo/shots/noir-90.jpg" width="49.5%" alt="Noir — the 90% black stage stat" />
@@ -97,15 +150,25 @@ on the better-slides engine with the full performance treatment (Spotlight style
 worked example *and* the marketing: a talk about being unforgettable that is itself
 unforgettable. ([live](https://hanley-tech.github.io/better-slides/demo/))
 
-[`demo/noir/`](demo/noir/) is **"This is not a slideshow"** — a short launch keynote in the
-**Noir** style: black stage, white light, one accent, held pauses, and the "one more thing"
-finale. ([live](https://hanley-tech.github.io/better-slides/demo/noir/))
+The other five are short talks, one per style — each with a real thesis, because a style
+demo that has nothing to say isn't demonstrating the point:
 
-![The Noir style — black stage, white light, one accent](demo/noir/preview.jpg)
+| Deck | Style | The one idea |
+| --- | --- | --- |
+| [`demo/noir/`](demo/noir/) | Noir | *This is not a slideshow.* |
+| [`demo/obsidian/`](demo/obsidian/) | Obsidian | *Subtraction is the work.* |
+| [`demo/cupertino/`](demo/cupertino/) | Cupertino | *You find the work by finishing something badly, tonight.* |
+| [`demo/terminal/`](demo/terminal/) | Terminal | *Every dependency is a promise someone else has to keep.* |
+| [`demo/broadsheet/`](demo/broadsheet/) | Broadsheet | *Attention is rented. Memory is owned.* |
 
 ```bash
-open demo/index.html        # Be Unforgettable (Spotlight)
-open demo/noir/index.html   # This is not a slideshow (Noir)
+open index.html                  # the landing page (Noir) — itself a deck
+open demo/index.html             # Be Unforgettable (Spotlight)
+open demo/noir/index.html        # This is not a slideshow (Noir)
+open demo/obsidian/index.html    # Subtraction is the work (Obsidian)
+open demo/cupertino/index.html   # Go make the ugly thing (Cupertino)
+open demo/terminal/index.html    # Dependencies are debt (Terminal)
+open demo/broadsheet/index.html  # The Half-Life of Attention (Broadsheet)
 ```
 
 ## Install
@@ -173,6 +236,7 @@ from [`SKILL.md`](SKILL.md) and load only the referenced support files it needs:
 | [`scripts/extract-pptx.py`](scripts/extract-pptx.py) | PPTX content extraction | Phase 0 (conversion) |
 | [`scripts/deploy.sh`](scripts/deploy.sh) | Deploy to a live URL (Vercel) | Phase 4 (share) |
 | [`scripts/export-pdf.sh`](scripts/export-pdf.sh) | Export to PDF | Phase 4 (share) |
+| [`scripts/capture-shots.sh`](scripts/capture-shots.sh) | Capture `og.jpg` / slide stills | Phase 4 (publish) |
 
 ## Philosophy
 

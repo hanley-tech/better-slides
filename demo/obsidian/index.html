@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Be Unforgettable · Speaker Playbook</title>
-<meta name="description" content="Don't be boring. Be unforgettable. The Speaker Playbook, performed — built with better-slides.">
-<link rel="canonical" href="https://hanley-tech.github.io/better-slides/demo/">
+<title>Subtraction is the work</title>
+<meta name="description" content="A short talk on the case for taking things away — why restraint is the loudest thing in the room.">
+<link rel="canonical" href="https://hanley-tech.github.io/better-slides/demo/obsidian/">
 <!-- Open Graph / WhatsApp / iMessage / Facebook -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="better-slides">
-<meta property="og:url" content="https://hanley-tech.github.io/better-slides/demo/">
-<meta property="og:title" content="Be Unforgettable · Speaker Playbook">
-<meta property="og:description" content="Don't be boring. Be unforgettable. Built with better-slides.">
-<meta property="og:image" content="https://hanley-tech.github.io/better-slides/demo/og.jpg">
+<meta property="og:site_name" content="Hanley Leung">
+<meta property="og:url" content="https://hanley-tech.github.io/better-slides/demo/obsidian/">
+<meta property="og:title" content="Subtraction is the work">
+<meta property="og:description" content="A short talk on the case for taking things away — why restraint is the loudest thing in the room.">
+<meta property="og:image" content="https://hanley-tech.github.io/better-slides/demo/obsidian/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="720">
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Be Unforgettable · Speaker Playbook">
-<meta name="twitter:description" content="Don't be boring. Be unforgettable. Built with better-slides.">
-<meta name="twitter:image" content="https://hanley-tech.github.io/better-slides/demo/og.jpg">
+<meta name="twitter:title" content="Subtraction is the work">
+<meta name="twitter:description" content="A short talk on the case for taking things away — why restraint is the loudest thing in the room.">
+<meta name="twitter:image" content="https://hanley-tech.github.io/better-slides/demo/obsidian/og.jpg">
 
 <!-- ════════════════════════════════════════════════════════════════════
      THEME  ·  the only brand-specific part — swap this whole block.
@@ -29,23 +29,20 @@
      3. (optional) point brandmark / title-hero at your logo assets
      See reference/theming.md for a worked example (LunaTechs).
      ════════════════════════════════════════════════════════════════════ -->
+<!-- SF Pro is a system face on Apple platforms; Inter Tight is the cross-platform fallback. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
 <style id="theme">
-  /* Spotlight style (LunaTechs stage voice) — see performance-styles/spotlight/design.md */
+  /* Obsidian — true black, monochrome, zero accent. See performance-styles/obsidian/design.md */
   :root{
-    --ink:#fff;            /* primary text */
-    --bg:#0B1B30;          /* stage base — deep navy */
-    --black:#14161C;
-    --blue:#1090E0;        /* brand primary */
-    --cyan:#00B0F0;        /* brand accent / highlights */
-    --deep:#0050B0;        /* brand deep (gradients) */
-    --gold:#FCD830;        /* pop accent */
-    --amber:#F2960B;
-    --mono:"Poppins","Helvetica Neue",Arial,sans-serif;
-    /* background swirl palette — 6 tones used by the animated gradient */
-    --p0:#0e3b66; --p1:#0a5a86; --p2:#0050B0; --p3:#0a2f52; --p4:#0e3b66; --p5:#0a5a86;
+    --ink:#F5F5F7; --bg:#000000; --black:#000000;
+    --blue:#F5F5F7; --cyan:#F5F5F7; --deep:#0A0A0A;   /* "accent" family folded to white — monochrome */
+    --gold:#F5F5F7; --amber:#F5F5F7;
+    --muted:#8E8E93;
+    --hair:rgba(255,255,255,.22);
+    --mono:"SF Pro Display","SF Pro Text",-apple-system,"Inter Tight",Arial,sans-serif;
+    --p0:#000; --p1:#0a0a0a; --p2:#000; --p3:#0a0a0a; --p4:#000; --p5:#0a0a0a;
   }
 </style>
 <!-- ═══════════════════════ END THEME ═══════════════════════ -->
@@ -336,11 +333,6 @@
   .motes{position:fixed;inset:0;z-index:6;pointer-events:none;overflow:hidden}
   .motes i{position:absolute;border-radius:50%;background:var(--c,#fff);box-shadow:0 0 7px 1px var(--g,rgba(139,124,255,.6));animation:drift ease-in-out infinite}
   @keyframes drift{0%{opacity:0;transform:translate(0,0)}25%{opacity:var(--o,.5)}50%{opacity:var(--o,.5);transform:translate(var(--dx,0),var(--dy,0))}75%{opacity:var(--o,.5)}100%{opacity:0;transform:translate(0,0)}}
-  /* one-more-thing finale slide — centered, held, dramatic */
-  .omt-slide{align-items:center;text-align:center}
-  .omt-slide .omt-kicker{align-self:center;margin-bottom:3cqmin}
-  .omt-slide .omt-line{font-size:clamp(34px,7.4cqmin,120px);max-width:18ch}
-  body.muted .fab.sounding,#soundbtn.off{opacity:.5}
   /* inline edit mode — press E, click any text, Ctrl/Cmd+S to save the file */
   body.editing .slide.active{outline:2px dashed rgba(255,255,255,.28);outline-offset:-10px;cursor:text}
   body.editing .fab{background:rgba(255,200,87,.25);border-color:rgba(255,200,87,.5)}
@@ -348,7 +340,6 @@
     .bg::after,.jit,.slide.active .pop,.title-mascot,.title-hero .bgimg::before,.wave,.slide.active .slam,.slide.active .cards .card,.slide.active .chip,.slide.active .qr,.slide.split.active .photo-wrap,.slide.active .mock,.slide.active .actbtn,.slide.active .actstep,.slide.active .bars .fillb{animation:none!important}
     .bg{transition:none}
     .slide.active .hc-line,.slide.active .hc-area,.slide.active .hc-dot,.slide.active .cut-ramble,.slide.active .cut-answer{stroke-dashoffset:0!important;opacity:1!important;animation:none!important}
-    .omt-kicker,.omt-line{opacity:1!important}
     .motes{display:none}
   }
   @media print{
@@ -357,9 +348,100 @@
     .deck{height:auto}
     .slide{position:static!important;display:flex!important;min-height:90cqh;page-break-after:always;padding:8cqmin}
     .slide .pop{animation:none!important}
-    .omt-kicker,.omt-line{opacity:1!important}
     .bg::after{display:none}
     section.slide{background:linear-gradient(135deg,var(--bg),var(--black))}
+  }
+</style>
+<!-- ═══════ OBSIDIAN · style overrides (must follow the engine sheet) ═══════ -->
+<style id="obsidian-overrides">
+  /* ── the stage: true black with a faint depth radial, felt not seen ── */
+  .bg{display:none}
+  .motes{display:none}
+  .grain{opacity:.045}
+  .slide{background:radial-gradient(120% 100% at 50% 28%, #151515 0%, #080808 58%, #000 100%);
+    align-items:center;text-align:center;justify-content:center;padding:9cqmin 12cqmin}
+
+  /* ── type: one humanist sans, one weight, one colour ── */
+  h1{font-size:clamp(44px,11.8cqmin,168px);font-weight:600;line-height:.98;letter-spacing:-.024em;color:var(--ink)}
+  h2{font-size:clamp(34px,8cqmin,116px);font-weight:600;line-height:1.05;letter-spacing:-.018em;color:var(--ink);max-width:17ch}
+  .mega{font-size:clamp(90px,20cqmin,300px);font-weight:600;line-height:.92;letter-spacing:-.03em;color:var(--ink);text-shadow:none}
+  .sub{font-size:clamp(17px,3.3cqmin,44px);font-weight:400;line-height:1.34;color:var(--muted);max-width:26ch;margin-top:4cqmin;opacity:1;align-self:center}
+  .tiny{font-size:clamp(12px,1.85cqmin,22px);font-weight:400;letter-spacing:.02em;text-transform:none;color:var(--muted);opacity:1}
+
+  /* ── kicker: tiny uppercase eyebrow with a hairline rule centred above it ── */
+  .badge{display:flex;flex-direction:column;align-items:center;align-self:center;gap:2.4cqmin;
+    font-size:clamp(9px,1.85cqmin,22px);font-weight:600;letter-spacing:.22em;line-height:1.2;
+    text-transform:uppercase;color:var(--muted);margin-bottom:4.4cqmin}
+  .badge::before{content:"";display:block;width:9cqmin;height:1px;background:var(--hair)}
+
+  /* ── kill every accent affordance the engine ships ── */
+  .hl,.wink{background:none;color:inherit;padding:0;border-radius:0;transform:none;display:inline}
+  .glow{color:var(--ink);text-shadow:none}
+  .strike::after{background:var(--hair)}
+  .jit{animation:none}
+
+  /* ── title slide: centred lockup, maximum black ── */
+  .title-hero{justify-content:center}
+  .title-hero .bgimg{background:radial-gradient(120% 100% at 50% 28%, #151515 0%, #080808 58%, #000 100%)}
+  .title-hero .bgimg::before{display:none}
+  .title-hero .bgimg::after{display:none}
+  .title-hero h1{margin:6cqmin 0 0;max-width:13ch}
+  .title-hero .t-sm{font-size:clamp(20px,5cqmin,70px);font-weight:400;color:var(--muted);letter-spacing:-.01em;margin-bottom:.28em}
+  .title-hero .t-mega{font-size:clamp(44px,11.8cqmin,168px);font-weight:600;letter-spacing:-.024em;line-height:.98;margin-top:0}
+  .title-hero .brandlock{opacity:1}
+  .title-hero .brandlock .lockwm{font-size:clamp(11px,1.85cqmin,22px);font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .title-hero .title-foot{letter-spacing:.22em;font-weight:600;font-size:clamp(9px,1.85cqmin,22px);color:var(--muted);opacity:1;bottom:6cqmin}
+
+  /* ── hero: the tick field — sixty-four marks, one lit ── */
+  .ticks{display:flex;justify-content:center;align-items:flex-end;gap:.85cqmin;margin:1cqmin 0 3.4cqmin;width:100%;max-width:78cqw}
+  .ticks i{display:block;width:2px;height:5.2cqmin;background:rgba(255,255,255,.16);flex:none}
+  .ticks i.lit{background:var(--ink);height:8.4cqmin;width:3px}
+  .slide.active .ticks i{animation:tick .6s ease-out backwards}
+  .slide.active .ticks i.lit{animation:tick .9s cubic-bezier(.22,.61,.18,1) .5s backwards}
+  @keyframes tick{from{opacity:0}to{opacity:1}}
+  .fieldlbl{font-size:clamp(9px,1.85cqmin,22px);font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:5cqmin}
+
+  /* ── landing: three beats, separated by hairlines — no cards, no fills ── */
+  .beats{display:flex;align-items:stretch;justify-content:center;gap:5cqmin;margin-top:6cqmin;width:100%;max-width:80cqw}
+  .beats>div{flex:1;padding:0 3cqmin;border-left:1px solid var(--hair);text-align:left}
+  .beats>div:first-child{border-left:none}
+  .beats .bl{font-size:clamp(8px,1.6cqmin,19px);font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:1.8cqmin}
+  .beats .bt{font-size:clamp(14px,2.7cqmin,36px);font-weight:600;line-height:1.24;color:var(--ink);letter-spacing:-.012em}
+  .slide.active .beats>div{animation:arise .9s cubic-bezier(.22,.61,.18,1) backwards}
+  .slide.active .beats>div:nth-child(2){animation-delay:.1s}
+  .slide.active .beats>div:nth-child(3){animation-delay:.2s}
+
+  /* ── the close: the only filled shape in the entire deck ── */
+  .pill{display:inline-flex;align-items:center;align-self:center;background:#F5F5F7;color:#000;
+    font-weight:600;letter-spacing:-.012em;font-size:clamp(15px,2.8cqmin,38px);
+    padding:1.5cqmin 4.4cqmin;border-radius:999px;margin-top:6cqmin;text-decoration:none}
+  .credit{margin-top:4.4cqmin;font-size:clamp(11px,1.85cqmin,22px);font-weight:400;color:var(--muted);letter-spacing:.01em}
+
+  /* ── motion: one calm rise. Obsidian never scale-punches. ── */
+  @keyframes arise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .slide.active .pop{animation:arise .9s cubic-bezier(.22,.61,.18,1) backwards}
+  .slide.active .pop:nth-child(2){animation-delay:.12s}
+  .slide.active .pop:nth-child(3){animation-delay:.24s}
+  .slide.active .pop:nth-child(4){animation-delay:.36s}
+  .slide.active .pop:nth-child(5){animation-delay:.48s}
+  .slide.active .slam{animation:arise .9s cubic-bezier(.22,.61,.18,1) .12s backwards}
+  .slide.active .pill{animation:arise .9s cubic-bezier(.22,.61,.18,1) .5s backwards}
+
+  /* ── chrome: dark monochrome glass ── */
+  .fab.on{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.4)}
+  .menu{background:rgba(10,10,10,.6);border-color:rgba(255,255,255,.14)}
+  .menu .bar span{background:var(--ink)}
+  .menu .navi.on{background:rgba(255,255,255,.1)}
+  .menu .navi.on .n{color:var(--ink)}
+  .brandmark .wm{font-size:clamp(9px,1.6cqmin,19px);font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  #soundbtn.off{opacity:.45}
+
+  @media (prefers-reduced-motion: reduce){
+    .slide.active .ticks i,.slide.active .beats>div,.slide.active .pill{animation:none!important}
+  }
+  @media print{
+    .slide.active .ticks i,.beats>div,.pill{animation:none!important;opacity:1!important}
+    section.slide{background:#000!important}
   }
 </style>
 </head>
@@ -367,8 +449,7 @@
 <div id="stage">
 <div class="bg" id="bg"></div>
 <div class="grain"></div>
-<div class="motes" id="motes"></div>
-<div class="confetti" id="confetti"></div>
+<!-- Obsidian ships no motes and no confetti: the restraint extends to the celebration. -->
 
 <div class="deck" id="deck">
 
@@ -381,203 +462,79 @@
        Delete the showcase slides you don't need.
        ════════════════════════════════════════════════════════════ -->
 
-  <!-- 1 · TITLE (showstopper) -->
+  <!-- 1 · TITLE — a centred lockup and a great deal of black -->
   <section class="slide active hasbg title-hero" data-nav="Title">
     <div class="bgimg"></div>
     <div class="brandlock pop">
-      <span class="lockwm">▸ better<b>slides</b></span>
+      <span class="lockwm">Hanley Leung</span>
     </div>
     <h1 class="pop">
-      <span class="t-sm">Don't be <span class="strike">boring.</span></span>
-      <span class="t-mega">Be <span class="glow jit">unforgettable.</span></span>
+      <span class="t-sm">Everything I ship, I ship twice.</span>
+      <span class="t-mega">The second one<br>is smaller.</span>
     </h1>
-    <div class="title-foot pop">Be Unforgettable · a better-slides demo</div>
+    <div class="title-foot pop">A short talk about taking things away</div>
   </section>
 
-  <!-- 2 · FUNNEL — cut it down to one idea -->
-  <section class="slide" data-nav="One idea">
-    <span class="badge pop">the whole job</span>
-    <h2 class="pop" style="margin-bottom:.3cqmin">Cut it to <span class="hl">one idea.</span></h2>
-    <div class="funnel3">
-      <div class="tier t1 pop"><span class="tl">everything you could say</span>point · point · point · point · point</div>
-      <div class="fdown pop">▼</div>
-      <div class="tier t2 pop"><span class="tl">what you choose to say</span>your 2–3 strongest points</div>
-      <div class="fdown pop">▼</div>
-      <div class="tier t3 pop"><span class="tl">what they'll remember</span>★ THE one</div>
-    </div>
-    <div class="sub pop" style="max-width:38ch;margin-top:3cqmin">Can't say it in one breath? It's not one idea yet.</div>
+  <!-- 2 · THE HOOK — the confession -->
+  <section class="slide" data-nav="The confession">
+    <span class="badge pop">a confession</span>
+    <h2 class="pop">I shipped the version with everything in it.</h2>
+    <div class="sub pop">It tested fine. It launched fine. Nobody could tell me what it was.</div>
   </section>
 
-  <!-- 3 · STORY — be human -->
-  <section class="slide split" data-nav="Tell your story">
-    <span class="badge pop">be human</span>
-    <h2 class="pop">Tell <span class="jit">YOUR</span> story.</h2>
-    <div class="sub pop" style="margin-top:2.4cqmin">They came for the topic — they stay for you. Human first, no jargon.</div>
-    <div class="swap pop">
-      <span class="bad">"15 years in distributed systems…" 😴</span>
-      <span class="arr">↓</span>
-      <span class="good">"I took down prod at 2am — here's what it taught me." 🔥</span>
-    </div>
-    <div class="photo-wrap"><div class="photo-card ph"></div></div>
+  <!-- 3 · THE ONE IDEA -->
+  <section class="slide" data-nav="The one idea">
+    <span class="badge pop">the idea</span>
+    <h2 class="slam">Subtraction is the work.</h2>
+    <div class="sub pop">Anyone can add. Deciding what to remove is the job you were hired for.</div>
   </section>
 
-  <!-- 4 · BEFORE / AFTER — slides are eye candy -->
-  <section class="slide" data-nav="Eye candy">
-    <span class="badge pop">your slides are eye candy</span>
-    <h2 class="pop" style="font-size:clamp(30px,6.6cqmin,104px);margin-bottom:.3cqmin">Same point. <span class="wink">One sticks.</span></h2>
-    <div class="bca">
-      <div class="mock bad">
-        <span class="tag">❌ a reading assignment</span>
-        <h4>Our Q3 Platform Strategy &amp; Roadmap</h4>
-        <ul><li>twelve initiatives across four pillars</li><li>each with sub-bullets and owners</li><li>dense paragraph of context</li><li>and one more dense line…</li></ul>
+  <!-- 4 · HERO — sixty-four marks, one lit. The money slide. -->
+  <section class="slide" data-nav="What survives">
+    <span class="badge pop">what the room keeps</span>
+    <div class="ticks pop" aria-label="Sixty-four marks; one is lit."></div>
+    <div class="fieldlbl pop">sixty-four things you could say</div>
+    <div class="mega slam">1</div>
+    <div class="sub pop">One is what they repeat tomorrow. The other sixty-three were for you.</div>
+  </section>
+
+  <!-- 5 · THE LANDING — act tonight -->
+  <section class="slide" data-nav="Tonight">
+    <span class="badge pop">tonight</span>
+    <h2 class="pop">Remove it. If nothing breaks, it was decoration.</h2>
+    <div class="beats">
+      <div>
+        <div class="bl">the tool</div>
+        <div class="bt">The last thing you made. Open it as it is.</div>
       </div>
-      <div class="mock good">
-        <span class="tag">✅ eye candy</span>
-        <div class="big">10× <span class="gd">faster.</span></div>
-        <div class="cap2">one number. one breath.</div>
+      <div>
+        <div class="bl">five minutes</div>
+        <div class="bt">Cut a third. Not the worst third — the safest one.</div>
       </div>
-    </div>
-    <div class="sub pop" style="max-width:46ch;margin-top:3cqmin">Huge type, few words, one visual. Can't read it on your phone at arm's length? Too small.</div>
-  </section>
-
-  <!-- 5 · HERO CHART (the money slide — screenshot-gorgeous SVG) -->
-  <section class="slide" data-nav="The money slide">
-    <span class="badge pop">the money slide 📸</span>
-    <h2 class="pop" style="font-size:clamp(30px,6.6cqmin,104px);margin-bottom:.3cqmin">Build <span class="hl">1–2 hero slides.</span></h2>
-    <div class="herowrap" style="margin-top:6cqmin">
-      <div class="herochart">
-        <span class="photolbl" style="top:-5cqmin">📸 they'll photograph this</span>
-        <svg viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet" aria-label="hero chart: follow-ups over the month after a talk">
-          <defs><linearGradient id="hcg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00B0F0" stop-opacity=".5"></stop><stop offset="1" stop-color="#00B0F0" stop-opacity="0"></stop></linearGradient></defs>
-          <line class="hc-grid" x1="40" y1="70" x2="540" y2="70"></line>
-          <line class="hc-grid" x1="40" y1="150" x2="540" y2="150"></line>
-          <line class="hc-grid" x1="40" y1="230" x2="540" y2="230"></line>
-          <path class="hc-area" fill="url(#hcg)" d="M40,250 C130,242 170,205 230,192 C300,176 340,128 400,98 C460,68 500,52 540,40 L540,280 L40,280 Z"></path>
-          <path class="hc-line" d="M40,250 C130,242 170,205 230,192 C300,176 340,128 400,98 C460,68 500,52 540,40"></path>
-          <circle class="hc-dot" cx="540" cy="40" r="8"></circle>
-          <text class="hc-stat" x="44" y="92">3.2×</text>
-          <text class="hc-sub" x="46" y="120">more follow-ups, a month later</text>
-          <text class="hc-x" x="40" y="305">your talk</text>
-          <text class="hc-x" x="430" y="305">a month later →</text>
-        </svg>
-      </div>
-      <div class="hmeta">
-        <div class="qt pop">One <span class="wink">unforgettable</span> visual.</div>
-        <div class="ql2 pop">A bold chart, diagram or table — <b>screenshot-gorgeous.</b> It's the slide that walks out the door and spreads your idea without you.</div>
+      <div>
+        <div class="bl">done looks like</div>
+        <div class="bt">You can say what it is in a single breath.</div>
       </div>
     </div>
   </section>
 
-  <!-- 6 · CLOCK — know your slot -->
-  <section class="slide" data-nav="Know your time">
-    <span class="badge pop">your slot ⏱</span>
-    <h2 class="pop">Know your <span class="jit">time.</span></h2>
-    <div class="clock"><div class="c-a">Keynote · 20–25 min</div><div class="c-b">+ 5–10 Q&amp;A</div></div>
-    <div class="clock"><div class="c-a">Talk · aim for 10 min</div><div class="c-b">+ 5 Q&amp;A</div></div>
-    <div class="sub pop" style="max-width:44ch">Exact timing varies by event — check with your organizer.</div>
-  </section>
-
-  <!-- 7 · STATEMENT — rehearse on the clock -->
-  <section class="slide" data-nav="Rehearse">
-    <span class="badge pop">rehearse on the clock</span>
-    <h2 class="slam">Say it out loud. <span class="hl">On a timer.</span></h2>
-    <div class="duo">
-      <div class="pop"><div class="tiny">practiced</div><p>10:00</p></div>
-      <div class="pop"><div class="tiny">live 😬 +30%</div><p class="gold">~13:00</p></div>
-    </div>
-    <div class="sub pop" style="max-width:44ch">Reading it in your head is a lie. Rehearse standing up — then plan for ~30% longer on the day.</div>
-  </section>
-
-  <!-- 8 · CARDS — on the day, watch for the signals -->
-  <section class="slide" data-nav="Watch the signals">
-    <span class="badge pop">on the day — we signal you</span>
-    <h2 class="pop" style="font-size:clamp(30px,6.6cqmin,104px);margin-bottom:.4cqmin">Watch for our <span class="wink">hands.</span></h2>
-    <div class="cards c3 big">
-      <div class="card"><div class="ic">✋</div><div class="ct">Every 5 min</div><div class="cd">Time-remaining flash.</div></div>
-      <div class="card"><div class="ic">✊</div><div class="ct">Closed fist</div><div class="cd">Wrap it up — land the plane now.</div></div>
-      <div class="card"><div class="ic">🤝</div><div class="ct">Need help?</div><div class="cd">Look to your teammate. We've got you.</div></div>
-    </div>
-  </section>
-
-  <!-- 9 · STORY/swap — Q&A judo -->
-  <section class="slide" data-nav="Q&amp;A judo">
-    <span class="badge pop">q&amp;a judo</span>
-    <h2 class="pop">You may cut off <span class="jit">the rambler.</span></h2>
-    <div class="swap pop" style="max-width:40ch">
-      <span class="bad">🙋 the 90-second "question"…</span>
-      <span class="arr">↓</span>
-      <span class="good">✅ your crisp answer</span>
-    </div>
-    <div class="sub pop" style="max-width:46ch">Speed them up, or politely answer what you think they're asking.</div>
-  </section>
-
-  <!-- 10 · ACTCARD — stick the landing -->
-  <section class="slide" data-nav="Stick the landing">
-    <span class="badge pop">stick the landing</span>
-    <h2 class="pop" style="font-size:clamp(30px,6.6cqmin,104px)">Make them act <span class="hl">tonight.</span></h2>
-    <div class="actcard">
-      <div class="actbtn"><span class="play">▶</span> Do this one thing</div>
-      <div class="actsteps">
-        <div class="actstep"><b>1</b> the one tool</div>
-        <div class="actstep"><b>2</b> the first 5 min</div>
-        <div class="actstep"><b>3</b> what "done" looks like</div>
-      </div>
-    </div>
-    <div class="sub pop" style="max-width:48ch">Don't end on "thanks." End on one thing they can do right now — so they leave itching to try it.</div>
-  </section>
-
-  <!-- 11 · QR — don't vanish -->
-  <section class="slide" data-nav="Don't vanish">
-    <span class="badge pop">don't vanish 🔗</span>
-    <div class="qrwrap">
-      <div class="qr pop"><svg id="qr" viewBox="0 0 100 100" aria-label="example QR code"></svg></div>
-      <div class="qmeta">
-        <div class="qt pop">End on a <span class="wink">big QR.</span></div>
-        <div class="ql pop">One scan to your <b>Linktree, email, LinkedIn or site</b> — so the room can find you after.</div>
-        <div class="tag pop">↑ drop your own QR here</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 12 · CHIPS — turn it up -->
-  <section class="slide" data-nav="Turn it up">
-    <span class="badge pop">turn it up 🔊</span>
-    <h2 class="pop">Make it an <span class="jit">experience.</span></h2>
-    <div class="chips">
-      <span class="chip pop">🔊 Audio</span>
-      <span class="chip pop">🎵 Music</span>
-      <span class="chip pop">✨ Animation</span>
-      <span class="chip pop">💥 FX</span>
-      <span class="chip pop">🙌 Interactive</span>
-    </div>
-    <div class="sub pop" style="max-width:46ch">We love audio-visual energy. Don't be scared — it's part of the message.</div>
-  </section>
-
-  <!-- 13 · OMT — one more thing (the finale turn) -->
-  <section class="slide omt-slide" data-nav="One more thing" data-omt>
-    <span class="badge omt-kicker" style="opacity:0">one more thing…</span>
-    <h2 class="omt-line" style="opacity:0">The room can feel it when <span class="hl">you're enjoying this.</span></h2>
-  </section>
-
-  <!-- 14 · CLOSE (full-bleed photo) -->
-  <section class="slide photo" data-nav="Now go">
-    <div class="pic"></div>
-    <div class="cap">
-      <span class="badge pop">now go 🚀</span>
-      <h1 class="pop">Good luck.<br>Have <span class="hl">fun.</span></h1>
-      <div class="sub pop">So enjoy it — we've got your back up there.</div>
-      <div class="tiny pop" style="margin-top:3cqmin">better-slides · by Hanley Leung · hanley.world</div>
-    </div>
+  <!-- 6 · CLOSE — the landing, the credit, the one filled shape -->
+  <section class="slide" data-nav="Close">
+    <span class="badge pop">thank you</span>
+    <h2 class="pop">Take one thing away.</h2>
+    <div class="sub pop">That’s the whole talk. It was longer this morning.</div>
+    <a class="pill" href="https://hanley.world">Start with the last thing you made ›</a>
+    <div class="credit pop">by Hanley Leung · hanley.world</div>
   </section>
 
 </div>
 
-<!-- corner brand lockup (hidden on slide 1). -->
-<div class="brandmark"><span class="wm">better<b>slides</b></span></div>
+<!-- corner brand lockup (hidden on slide 1). Add an <img> before .wm for a logo. -->
+<div class="brandmark"><span class="wm">Hanley Leung</span></div>
 
 <button class="fab" id="fab" aria-label="Deck controls"></button>
 <div class="menu" id="menu">
-  <div class="wm">better<b>slides</b> · Be Unforgettable</div>
+  <div class="wm">Hanley Leung · Subtraction is the work</div>
   <div class="prog"><div class="bar"><span id="barfill"></span></div><div class="count" id="count">1 / 1</div></div>
   <div class="acts">
     <button class="act" data-act="prev" aria-label="Previous">‹</button>
@@ -591,45 +548,39 @@
 </div>
 </div>
 
-<!-- GSAP powers the omt finale build. The deck degrades gracefully if it fails to load. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
   const stage=document.getElementById('stage');
   function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.setProperty('--scale',s);}
   addEventListener('resize',fit);addEventListener('orientationchange',fit);fit();
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ── SOUND DESIGN ──────────────────────────────────────────────
-     Synthesized cues via Web Audio — zero asset files, fully portable.
-     Opt-in, gesture-gated, and never required to follow the talk.
-     Default: cues ON but quiet. Toggle with 🔊 in the menu or the M key. */
+  /* ── SOUND ─────────────────────────────────────────────────────
+     Obsidian's palette is one cue: a soft swoosh on a true section break.
+     No music, no applause. Synthesized via Web Audio — no asset files.
+     Opt-in, gesture-gated, and the deck reads perfectly muted. */
   let actx=null, soundOn=true;
   function audio(){ try{ return actx || (actx=new (window.AudioContext||window.webkitAudioContext)()); }catch(e){ return null; } }
   function resumeAudio(){ const a=audio(); if(a&&a.state==='suspended') a.resume(); }   // unlock on first gesture
-  function blip(freq,dur,type,gain){
+  function swoosh(){
     if(!soundOn) return; const a=audio(); if(!a) return;
-    const o=a.createOscillator(),g=a.createGain();
-    o.type=type||'sine'; o.frequency.value=freq;
-    g.gain.setValueAtTime(0,a.currentTime);
-    g.gain.linearRampToValueAtTime(gain||0.16,a.currentTime+0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+dur);
-    o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime+dur);
+    const o=a.createOscillator(),g=a.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(520,a.currentTime); o.frequency.exponentialRampToValueAtTime(120,a.currentTime+0.32);
+    g.gain.setValueAtTime(0.0001,a.currentTime);
+    g.gain.linearRampToValueAtTime(0.05,a.currentTime+0.04);
+    g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+0.36);
+    o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime+0.38);
   }
-  const CUES={
-    swoosh(){ if(!soundOn) return; const a=audio(); if(!a) return;
-      const o=a.createOscillator(),g=a.createGain(); o.type='sawtooth';
-      o.frequency.setValueAtTime(900,a.currentTime); o.frequency.exponentialRampToValueAtTime(120,a.currentTime+0.25);
-      g.gain.setValueAtTime(0.10,a.currentTime); g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+0.28);
-      o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime+0.3); },
-    chime(){ blip(880,0.5,'sine',0.16); blip(1320,0.6,'sine',0.10); },     // hero number
-    powerup(){ if(!soundOn) return; const a=audio(); if(!a) return;
-      const o=a.createOscillator(),g=a.createGain(); o.type='triangle';
-      o.frequency.setValueAtTime(220,a.currentTime); o.frequency.exponentialRampToValueAtTime(880,a.currentTime+0.3);
-      g.gain.setValueAtTime(0.14,a.currentTime); g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+0.34);
-      o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime+0.36); },
-    omt(){ blip(196,0.7,'sine',0.20); blip(294,0.85,'triangle',0.12); }    // the turn
-  };
-  function beat(name){ (CUES[name]||function(){})(); }
+
+  /* the hero field: sixty-four marks, one lit */
+  (function(){
+    const f=document.querySelector('.ticks'); if(!f) return;
+    for(let k=0;k<64;k++){
+      const t=document.createElement('i');
+      if(k===41) t.className='lit';
+      t.style.animationDelay=(k===41?0.5:k*0.008)+'s';
+      f.appendChild(t);
+    }
+  })();
 
   const slides=[...document.querySelectorAll('.slide')];
   // background swirl palette — pulled from the theme tokens
@@ -666,48 +617,11 @@
     if(navItems[i]) navItems[i].scrollIntoView({block:'nearest'});
     const t=themes[i];
     bg.style.setProperty('--g1',t[0]);bg.style.setProperty('--g2',t[1]);bg.style.setProperty('--g3',t[2]);
+    const cur=slides[i];
     const hash='#'+(i+1);
     if(location.hash!==hash){try{history.replaceState(null,'',hash);}catch(e){location.hash=hash;}}
-    // per-slide performance cues
-    const cur=slides[i];
-    if(cur.classList.contains('omt-slide')) playOMT(cur);
-    else if(cur.querySelector('.herochart')) setTimeout(()=>{beat('chime');beat('powerup');},1300); // the line lands
-    if(i===slides.length-1)party();
-  }
-  /* The "one more thing" finale: a held pause, the turn, then the payoff slams in. */
-  function playOMT(slide){
-    const k=slide.querySelector('.omt-kicker'), line=slide.querySelector('.omt-line');
-    if(!k||!line) return;
-    if(!window.gsap||reducedMotion){ k.style.opacity=1; line.style.opacity=1; return; }
-    gsap.set([k,line],{clearProps:'all'}); k.style.opacity=0; line.style.opacity=0;
-    gsap.timeline()
-      .to(k,{autoAlpha:1,duration:.6,delay:1.1})                 // held pause, then the turn
-      .add(()=>beat('omt'),'<')
-      .fromTo(line,{autoAlpha:0,scale:.9,y:18},{autoAlpha:1,scale:1,y:0,duration:.75,ease:'back.out(1.6)'},'+=0.45');
-  }
-  function applause(){
-    if(!soundOn) return; const a=audio(); if(!a) return;
-    const dur=2.4, buf=a.createBuffer(1,Math.floor(a.sampleRate*dur),a.sampleRate), d=buf.getChannelData(0);
-    for(let n=0;n<d.length;n++){ const t=n/d.length; d[n]=(Math.random()*2-1)*Math.pow(1-t,1.4)*(0.55+0.45*Math.sin(t*70)); }
-    const src=a.createBufferSource(); src.buffer=buf;
-    const f=a.createBiquadFilter(); f.type='bandpass'; f.frequency.value=2100; f.Q.value=0.5;
-    const g=a.createGain(); g.gain.value=0.22;
-    src.connect(f).connect(g).connect(a.destination); src.start();
-  }
-  function party(){
-    applause();
-    const c=document.getElementById('confetti');c.classList.add('go');c.innerHTML='';
-    const cols=[...palette,'#fff',cs.getPropertyValue('--gold').trim()||'#FFC857'];
-    for(let k=0;k<150;k++){
-      const b=document.createElement('b');
-      b.style.left=Math.random()*100+'%';
-      b.style.background=cols[k%cols.length];
-      b.style.animationDuration=(2.4+Math.random()*2.6)+'s';
-      b.style.animationDelay=(Math.random()*.8)+'s';
-      b.style.transform='scale('+(.5+Math.random())+')';
-      c.appendChild(b);
-    }
-    setTimeout(()=>c.classList.remove('go'),5400);
+    // the only cue in the deck: the turn into the hero field
+    if(cur.querySelector('.ticks')) setTimeout(swoosh,120);
   }
   function toggleFull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
   function closeMenu(){menu.classList.remove('open');fab.classList.remove('on')}
@@ -716,7 +630,7 @@
     soundOn=!soundOn;
     document.body.classList.toggle('muted',!soundOn);
     if(soundbtn){ soundbtn.textContent=soundOn?'🔊':'🔇'; soundbtn.classList.toggle('off',!soundOn); }
-    if(soundOn){ resumeAudio(); beat('swoosh'); }   // little confirmation blip
+    if(soundOn){ resumeAudio(); swoosh(); }
   }
   /* ── INLINE EDITING ─────────────────────────────────────────
      E toggles edit mode (click any text, type), Ctrl/Cmd+S downloads the
@@ -775,46 +689,10 @@
     resumeAudio();                                   // unlock audio on first click
     if(editing)return;
     if(e.target.closest('.fab')||e.target.closest('.menu'))return;
+    if(e.target.closest('.pill'))return;             // the CTA is a real link
     if(menu.classList.contains('open')){closeMenu();return;}
     show(i+(e.clientX>innerWidth*.5?1:-1));
   });
-  const motes=document.getElementById('motes');
-  const moteCols=[['#ffffff','rgba(255,255,255,.55)'],['#cfc7ff','rgba(139,124,255,.6)'],['#ffe79a','rgba(255,200,87,.55)']];
-  for(let k=0;k<34;k++){
-    const m=document.createElement('i');
-    const s=2+Math.random()*3.5;
-    const r=k%5;
-    const c=r===0?moteCols[2]:(r%2?moteCols[1]:moteCols[0]);
-    m.style.left=(Math.random()*100)+'%';
-    m.style.top=(Math.random()*100)+'%';
-    m.style.width=m.style.height=s+'px';
-    m.style.setProperty('--c',c[0]);
-    m.style.setProperty('--g',c[1]);
-    m.style.setProperty('--dx',(Math.random()*6-3)+'cqw');
-    m.style.setProperty('--dy',(Math.random()*6-3)+'cqh');
-    m.style.setProperty('--o',(.3+Math.random()*.4).toFixed(2));
-    m.style.animationDuration=(7+Math.random()*9)+'s';
-    m.style.animationDelay=(-Math.random()*16)+'s';
-    motes.appendChild(m);
-  }
-  /* mock QR (placeholder for a real code) — even quiet zone baked into the viewBox */
-  (function(){
-    const svg=document.getElementById('qr'); if(!svg) return;
-    const N=25, Q=7, M=(100-2*Q)/N;          // Q = quiet-zone units on every side
-    const P=i=>(Q+i*M).toFixed(2);           // module top-left position
-    const S=n=>(n*M).toFixed(2);             // size of n modules
-    const inSep=(x,y)=>{const s=(ox,oy)=>x>=ox&&x<ox+8&&y>=oy&&y<oy+8;return s(-1,-1)||s(N-7,-1)||s(-1,N-7);};
-    let r='';
-    for(let y=0;y<N;y++)for(let x=0;x<N;x++){
-      if(inSep(x,y))continue;
-      const h=Math.abs(Math.sin((x+1)*12.9898+(y+1)*78.233))*43758.5453;
-      if((h-Math.floor(h))<.46) r+=`<rect x="${P(x)}" y="${P(y)}" width="${S(1)}" height="${S(1)}"/>`;
-    }
-    const finder=(ox,oy)=>`<rect x="${P(ox)}" y="${P(oy)}" width="${S(7)}" height="${S(7)}"/>`+
-      `<rect x="${P(ox+1)}" y="${P(oy+1)}" width="${S(5)}" height="${S(5)}" fill="#fff"/>`+
-      `<rect x="${P(ox+2)}" y="${P(oy+2)}" width="${S(3)}" height="${S(3)}"/>`;
-    svg.innerHTML=`<g fill="#10121C">${r}${finder(0,0)}${finder(N-7,0)}${finder(0,N-7)}</g>`;
-  })();
   const slideFromHash=()=>{const n=parseInt((location.hash||'').slice(1),10);return (n>=1&&n<=slides.length)?n-1:0;};
   window.addEventListener('hashchange',()=>{const n=slideFromHash();if(n!==i)show(n);});
   show(slideFromHash());

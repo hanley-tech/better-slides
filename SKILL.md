@@ -191,10 +191,14 @@ Then ask if they want to share. Offer:
 
   A published deck also needs (both REQUIRED):
   - **Social share card** — an `og.jpg` (1280×720) captured from the *rendered first
-    slide* (Playwright screenshot after entrance animations, letterbox trimmed), with
-    `canonical`/`og:url` pointing at the deck's URL and `og:image`/`twitter:image` at
+    slide*. Run `bash scripts/capture-shots.sh <deck.html> --og` — it serves the deck,
+    forces entrance animations to their final state, clips to the stage (no baked-in
+    letterbox bars), writes `og.jpg` at mode 644, and fails loudly if the deck
+    references any asset that 404s. Do NOT hand-drive a browser for this.
+    Then set `canonical`/`og:url` to the deck's URL and `og:image`/`twitter:image` to
     the og.jpg as ABSOLUTE URLs, `twitter:card` = `summary_large_image`. Re-capture
-    when the title slide changes.
+    when the title slide changes. Add `--preview` for a 1920×1080 `preview.jpg`, or
+    `--slides 3,5` / `--all` for README stills.
   - **Asset preloader gate** (media-heavy decks) — see
     [`reference/preloader.md`](reference/preloader.md): progress bar that downloads
     every asset into the browser disk cache, then a Start button gated on the first
@@ -225,5 +229,11 @@ Then ask if they want to share. Offer:
 | [`scripts/extract-pptx.py`](scripts/extract-pptx.py) | PPTX content extraction | Phase 0 Mode D |
 | [`scripts/deploy.sh`](scripts/deploy.sh) | Deploy deck to a live URL (Vercel) | Phase 4 |
 | [`scripts/export-pdf.sh`](scripts/export-pdf.sh) | Export deck to PDF | Phase 4 |
+| [`scripts/capture-shots.sh`](scripts/capture-shots.sh) | Capture `og.jpg` share card / slide stills | Phase 4 (publish) |
+| [`index.html`](index.html) | The project landing page — itself a deck (Noir) | Reference example |
 | [`demo/index.html`](demo/index.html) | Flagship: the "Be Unforgettable" talk (Spotlight) | Reference example |
 | [`demo/noir/index.html`](demo/noir/index.html) | "This is not a slideshow" (Noir) | Reference example |
+| [`demo/obsidian/index.html`](demo/obsidian/index.html) | "Subtraction is the work" (Obsidian) | Reference example |
+| [`demo/cupertino/index.html`](demo/cupertino/index.html) | A photo-forward story talk (Cupertino) | Reference example |
+| [`demo/terminal/index.html`](demo/terminal/index.html) | "Dependencies are debt" (Terminal) | Reference example |
+| [`demo/broadsheet/index.html`](demo/broadsheet/index.html) | An essay-as-talk (Broadsheet) | Reference example |

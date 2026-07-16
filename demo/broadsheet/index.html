@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Half-Life of Attention</title>
+<meta name="description" content="An essay on what survives the scroll — attention is rented, memory is owned. A short talk by Hanley Leung.">
+<link rel="canonical" href="https://hanley-tech.github.io/better-slides/demo/broadsheet/">
+<!-- Open Graph / WhatsApp / iMessage / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="hanley.world">
+<meta property="og:url" content="https://hanley-tech.github.io/better-slides/demo/broadsheet/">
+<meta property="og:title" content="The Half-Life of Attention">
+<meta property="og:description" content="An essay on what survives the scroll — attention is rented, memory is owned. A short talk by Hanley Leung.">
+<meta property="og:image" content="https://hanley-tech.github.io/better-slides/demo/broadsheet/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Half-Life of Attention">
+<meta name="twitter:description" content="An essay on what survives the scroll — attention is rented, memory is owned. A short talk by Hanley Leung.">
+<meta name="twitter:image" content="https://hanley-tech.github.io/better-slides/demo/broadsheet/og.jpg">
+
+<!-- ════════════════════════════════════════════════════════════════════
+     THEME  ·  the only brand-specific part — swap this whole block.
+     ════════════════════════════════════════════════════════════════════ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,700;1,9..144,900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style id="theme">
+  /* Broadsheet — ink stage, cream serif, one crimson accent. */
+  :root{
+    --ink:#EDE6D6; --bg:#14181F; --black:#0C0E12;
+    --blue:#C8553D; --cyan:#C8553D; --deep:#8F3A2A;   /* crimson carries the accent role */
+    --gold:#C8553D; --amber:#8F3A2A;                  /* no second accent in this system */
+    --mono:"Fraunces",Georgia,serif;
+    --body:"Source Serif 4",Georgia,serif;
+    --muted:#9A937F;
+    --line:#2A2F38;
+    --p0:#14181F; --p1:#181D26; --p2:#241A18; --p3:#10131A; --p4:#14181F; --p5:#181D26;
+  }
+</style>
+<!-- ═══════════════════════ END THEME ═══════════════════════ -->
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{font-family:var(--mono);color:var(--ink);background:#000;-webkit-font-smoothing:antialiased}
+  /* fixed 1920×1080 stage, scaled to fit, letterboxed */
+  #stage{position:fixed;top:50%;left:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--scale,1));transform-origin:center center;container-type:size;overflow:hidden;background:var(--bg)}
+  .bg{position:fixed;inset:-20%;z-index:0;filter:blur(70px);opacity:.42;transition:background 1.2s ease}
+  .bg::after{content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(40% 50% at 18% 22%, var(--g1), transparent 60%),
+      radial-gradient(45% 55% at 82% 30%, var(--g2), transparent 60%),
+      radial-gradient(55% 60% at 50% 88%, var(--g3), transparent 62%);
+    animation:swirl 26s ease-in-out infinite alternate}
+  @keyframes swirl{0%{transform:translate3d(0,0,0) scale(1) rotate(0)}100%{transform:translate3d(2%,-2%,0) scale(1.08) rotate(4deg)}}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.075;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='80' height='80' filter='url(%23n)'/></svg>")}
+  .deck{position:relative;z-index:2;height:100cqh;width:100cqw}
+  /* Broadsheet: margins are the luxury */
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:8cqmin 11cqmin}
+  .slide.active{display:flex}
+  /* editorial entrance — slow fade + rise, no bounce, no rotation */
+  .slide.active .pop{animation:pop .85s cubic-bezier(.22,.61,.36,1) backwards}
+  .slide.active .pop:nth-child(2){animation-delay:.5s}
+  .slide.active .pop:nth-child(3){animation-delay:.9s}
+  .slide.active .pop:nth-child(4){animation-delay:1.35s}
+  .slide.active .pop:nth-child(5){animation-delay:1.8s}
+  @keyframes pop{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+  /* the hero figure — the one slam in the deck, at reduced amplitude */
+  .slide.active .slam{animation:slam .8s cubic-bezier(.22,.61,.36,1) 1.5s backwards}
+  @keyframes slam{0%{opacity:0;transform:scale(1.07)}100%{opacity:1;transform:scale(1)}}
+
+  /* ── the signature reveal: the crimson rule draws, then the headline ── */
+  .rule{flex:none;width:40px;height:2px;background:var(--blue);margin:1.8cqmin 0 3.2cqmin}
+  .slide.active .rule{animation:ruledraw .5s cubic-bezier(.22,.61,.36,1) .42s backwards}
+  @keyframes ruledraw{from{width:0}to{width:40px}}
+  .hair{width:100%;height:1px;background:var(--line);flex:none}
+
+  /* type */
+  .badge{display:block;align-self:flex-start;font-family:var(--mono);font-weight:600;font-style:normal;
+    letter-spacing:.22em;text-transform:uppercase;font-size:clamp(11px,2.2cqmin,26px);line-height:1.2;color:var(--muted)}
+  h1{font-size:clamp(40px,10cqmin,190px);line-height:.98;font-weight:900;letter-spacing:-.02em}
+  h2{font-size:clamp(30px,7.6cqmin,140px);line-height:1.05;font-weight:700;letter-spacing:-.015em}
+  .mega{font-size:clamp(70px,20cqmin,380px);font-weight:900;line-height:.85;letter-spacing:-.03em;color:var(--blue);padding-top:.16em}
+  .sub{font-family:var(--body);font-size:clamp(15px,3.4cqmin,42px);font-weight:400;line-height:1.55;margin-top:3.4cqmin;max-width:30ch;color:var(--ink);opacity:.82}
+  .tiny{font-family:var(--body);font-size:clamp(11px,2cqmin,22px);font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  /* the essay moment: one italic crimson word per headline. Bold does not exist here. */
+  .em{color:var(--blue);font-style:italic;font-weight:inherit}
+
+  /* pull quote — the section beat */
+  .pull{width:100%;margin-top:1cqmin}
+  .qmark{display:block;font-family:var(--mono);font-weight:900;font-size:22cqmin;line-height:.62;height:.44em;color:var(--blue);opacity:.92;letter-spacing:-.04em}
+  .quote{font-family:var(--mono);font-style:italic;font-weight:500;font-size:clamp(22px,6cqmin,92px);line-height:1.25;letter-spacing:-.01em;max-width:22ch}
+  .attrib{font-family:var(--body);font-variant:small-caps;letter-spacing:.16em;color:var(--muted);font-size:clamp(11px,2.2cqmin,26px);margin-top:3.4cqmin}
+
+  /* liquid-glass control dot + popup */
+  .fab{position:fixed;bottom:2.6cqmin;right:2.6cqmin;z-index:7;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;
+    background:rgba(237,230,214,.09);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);
+    border:1px solid rgba(237,230,214,.22);
+    box-shadow:0 8px 28px rgba(0,0,0,.4),inset 0 1px 1px rgba(237,230,214,.35);
+    transition:transform .3s cubic-bezier(.2,1,.3,1),background .3s}
+  .fab:hover{transform:scale(1.08);background:rgba(237,230,214,.14)}
+  .fab:active{transform:scale(.95)}
+  .fab.on{background:rgba(200,85,61,.24);border-color:rgba(200,85,61,.55)}
+  .menu{position:fixed;bottom:7cqmin;right:2.6cqmin;z-index:7;display:flex;flex-direction:column;min-width:274px;max-height:80cqh;padding:12px;border-radius:4px;font-family:var(--body);color:var(--ink);
+    background:rgba(12,14,18,.72);-webkit-backdrop-filter:blur(28px) saturate(150%);backdrop-filter:blur(28px) saturate(150%);
+    border:1px solid var(--line);
+    box-shadow:0 20px 54px rgba(0,0,0,.6);
+    opacity:0;transform:translateY(12px) scale(.97);transform-origin:bottom right;pointer-events:none;transition:.3s cubic-bezier(.2,1,.3,1)}
+  .menu.open{opacity:1;transform:none;pointer-events:auto}
+  .menu .wm{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.02em;opacity:.9;padding:4px 8px 2px}
+  .menu .wm b{color:var(--blue);font-weight:600}
+  .menu .prog{display:flex;align-items:center;gap:10px;padding:10px 8px 12px}
+  .menu .bar{flex:1;height:2px;background:rgba(237,230,214,.16);overflow:hidden}
+  .menu .bar span{display:block;height:100%;background:var(--blue);transition:width .35s ease}
+  .menu .count{font-size:12px;font-weight:600;opacity:.7;min-width:48px;text-align:right}
+  .menu .acts{display:flex;gap:6px;margin:6px 0 2px}
+  .menu .act{flex:1;display:flex;align-items:center;justify-content:center;padding:9px 0;border-radius:2px;border:1px solid var(--line);background:rgba(237,230,214,.04);color:var(--ink);font-size:16px;line-height:1;cursor:pointer;transition:background .15s}
+  .menu .act:hover{background:rgba(237,230,214,.12)}
+  .menu .nav{flex:1;min-height:0;overflow-y:auto;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:1px}
+  .menu .nav::-webkit-scrollbar{width:6px}
+  .menu .nav::-webkit-scrollbar-thumb{background:rgba(237,230,214,.22)}
+  .menu .navi{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:2px;border:none;background:transparent;color:var(--ink);font-family:var(--body);font-weight:600;font-size:11.5px;cursor:pointer;text-align:left;transition:background .15s}
+  .menu .navi:hover{background:rgba(237,230,214,.08)}
+  .menu .navi.on{background:rgba(200,85,61,.16)}
+  .menu .navi .n{opacity:.45;min-width:20px}
+  .menu .navi.on .n{opacity:1;color:var(--blue)}
+  .menu .navi .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* persistent corner brand lockup */
+  .brandmark{position:fixed;top:3.4cqmin;left:4cqmin;z-index:5;display:flex;align-items:center;gap:9px;pointer-events:none;opacity:.85;transition:opacity .8s ease}
+  .brandmark .wm{font-family:var(--mono);font-weight:600;font-size:clamp(12px,2cqmin,20px);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .brandmark .wm b{color:var(--blue);font-weight:600}
+  body.first .brandmark{opacity:0}
+
+  /* full-bleed closer */
+  .slide.photo{padding:0;justify-content:flex-end}
+  .slide.photo .pic{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-color:var(--bg)}
+  .slide.photo .pic::after{content:"";position:absolute;inset:0;background:
+    linear-gradient(0deg,rgba(12,14,18,.9) 6%,rgba(12,14,18,.35) 46%,transparent 84%)}
+  .slide.photo .cap{position:relative;z-index:1;width:100%;padding:8cqmin 11cqmin;display:flex;flex-direction:column;align-items:flex-start}
+  .slide.photo .cap h1{line-height:1.06}
+  .slide.photo .cap .sub{margin-top:3.4cqmin}
+
+  /* title slide — the held open */
+  .slide .bgimg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
+  .slide.hasbg>:not(.bgimg){position:relative;z-index:1}
+  .title-hero{align-items:flex-start;justify-content:center;text-align:left}
+  .title-hero .bgimg{background:
+    radial-gradient(62% 46% at 14% 108%, rgba(143,58,42,.34), transparent 66%),
+    radial-gradient(70% 52% at 88% -8%, rgba(200,85,61,.10), transparent 62%),
+    linear-gradient(168deg, #181D26 0%, #14181F 52%, #0C0E12 100%)}
+  .title-hero .t-sm{display:block;font-family:var(--mono);font-size:clamp(20px,5.2cqmin,64px);font-weight:500;font-style:italic;line-height:1.1;color:var(--muted);letter-spacing:-.01em;margin-bottom:.16em}
+  .title-hero .t-mega{display:block;font-size:clamp(46px,14cqmin,250px);font-weight:900;line-height:.9;letter-spacing:-.03em}
+  .title-hero .brandlock{z-index:1;display:flex;flex-direction:column;align-items:flex-start}
+  .title-hero .brandlock .lockwm{font-family:var(--mono);font-weight:600;font-size:clamp(12px,2.2cqmin,24px);letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  .title-hero .brandlock .lockwm b{color:var(--blue);font-weight:600}
+  .title-hero h1{margin:3.4cqmin 0 0}
+  .title-hero .title-foot{position:absolute!important;bottom:8cqmin;left:11cqmin;right:11cqmin;z-index:2;
+    font-family:var(--body);font-weight:400;text-transform:uppercase;letter-spacing:.3em;font-size:clamp(10px,1.9cqmin,20px);color:var(--muted);
+    padding-top:2.6cqmin;border-top:1px solid var(--line)}
+
+  /* one-more-thing finale slide — centered, held, quiet as a turned page */
+  .omt-slide{align-items:center;justify-content:center;text-align:center}
+  .omt-slide .omt-kicker{align-self:center}
+  .omt-slide .rule{align-self:center}
+  .omt-slide .omt-line{font-size:clamp(28px,7.4cqmin,130px);max-width:16ch;line-height:1.08}
+  #soundbtn.off{opacity:.5}
+
+  /* inline edit mode — press E, click any text, Ctrl/Cmd+S to save the file */
+  body.editing .slide.active{outline:1px dashed rgba(237,230,214,.28);outline-offset:-10px;cursor:text}
+  body.editing .fab{background:rgba(200,85,61,.3);border-color:rgba(200,85,61,.6)}
+
+  @media (prefers-reduced-motion: reduce){
+    .bg::after,.slide.active .pop,.slide.active .slam,.slide.active .rule{animation:none!important}
+    .bg{transition:none}
+    .rule{width:40px!important}
+    .omt-kicker,.omt-line,.omt-slide .rule{opacity:1!important}
+  }
+  @media print{
+    html,body{height:auto;overflow:visible;background:var(--bg)}
+    .bg,.grain,.fab,.menu,.brandmark{display:none!important}
+    .deck{height:auto}
+    .slide{position:static!important;display:flex!important;min-height:90cqh;page-break-after:always;padding:9cqmin}
+    .slide .pop,.slide .slam,.slide .rule{animation:none!important}
+    .rule{width:40px!important}
+    .omt-kicker,.omt-line,.omt-slide .rule{opacity:1!important}
+    .bg::after{display:none}
+    section.slide{background:var(--bg)}
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<div class="bg" id="bg"></div>
+<div class="grain"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · TITLE — the held open -->
+  <section class="slide active hasbg title-hero" data-nav="Title">
+    <div class="bgimg"></div>
+    <div class="brandlock pop">
+      <span class="lockwm">hanley<b>.world</b></span>
+    </div>
+    <h1 class="pop">
+      <span class="t-sm">The half-life of</span>
+      <span class="t-mega">attention.</span>
+    </h1>
+    <div class="title-foot pop">An essay on what survives the scroll · Hanley Leung</div>
+  </section>
+
+  <!-- 2 · THE PREMISE -->
+  <section class="slide" data-nav="The premise">
+    <span class="badge pop">the argument</span>
+    <div class="rule"></div>
+    <h2 class="pop">We got very good at being <span class="em">interesting.</span></h2>
+    <div class="sub pop">Interesting is a transaction. It clears in a second and a half, and it settles to nothing. The scroll is a market that pays out in the same currency it takes.</div>
+  </section>
+
+  <!-- 3 · THE HERO FIGURE — the one number, the one chime -->
+  <section class="slide" data-nav="Name three" data-hero>
+    <span class="badge pop">a small experiment</span>
+    <div class="rule"></div>
+    <h2 class="pop">A thousand things crossed your feed yesterday.</h2>
+    <div class="mega slam" style="margin-top:3cqmin">3.</div>
+    <div class="sub pop" style="margin-top:2.6cqmin;max-width:34ch">Name three. Most rooms manage one — and it is almost always the thing that <span class="em">annoyed</span> them.</div>
+  </section>
+
+  <!-- 4 · THE PULL QUOTE — the section beat, the turned page -->
+  <section class="slide" data-nav="Pull quote" data-swoosh>
+    <div class="pull">
+      <span class="qmark pop">“</span>
+      <div class="quote pop">People will forget what you said, but people will never forget how you made them feel.</div>
+      <div class="attrib pop">Maya Angelou</div>
+    </div>
+  </section>
+
+  <!-- 5 · OMT — the turn -->
+  <section class="slide omt-slide" data-nav="One more thing" data-omt data-swoosh>
+    <span class="badge omt-kicker" style="opacity:0">one more thing</span>
+    <div class="rule" style="opacity:0"></div>
+    <h2 class="omt-line" style="opacity:0">Attention is <span class="em">rented.</span> Memory is owned.</h2>
+  </section>
+
+  <!-- 6 · THE LANDING + the credit -->
+  <section class="slide photo" data-nav="Tonight">
+    <div class="pic" style="background:radial-gradient(78% 62% at 16% 96%, #241A18, #0C0E12 72%)"></div>
+    <div class="cap">
+      <span class="badge pop">tonight</span>
+      <div class="rule"></div>
+      <h1 class="pop">Write the <span class="em">one sentence.</span></h1>
+      <div class="sub pop" style="max-width:46ch">Before the next thing you publish — post, deck, memo — spend five minutes writing the one sentence you want repeated back to you in a week. If you cannot write it, it is not finished; it is only interesting. Done is when someone else can say it without you.</div>
+      <div class="tiny pop" style="margin-top:4.4cqmin">by Hanley Leung · hanley.world</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- corner brand lockup (hidden on slide 1). -->
+<div class="brandmark"><span class="wm">hanley<b>.world</b></span></div>
+
+<button class="fab" id="fab" aria-label="Deck controls"></button>
+<div class="menu" id="menu">
+  <div class="wm">The Half-Life of <b>Attention</b></div>
+  <div class="prog"><div class="bar"><span id="barfill"></span></div><div class="count" id="count">1 / 1</div></div>
+  <div class="acts">
+    <button class="act" data-act="prev" aria-label="Previous">‹</button>
+    <button class="act" data-act="next" aria-label="Next">›</button>
+    <button class="act" data-act="sound" id="soundbtn" aria-label="Toggle sound" title="Sound on/off">🔊</button>
+    <button class="act" data-act="edit" aria-label="Edit text" title="Edit text (E)">✎</button>
+    <button class="act" data-act="full" aria-label="Fullscreen">⛶</button>
+    <button class="act" data-act="print" aria-label="Print">⎙</button>
+  </div>
+  <div class="nav" id="nav"></div>
+</div>
+</div>
+
+<!-- GSAP powers the omt finale build. The deck degrades gracefully if it fails to load. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const stage=document.getElementById('stage');
+  function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.setProperty('--scale',s);}
+  addEventListener('resize',fit);addEventListener('orientationchange',fit);fit();
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── SOUND ─────────────────────────────────────────────────────
+     Broadsheet is nearly silent: a soft page-turn swoosh on section
+     breaks, one low chime when the hero figure lands. No music bed,
+     no applause. Opt-in, gesture-gated, never required. Toggle: M. */
+  let actx=null, soundOn=true;
+  function audio(){ try{ return actx || (actx=new (window.AudioContext||window.webkitAudioContext)()); }catch(e){ return null; } }
+  function resumeAudio(){ const a=audio(); if(a&&a.state==='suspended') a.resume(); }
+  function blip(freq,dur,type,gain){
+    if(!soundOn) return; const a=audio(); if(!a) return;
+    const o=a.createOscillator(),g=a.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    g.gain.setValueAtTime(0,a.currentTime);
+    g.gain.linearRampToValueAtTime(gain||0.1,a.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+dur);
+    o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime+dur);
+  }
+  const CUES={
+    /* a page turning: a short breath of filtered noise, no pitch */
+    pageturn(){ if(!soundOn) return; const a=audio(); if(!a) return;
+      const dur=0.34, buf=a.createBuffer(1,Math.floor(a.sampleRate*dur),a.sampleRate), d=buf.getChannelData(0);
+      for(let n=0;n<d.length;n++){ const t=n/d.length; d[n]=(Math.random()*2-1)*Math.sin(Math.PI*t)*Math.pow(t,.35); }
+      const src=a.createBufferSource(); src.buffer=buf;
+      const f=a.createBiquadFilter(); f.type='bandpass'; f.frequency.value=1400; f.Q.value=0.7;
+      const g=a.createGain(); g.gain.value=0.075;
+      src.connect(f).connect(g).connect(a.destination); src.start(); },
+    /* one low chime — the hero figure only */
+    chime(){ blip(174.6,1.5,'sine',0.11); blip(349.2,1.1,'sine',0.045); },
+    omt(){ blip(146.8,1.1,'sine',0.11); }
+  };
+  function beat(name){ (CUES[name]||function(){})(); }
+  window.beat=beat;
+
+  const slides=[...document.querySelectorAll('.slide')];
+  const cs=getComputedStyle(document.documentElement);
+  const palette=['--p0','--p1','--p2','--p3','--p4','--p5'].map(v=>cs.getPropertyValue(v).trim()||'#14181F');
+  const themes=slides.map((_,n)=>[palette[n%6],palette[(n+2)%6],palette[(n+4)%6]]);
+  const bg=document.getElementById('bg');
+  const barfill=document.getElementById('barfill');
+  const count=document.getElementById('count');
+  const fab=document.getElementById('fab');
+  const menu=document.getElementById('menu');
+  const nav=document.getElementById('nav');
+  const navTitle=s=>{
+    if(s.dataset.nav) return s.dataset.nav;
+    const b=s.querySelector('.badge'); if(b) return b.textContent.trim();
+    const h=s.querySelector('h1,h2'); return h?h.textContent.replace(/\s+/g,' ').trim().slice(0,26):'Slide';
+  };
+  const navItems=slides.map((s,n)=>{
+    const btn=document.createElement('button');
+    btn.className='navi'; btn.dataset.go=n;
+    btn.innerHTML='<span class="n"></span><span class="t"></span>';
+    btn.querySelector('.n').textContent=String(n+1).padStart(2,'0');
+    btn.querySelector('.t').textContent=navTitle(s);
+    nav.appendChild(btn); return btn;
+  });
+  let i=0;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,x)=>s.classList.toggle('active',x===i));
+    document.body.classList.toggle('first',i===0);
+    barfill.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+    navItems.forEach((b,x)=>b.classList.toggle('on',x===i));
+    if(navItems[i]) navItems[i].scrollIntoView({block:'nearest'});
+    const t=themes[i];
+    bg.style.setProperty('--g1',t[0]);bg.style.setProperty('--g2',t[1]);bg.style.setProperty('--g3',t[2]);
+    const hash='#'+(i+1);
+    if(location.hash!==hash){try{history.replaceState(null,'',hash);}catch(e){location.hash=hash;}}
+    // per-slide performance cues
+    const cur=slides[i];
+    if(cur.hasAttribute('data-swoosh')) beat('pageturn');           // section break: a turned page
+    if(cur.hasAttribute('data-hero')) setTimeout(()=>beat('chime'),1550);  // the figure lands
+    if(cur.classList.contains('omt-slide')) playOMT(cur);
+  }
+  /* The "one more thing": a held beat, the rule draws, the payoff fades up. */
+  function playOMT(slide){
+    const k=slide.querySelector('.omt-kicker'), r=slide.querySelector('.rule'), line=slide.querySelector('.omt-line');
+    if(!k||!line||!r) return;
+    if(!window.gsap||reducedMotion){ k.style.opacity=1; r.style.opacity=1; line.style.opacity=1; return; }
+    gsap.killTweensOf([k,r,line]);
+    gsap.set([k,line],{opacity:0,y:0,clearProps:'visibility'});
+    gsap.set(r,{opacity:0,width:0});
+    gsap.timeline()
+      .to(k,{autoAlpha:1,duration:.7,delay:1.4})                    // the held beat, then the turn
+      .to(r,{autoAlpha:1,width:40,duration:.5,ease:'power2.out'},'+=0.25')
+      .add(()=>beat('omt'),'<')
+      .fromTo(line,{autoAlpha:0,y:18},{autoAlpha:1,y:0,duration:.9,ease:'power3.out'},'+=0.2');
+  }
+  function toggleFull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+  function closeMenu(){menu.classList.remove('open');fab.classList.remove('on')}
+  const soundbtn=document.getElementById('soundbtn');
+  function toggleSound(){
+    soundOn=!soundOn;
+    document.body.classList.toggle('muted',!soundOn);
+    if(soundbtn){ soundbtn.textContent=soundOn?'🔊':'🔇'; soundbtn.classList.toggle('off',!soundOn); }
+    if(soundOn){ resumeAudio(); beat('pageturn'); }
+  }
+  /* ── INLINE EDITING ── E toggles, Ctrl/Cmd+S downloads, Esc exits. */
+  let editing=false;
+  function toggleEdit(){
+    editing=!editing;
+    document.body.classList.toggle('editing',editing);
+    document.querySelectorAll('.slide').forEach(s=>{
+      if(editing) s.setAttribute('contenteditable','true');
+      else s.removeAttribute('contenteditable');
+    });
+  }
+  function saveDeck(){
+    const doc=document.documentElement.cloneNode(true);
+    doc.querySelectorAll('#nav').forEach(n=>n.innerHTML='');
+    doc.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+    const b=doc.querySelector('body'); if(b) b.classList.remove('editing');
+    const html='<!DOCTYPE html>\n'+doc.outerHTML;
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+    a.download=(location.pathname.split('/').pop())||'index.html';
+    a.click();
+  }
+  document.addEventListener('keydown',e=>{
+    if((e.metaKey||e.ctrlKey)&&(e.key==='s'||e.key==='S')){e.preventDefault();saveDeck();return;}
+    if(editing){if(e.key==='Escape')toggleEdit();return;}
+    if(e.key==='e'||e.key==='E'){toggleEdit();return;}
+    resumeAudio();
+    if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();show(i+1)}
+    if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();show(i-1)}
+    if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);
+    if(e.key==='f'||e.key==='F')toggleFull();
+    if(e.key==='m'||e.key==='M')toggleSound();
+    if(e.key==='p'||e.key==='P'){e.preventDefault();window.print()}
+    if(e.key==='Escape')closeMenu();
+  });
+  fab.addEventListener('click',e=>{e.stopPropagation();const o=menu.classList.toggle('open');fab.classList.toggle('on',o)});
+  menu.addEventListener('click',e=>{
+    const g=e.target.closest('.navi');
+    if(g){show(+g.dataset.go);closeMenu();return;}
+    const b=e.target.closest('.act');if(!b)return;
+    const a=b.dataset.act;
+    if(a==='prev')show(i-1);
+    else if(a==='next')show(i+1);
+    else if(a==='sound')toggleSound();
+    else if(a==='edit'){toggleEdit();closeMenu();}
+    else if(a==='full')toggleFull();
+    else if(a==='print')window.print();
+  });
+  let sx=null;
+  addEventListener('touchstart',e=>sx=e.touches[0].clientX);
+  addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)show(i+(dx<0?1:-1));sx=null});
+  addEventListener('click',e=>{
+    resumeAudio();
+    if(editing)return;
+    if(e.target.closest('.fab')||e.target.closest('.menu'))return;
+    if(menu.classList.contains('open')){closeMenu();return;}
+    show(i+(e.clientX>innerWidth*.5?1:-1));
+  });
+  const slideFromHash=()=>{const n=parseInt((location.hash||'').slice(1),10);return (n>=1&&n<=slides.length)?n-1:0;};
+  window.addEventListener('hashchange',()=>{const n=slideFromHash();if(n!==i)show(n);});
+  show(slideFromHash());
+</script>
+</body>
+</html>

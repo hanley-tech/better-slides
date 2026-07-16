@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dependencies are debt</title>
+<meta name="description" content="Every dependency is a promise someone else has to keep. The case for the single file that still runs in ten years.">
+<link rel="canonical" href="https://hanley-tech.github.io/better-slides/demo/terminal/">
+<!-- Open Graph / WhatsApp / iMessage / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="better-slides">
+<meta property="og:url" content="https://hanley-tech.github.io/better-slides/demo/terminal/">
+<meta property="og:title" content="Dependencies are debt">
+<meta property="og:description" content="Every dependency is a promise someone else has to keep. The case for the single file that still runs in ten years.">
+<meta property="og:image" content="https://hanley-tech.github.io/better-slides/demo/terminal/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dependencies are debt">
+<meta name="twitter:description" content="Every dependency is a promise someone else has to keep. The case for the single file that still runs in ten years.">
+<meta name="twitter:image" content="https://hanley-tech.github.io/better-slides/demo/terminal/og.jpg">
+
+<!-- ════════════════════════════════════════════════════════════════════
+     THEME  ·  the only brand-specific part — swap this whole block.
+     Terminal style — see performance-styles/terminal/design.md
+     ════════════════════════════════════════════════════════════════════ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style id="theme">
+  :root{
+    --ink:#E6EDF3; --bg:#0D1117; --black:#010409;
+    --blue:#39D353; --cyan:#39D353; --deep:#26A641;   /* green carries the accent role */
+    --gold:#D29922; --amber:#D29922;                  /* the once-per-deck warning */
+    --mono:"JetBrains Mono","SF Mono",ui-monospace,monospace;
+    --p0:#0D1117; --p1:#10161D; --p2:#0E2417; --p3:#0A0E14; --p4:#0D1117; --p5:#10161D;
+    --panel:#161B22; --muted:#8B949E; --line:#21262D;
+  }
+</style>
+<style id="terminal-overrides">
+  /* Terminal: mono everything, green is the only accent, terminal corners not bubbles. */
+  .title-hero .bgimg{background:
+    radial-gradient(60% 44% at 50% -6%, rgba(57,211,83,.13), transparent 62%),
+    radial-gradient(80% 60% at 84% 110%, rgba(38,166,65,.10), transparent 62%),
+    linear-gradient(160deg,#10161D 0%,#0D1117 58%,#010409 100%)}
+  .title-hero .bgimg::before{display:none}
+  .title-hero .bgimg::after{background:radial-gradient(76% 66% at 50% 18%, transparent, rgba(1,4,9,.4) 94%)}
+  .title-hero .glow{color:var(--blue);text-shadow:0 0 30px rgba(57,211,83,.45),0 0 90px rgba(57,211,83,.22)}
+  .title-hero .brandlock .lockwm{font-weight:500;color:var(--muted);letter-spacing:0}
+  .title-hero .brandlock .lockwm b{color:var(--blue);font-weight:700}
+  .title-hero .title-foot{letter-spacing:.22em;text-transform:none;color:var(--muted)}
+  /* kickers are comments */
+  .badge{text-transform:none;letter-spacing:0;color:var(--muted);font-weight:500;
+    font-size:clamp(13px,2.6cqmin,30px);margin-bottom:3cqmin}
+  .badge::before{content:"#";color:var(--muted);opacity:.7;margin-right:.6ch}
+  h1,h2{font-weight:800;letter-spacing:-.02em}
+  h2{font-size:clamp(32px,7cqmin,118px);line-height:1.05}
+  .mega{color:var(--blue);font-weight:800;letter-spacing:-.04em;line-height:.9;
+    font-size:clamp(64px,19cqmin,360px);text-shadow:0 0 70px rgba(57,211,83,.28)}
+  .sub{font-weight:400;font-size:clamp(16px,3cqmin,38px);line-height:1.5;color:var(--muted);margin-top:3cqmin}
+  .sub b{color:var(--ink);font-weight:700}
+  /* green highlight — flat, never a bubble; never on long prose */
+  .hl{background:none;color:var(--blue);padding:0;border-radius:0}
+  .strike::after{background:var(--muted)}
+  .brandmark .wm{font-weight:500;color:var(--muted);letter-spacing:0}
+  .brandmark .wm b{color:var(--blue)}
+  .tiny{text-transform:none;letter-spacing:.02em;color:var(--muted);opacity:1;font-weight:400}
+  /* the cursor — the heartbeat. Title and the final line only. */
+  .cur{display:inline-block;width:.58em;height:.86em;background:var(--blue);
+    margin-left:.1em;vertical-align:-.02em;animation:blink 1.06s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  /* terminal log panel */
+  .term{margin-top:2.6cqmin;width:100%;max-width:94%;background:var(--panel);
+    border:1px solid var(--line);border-radius:8px;padding:2.4cqmin 3cqmin;
+    font-size:clamp(11px,2.05cqmin,25px);line-height:1.8;color:var(--muted);
+    overflow:hidden}
+  .term .tl{display:block;white-space:pre;text-overflow:ellipsis;overflow:hidden}
+  .term .p{color:var(--blue)}
+  .term .w{color:var(--amber)}
+  .term .k{color:var(--ink)}
+  .slide.active .term .tl{animation:pop .34s cubic-bezier(.2,1.1,.3,1) backwards}
+  .slide.active .term .tl:nth-child(2){animation-delay:.09s}
+  .slide.active .term .tl:nth-child(3){animation-delay:.18s}
+  .slide.active .term .tl:nth-child(4){animation-delay:.27s}
+  .slide.active .term .tl:nth-child(5){animation-delay:.36s}
+  .slide.active .term .tl:nth-child(6){animation-delay:.45s}
+  .slide.active .term .tl:nth-child(7){animation-delay:.54s}
+  /* panels: terminal corners, 1px hairlines, no bubbles, no shadows */
+  .mock{border-radius:8px;box-shadow:none;border:1px solid var(--line)}
+  .mock .tag{border-radius:4px;font-weight:700;letter-spacing:0}
+  .mock.bad{background:var(--panel);color:var(--muted);padding:3.4cqmin 3cqmin;gap:.5cqmin}
+  .mock.bad .tag{background:rgba(139,148,158,.14);color:var(--muted)}
+  .mock.bad h4{color:var(--ink);font-weight:700;font-size:clamp(12px,2.2cqmin,26px)}
+  .mock.bad ul{list-style:none;margin:1.4cqmin 0 0}
+  .mock.bad li{font-size:clamp(9px,1.75cqmin,21px);opacity:.85;line-height:1.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mock.good{background:var(--panel);border:1px solid rgba(57,211,83,.34)}
+  .mock.good .tag{background:rgba(57,211,83,.14);color:var(--blue)}
+  .mock.good .big{color:var(--blue);font-weight:800;letter-spacing:-.03em}
+  .mock.good .cap2{color:var(--muted);font-weight:400;opacity:1}
+  /* the close: a command, not a button */
+  .actbtn{background:var(--panel);border:1px solid rgba(57,211,83,.42);color:var(--blue);
+    border-radius:8px;box-shadow:none;font-weight:700;font-size:clamp(17px,3.9cqmin,54px);
+    padding:1.8cqmin 3cqmin}
+  .actstep{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    font-weight:400;color:var(--muted);font-size:clamp(12px,2.1cqmin,25px)}
+  .actstep b{color:var(--blue);font-weight:700}
+  .slide.photo .pic::after{background:
+    linear-gradient(90deg,rgba(13,17,23,.94) 0%,rgba(13,17,23,.7) 32%,rgba(13,17,23,.12) 62%,transparent 80%),
+    linear-gradient(0deg,rgba(13,17,23,.92) 6%,rgba(13,17,23,.3) 44%,transparent 80%)}
+  .fab.on{background:rgba(57,211,83,.2);border-color:rgba(57,211,83,.5)}
+  .menu{background:rgba(13,17,23,.72);border-color:var(--line)}
+  .menu .navi.on{background:rgba(57,211,83,.14)}
+  .menu .wm b{color:var(--blue)}
+</style>
+<!-- ═══════════════════════ END THEME ═══════════════════════ -->
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{font-family:var(--mono);color:var(--ink);background:#000;-webkit-font-smoothing:antialiased}
+  /* fixed 1920×1080 stage, scaled to fit, letterboxed */
+  #stage{position:fixed;top:50%;left:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--scale,1));transform-origin:center center;container-type:size;overflow:hidden;background:var(--bg)}
+  .bg{position:fixed;inset:-20%;z-index:0;filter:blur(70px);opacity:.42;transition:background 1.2s ease}
+  .bg::after{content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(40% 50% at 18% 22%, var(--g1), transparent 60%),
+      radial-gradient(45% 55% at 82% 30%, var(--g2), transparent 60%),
+      radial-gradient(55% 60% at 50% 88%, var(--g3), transparent 62%);
+    animation:swirl 14s ease-in-out infinite alternate}
+  @keyframes swirl{0%{transform:translate3d(0,0,0) scale(1) rotate(0)}100%{transform:translate3d(3%,-3%,0) scale(1.12) rotate(8deg)}}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='80' height='80' filter='url(%23n)'/></svg>")}
+  .deck{position:relative;z-index:2;height:100cqh;width:100cqw}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:7cqmin 9cqmin}
+  .slide.active{display:flex}
+  .slide.active .pop{animation:pop .38s cubic-bezier(.2,1,.3,1) backwards}
+  .slide.active .pop:nth-child(2){animation-delay:.07s}
+  .slide.active .pop:nth-child(3){animation-delay:.14s}
+  .slide.active .pop:nth-child(4){animation-delay:.21s}
+  .slide.active .pop:nth-child(5){animation-delay:.28s}
+  @keyframes pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .slide.active .slam{animation:slam .42s cubic-bezier(.2,1.1,.3,1) .06s backwards}
+  @keyframes slam{0%{opacity:0;transform:scale(1.22)}62%{opacity:1;transform:scale(.99)}100%{transform:scale(1)}}
+  .badge{display:inline-flex;align-items:center;align-self:flex-start;font-family:var(--mono);line-height:1.2}
+  h1{font-size:clamp(42px,9.5cqmin,168px);line-height:1;font-weight:800;letter-spacing:-.02em}
+  h2{font-size:clamp(38px,8.4cqmin,140px);line-height:1;font-weight:800;letter-spacing:-.02em}
+  .mega{font-size:clamp(70px,22cqmin,420px);font-weight:800;line-height:.82;letter-spacing:-.04em}
+  .sub{font-size:clamp(20px,3.7cqmin,48px);line-height:1.42;margin-top:4cqmin;max-width:24ch}
+  .tiny{font-family:var(--mono);font-size:clamp(13px,2.1cqmin,24px);font-weight:600}
+  .strike{position:relative;opacity:.5}
+  .strike::after{content:"";position:absolute;left:-2%;right:-2%;top:52%;height:.1em;background:var(--blue)}
+  /* liquid-glass control dot + popup */
+  .fab{position:fixed;bottom:2.6cqmin;right:2.6cqmin;z-index:7;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;
+    background:rgba(255,255,255,.09);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);
+    border:1px solid rgba(255,255,255,.22);
+    box-shadow:0 8px 28px rgba(0,0,0,.4),inset 0 1px 1px rgba(255,255,255,.45),inset 0 -3px 8px rgba(0,0,0,.22);
+    transition:transform .3s cubic-bezier(.2,1,.3,1),background .3s}
+  .fab::before{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(155deg,rgba(255,255,255,.4),transparent 48%);pointer-events:none}
+  .fab:hover{transform:scale(1.08);background:rgba(255,255,255,.14)}
+  .fab:active{transform:scale(.95)}
+  .menu{position:fixed;bottom:7cqmin;right:2.6cqmin;z-index:7;display:flex;flex-direction:column;min-width:274px;max-height:80cqh;padding:12px;border-radius:10px;font-family:var(--mono);color:var(--ink);
+    -webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 20px 54px rgba(0,0,0,.55);
+    opacity:0;transform:translateY(12px) scale(.95);transform-origin:bottom right;pointer-events:none;transition:.3s cubic-bezier(.2,1,.3,1)}
+  .menu.open{opacity:1;transform:none;pointer-events:auto}
+  .menu .wm{font-size:13px;font-weight:500;opacity:.85;padding:4px 8px 2px}
+  .menu .prog{display:flex;align-items:center;gap:10px;padding:10px 8px 12px}
+  .menu .bar{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden}
+  .menu .bar span{display:block;height:100%;border-radius:99px;background:var(--blue);transition:width .35s ease}
+  .menu .count{font-size:12px;font-weight:500;opacity:.7;min-width:48px;text-align:right}
+  .menu .acts{display:flex;gap:6px;margin:6px 0 2px}
+  .menu .act{flex:1;display:flex;align-items:center;justify-content:center;padding:9px 0;border-radius:6px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--ink);font-size:16px;line-height:1;cursor:pointer;transition:background .15s}
+  .menu .act:hover{background:rgba(255,255,255,.14)}
+  .menu .nav{flex:1;min-height:0;overflow-y:auto;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:1px}
+  .menu .nav::-webkit-scrollbar{width:6px}
+  .menu .nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:3px}
+  .menu .navi{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:6px;border:none;background:transparent;color:var(--ink);font-family:var(--mono);font-weight:500;font-size:11.5px;cursor:pointer;text-align:left;transition:background .15s}
+  .menu .navi:hover{background:rgba(255,255,255,.1)}
+  .menu .navi .n{opacity:.45;min-width:20px}
+  .menu .navi.on .n{opacity:1;color:var(--blue)}
+  .menu .navi .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* persistent corner brand lockup (hidden on slide 1) */
+  .brandmark{position:fixed;top:3cqmin;left:3.6cqmin;z-index:5;display:flex;align-items:center;gap:9px;pointer-events:none;opacity:.95}
+  .brandmark .wm{font-family:var(--mono);font-size:clamp(13px,2.1cqmin,21px)}
+  body.first .brandmark{opacity:0}
+  /* full-bleed close slide */
+  .slide.photo{padding:0;justify-content:flex-end}
+  .slide.photo .pic{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-color:var(--bg)}
+  .slide.photo .pic::after{content:"";position:absolute;inset:0}
+  .slide.photo .cap{position:relative;z-index:1;width:100%;padding:7cqmin 9cqmin}
+  .slide.photo .cap h1{line-height:1.1}
+  /* mini-slide before/after mockups (eye candy) */
+  .bca{display:flex;gap:3.4cqmin;margin-top:3.4cqmin;width:100%;align-items:stretch}
+  .mock{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;aspect-ratio:16/9}
+  .mock .tag{position:absolute;top:1.4cqmin;right:1.4cqmin;font-family:var(--mono);font-size:clamp(9px,1.6cqmin,17px);padding:.3em .7em;z-index:2}
+  .mock.bad{justify-content:center}
+  .mock.bad ul{display:flex;flex-direction:column;gap:.5cqmin}
+  .mock.good{color:var(--ink);align-items:center;justify-content:center;text-align:center;padding:3cqmin}
+  .mock.good .big{font-size:clamp(30px,8cqmin,96px);line-height:.9}
+  .mock.good .cap2{font-size:clamp(10px,1.9cqmin,21px);margin-top:1.4cqmin}
+  .slide.active .mock{animation:pop .4s cubic-bezier(.2,1.1,.3,1) backwards}
+  .slide.active .mock:nth-child(2){animation-delay:.12s}
+  /* action card (the close) */
+  .actcard{margin-top:3.4cqmin;display:flex;flex-direction:column;gap:2.4cqmin;align-items:flex-start;width:100%}
+  .actbtn{display:inline-flex;align-items:center;gap:1.2ch}
+  .slide.active .actbtn{animation:slam .45s cubic-bezier(.2,1.1,.3,1) .22s backwards}
+  .actsteps{display:flex;gap:1.4cqmin;flex-wrap:wrap}
+  .actstep{display:flex;align-items:center;gap:1ch;padding:1.1cqmin 2cqmin}
+  .slide.active .actstep{animation:pop .4s cubic-bezier(.2,1.1,.3,1) backwards}
+  .slide.active .actstep:nth-child(2){animation-delay:.1s}
+  .slide.active .actstep:nth-child(3){animation-delay:.2s}
+  /* title slide */
+  .slide .bgimg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
+  .slide .bgimg::after{content:"";position:absolute;inset:0}
+  .slide.hasbg>:not(.bgimg){position:relative;z-index:1}
+  .title-hero{align-items:center;justify-content:flex-start;text-align:center}
+  .title-hero .t-sm{display:block;font-size:clamp(24px,5.2cqmin,70px);font-weight:500;line-height:1;color:var(--muted);margin-bottom:.22em}
+  .title-hero .t-mega{display:block;font-size:clamp(44px,11.5cqmin,164px);font-weight:800;line-height:.96;letter-spacing:-.04em}
+  .title-hero .brandlock{z-index:1;display:flex;flex-direction:column;align-items:center;opacity:.85}
+  .title-hero .brandlock .lockwm{font-family:var(--mono);font-size:clamp(16px,3.2cqmin,36px)}
+  .title-hero .title-foot{position:absolute!important;bottom:5.5cqmin;left:0;right:0;z-index:2;font-family:var(--mono);font-weight:400;font-size:clamp(11px,2cqmin,20px);opacity:.75}
+  .title-hero h1{margin:20cqmin 0 0}
+  body.muted .fab.sounding,#soundbtn.off{opacity:.5}
+  /* inline edit mode — press E, click any text, Ctrl/Cmd+S to save the file */
+  body.editing .slide.active{outline:2px dashed rgba(255,255,255,.28);outline-offset:-10px;cursor:text}
+  body.editing .fab{background:rgba(210,153,34,.25);border-color:rgba(210,153,34,.5)}
+  @media (prefers-reduced-motion: reduce){
+    .bg::after,.slide.active .pop,.slide.active .slam,.slide.active .mock,.slide.active .actbtn,
+    .slide.active .actstep,.slide.active .term .tl,.cur{animation:none!important}
+    .bg{transition:none}
+  }
+  @media print{
+    html,body{height:auto;overflow:visible;background:var(--bg)}
+    .bg,.grain,.fab,.menu,.brandmark{display:none!important}
+    .deck{height:auto}
+    .slide{position:static!important;display:flex!important;min-height:90cqh;page-break-after:always;padding:8cqmin}
+    .slide .pop,.slide .slam,.cur{animation:none!important}
+    .bg::after{display:none}
+    section.slide{background:var(--bg)}
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<div class="bg" id="bg"></div>
+<div class="grain"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · TITLE — type-on headline, blinking cursor -->
+  <section class="slide active hasbg title-hero" data-nav="Title">
+    <div class="bgimg"></div>
+    <div class="brandlock pop">
+      <span class="lockwm">better<b>slides</b></span>
+    </div>
+    <h1 class="pop">
+      <span class="t-sm">Dependencies are</span>
+      <span class="t-mega"><span class="glow" id="typed" data-type="debt."></span><span class="cur"></span></span>
+    </h1>
+    <div class="title-foot pop">Hanley Leung · hanley.world</div>
+  </section>
+
+  <!-- 2 · THE STORY — the one amber beat in the deck -->
+  <section class="slide" data-nav="03:14">
+    <span class="badge pop">03:14, a tuesday</span>
+    <h2 class="pop">It wasn't <span class="hl">our code.</span></h2>
+    <div class="term pop">
+      <span class="tl"><span class="p">$</span> kubectl logs api-7f9c --tail=6</span>
+      <span class="tl"><span class="k">Error: Cannot find module 'strip-ansi-cjs'</span></span>
+      <span class="tl">    at require (node:internal/modules/cjs/loader:1143)</span>
+      <span class="tl">    at Object.&lt;anonymous&gt; (/app/node_modules/…/index.js:3)</span>
+      <span class="tl"><span class="w">WARN  package unpublished from the registry 6h ago</span></span>
+      <span class="tl">    process exited with code 1</span>
+    </div>
+    <div class="sub pop" style="max-width:56ch">Four years of uptime, ended by a package <b>nobody on the team had ever chosen.</b></div>
+  </section>
+
+  <!-- 3 · THE ONE IDEA -->
+  <section class="slide" data-nav="The premise">
+    <span class="badge pop">the premise</span>
+    <h2 class="slam" style="font-size:clamp(28px,6.2cqmin,102px);max-width:22ch">Every dependency is a promise <span class="hl">someone else has to keep.</span></h2>
+    <div class="sub pop" style="max-width:52ch">You didn't borrow code. You borrowed a maintainer's attention — and it isn't in your budget.</div>
+  </section>
+
+  <!-- 4 · HERO NUMBER (the money slide — square-wave chime lands here) -->
+  <section class="slide" style="align-items:center;text-align:center" data-nav="1,247">
+    <span class="badge pop" style="align-self:center">what you actually shipped</span>
+    <div class="mega slam">1,247</div>
+    <div class="sub pop" style="max-width:46ch;align-self:center;text-align:center">transitive packages behind a 400-line service.<br><b>You read zero of them.</b> So did your reviewer.</div>
+  </section>
+
+  <!-- 5 · PROOF — log dump vs. one green line -->
+  <section class="slide" data-nav="Same job">
+    <span class="badge pop">same job, ten years apart</span>
+    <h2 class="pop" style="font-size:clamp(26px,5.8cqmin,94px)">One of these still <span class="hl">runs in 2036.</span></h2>
+    <div class="bca">
+      <div class="mock bad">
+        <span class="tag">inherited</span>
+        <h4>node_modules/</h4>
+        <ul>
+          <li>├── 1,247 packages, 41 direct</li>
+          <li>├── 9 postinstall scripts you never read</li>
+          <li>├── 3 packages with one maintainer</li>
+          <li>├── 1 unpublished last night</li>
+          <li>├── lockfile: 18,402 lines</li>
+          <li>└── audit: 14 vulnerabilities (4 high)</li>
+        </ul>
+      </div>
+      <div class="mock good">
+        <span class="tag">written</span>
+        <div class="big">0 deps.<br>1 file.</div>
+        <div class="cap2">400 lines you can read in an hour</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · THE LANDING + don't-vanish -->
+  <section class="slide photo" data-nav="Tonight">
+    <div class="pic" style="background:radial-gradient(70% 60% at 22% 40%, #0E2417, #0D1117 62%, #010409)"></div>
+    <div class="cap">
+      <span class="badge pop">tonight, five minutes</span>
+      <h1 class="pop">Pay one back.<span class="cur"></span></h1>
+      <div class="actcard">
+        <div class="actbtn"><span>$ npm ls --all | wc -l</span></div>
+        <div class="actsteps">
+          <div class="actstep"><b>1</b> run it on your smallest service</div>
+          <div class="actstep"><b>2</b> delete the one dep you could write in an hour</div>
+          <div class="actstep"><b>3</b> done = the diff is smaller than the lockfile</div>
+        </div>
+      </div>
+      <div class="tiny pop" style="margin-top:3.4cqmin">better-slides · by Hanley Leung · hanley.world</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- corner brand lockup (hidden on slide 1). -->
+<div class="brandmark"><span class="wm">better<b>slides</b></span></div>
+
+<button class="fab" id="fab" aria-label="Deck controls"></button>
+<div class="menu" id="menu">
+  <div class="wm">better<b>slides</b> · Dependencies are debt</div>
+  <div class="prog"><div class="bar"><span id="barfill"></span></div><div class="count" id="count">1 / 1</div></div>
+  <div class="acts">
+    <button class="act" data-act="prev" aria-label="Previous">‹</button>
+    <button class="act" data-act="next" aria-label="Next">›</button>
+    <button class="act" data-act="sound" id="soundbtn" aria-label="Toggle sound" title="Sound on/off">🔊</button>
+    <button class="act" data-act="edit" aria-label="Edit text" title="Edit text (E)">✎</button>
+    <button class="act" data-act="full" aria-label="Fullscreen">⛶</button>
+    <button class="act" data-act="print" aria-label="Print">⎙</button>
+  </div>
+  <div class="nav" id="nav"></div>
+</div>
+</div>
+
+<script>
+  const stage=document.getElementById('stage');
+  function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.setProperty('--scale',s);}
+  addEventListener('resize',fit);addEventListener('orientationchange',fit);fit();
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── SOUND ─────────────────────────────────────────────────────
+     Terminal's palette: a mechanical tick per beat, one square-wave chime
+     on the hero number. No music — silence is more terminal.
+     Synthesized via Web Audio, gesture-gated, never required. */
+  let actx=null, soundOn=true;
+  function audio(){ try{ return actx || (actx=new (window.AudioContext||window.webkitAudioContext)()); }catch(e){ return null; } }
+  function resumeAudio(){ const a=audio(); if(a&&a.state==='suspended') a.resume(); }
+  function blip(freq,dur,type,gain){
+    if(!soundOn) return; const a=audio(); if(!a) return;
+    const o=a.createOscillator(),g=a.createGain();
+    o.type=type||'square'; o.frequency.value=freq;
+    g.gain.setValueAtTime(0,a.currentTime);
+    g.gain.linearRampToValueAtTime(gain||0.1,a.currentTime+0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+dur);
+    o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime+dur);
+  }
+  const CUES={
+    tick(){ if(!soundOn) return; const a=audio(); if(!a) return;
+      const dur=0.03, buf=a.createBuffer(1,Math.floor(a.sampleRate*dur),a.sampleRate), d=buf.getChannelData(0);
+      for(let n=0;n<d.length;n++){ const t=n/d.length; d[n]=(Math.random()*2-1)*Math.pow(1-t,3); }
+      const src=a.createBufferSource(); src.buffer=buf;
+      const f=a.createBiquadFilter(); f.type='bandpass'; f.frequency.value=2600; f.Q.value=1.2;
+      const g=a.createGain(); g.gain.value=0.14;
+      src.connect(f).connect(g).connect(a.destination); src.start(); },
+    chime(){ blip(880,0.09,'square',0.09); setTimeout(()=>blip(1318.5,0.16,'square',0.07),90); }
+  };
+  function beat(name){ (CUES[name]||function(){})(); }
+
+  const slides=[...document.querySelectorAll('.slide')];
+  const cs=getComputedStyle(document.documentElement);
+  const palette=['--p0','--p1','--p2','--p3','--p4','--p5'].map(v=>cs.getPropertyValue(v).trim()||'#0D1117');
+  const themes=slides.map((_,n)=>[palette[n%6],palette[(n+2)%6],palette[(n+4)%6]]);
+  const bg=document.getElementById('bg');
+  const barfill=document.getElementById('barfill');
+  const count=document.getElementById('count');
+  const fab=document.getElementById('fab');
+  const menu=document.getElementById('menu');
+  const nav=document.getElementById('nav');
+  const navTitle=s=>{
+    if(s.dataset.nav) return s.dataset.nav;
+    const b=s.querySelector('.badge'); if(b) return b.textContent.trim();
+    const h=s.querySelector('h1,h2'); return h?h.textContent.replace(/\s+/g,' ').trim().slice(0,26):'Slide';
+  };
+  const navItems=slides.map((s,n)=>{
+    const btn=document.createElement('button');
+    btn.className='navi'; btn.dataset.go=n;
+    btn.innerHTML='<span class="n"></span><span class="t"></span>';
+    btn.querySelector('.n').textContent=String(n+1).padStart(2,'0');
+    btn.querySelector('.t').textContent=navTitle(s);
+    nav.appendChild(btn); return btn;
+  });
+  /* The type-on title: the headline prints, then the cursor keeps blinking. */
+  let typeTimer=null;
+  function typeOn(){
+    const el=document.getElementById('typed'); if(!el) return;
+    const text=el.dataset.type||'';
+    clearTimeout(typeTimer);
+    if(reducedMotion){ el.textContent=text; return; }
+    el.textContent='';
+    let n=0;
+    (function step(){
+      el.textContent=text.slice(0,++n);
+      if(n<text.length) typeTimer=setTimeout(step,88);
+    })();
+  }
+  let i=0, started=false;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,x)=>s.classList.toggle('active',x===i));
+    document.body.classList.toggle('first',i===0);
+    barfill.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+    navItems.forEach((b,x)=>b.classList.toggle('on',x===i));
+    if(navItems[i]) navItems[i].scrollIntoView({block:'nearest'});
+    const t=themes[i];
+    bg.style.setProperty('--g1',t[0]);bg.style.setProperty('--g2',t[1]);bg.style.setProperty('--g3',t[2]);
+    const hash='#'+(i+1);
+    if(location.hash!==hash){try{history.replaceState(null,'',hash);}catch(e){location.hash=hash;}}
+    // per-slide performance cues
+    if(started) beat('tick');                                   // mechanical tick on every beat
+    if(i===0) typeOn();                                         // the title prints itself
+    if(slides[i].querySelector('.mega')) setTimeout(()=>beat('chime'),260);   // the hero number lands
+    started=true;
+  }
+  function toggleFull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+  function closeMenu(){menu.classList.remove('open');fab.classList.remove('on')}
+  const soundbtn=document.getElementById('soundbtn');
+  function toggleSound(){
+    soundOn=!soundOn;
+    document.body.classList.toggle('muted',!soundOn);
+    if(soundbtn){ soundbtn.textContent=soundOn?'🔊':'🔇'; soundbtn.classList.toggle('off',!soundOn); }
+    if(soundOn){ resumeAudio(); beat('tick'); }
+  }
+  /* ── INLINE EDITING — E toggles, Ctrl/Cmd+S downloads the edited file. */
+  let editing=false;
+  function toggleEdit(){
+    editing=!editing;
+    document.body.classList.toggle('editing',editing);
+    document.querySelectorAll('.slide').forEach(s=>{
+      if(editing) s.setAttribute('contenteditable','true');
+      else s.removeAttribute('contenteditable');
+    });
+  }
+  function saveDeck(){
+    const doc=document.documentElement.cloneNode(true);
+    doc.querySelectorAll('#nav').forEach(n=>n.innerHTML='');
+    doc.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+    const b=doc.querySelector('body'); if(b) b.classList.remove('editing');
+    const html='<!DOCTYPE html>\n'+doc.outerHTML;
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+    a.download=(location.pathname.split('/').pop())||'index.html';
+    a.click();
+  }
+  document.addEventListener('keydown',e=>{
+    if((e.metaKey||e.ctrlKey)&&(e.key==='s'||e.key==='S')){e.preventDefault();saveDeck();return;}
+    if(editing){if(e.key==='Escape')toggleEdit();return;}
+    if(e.key==='e'||e.key==='E'){toggleEdit();return;}
+    resumeAudio();
+    if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();show(i+1)}
+    if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();show(i-1)}
+    if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);
+    if(e.key==='f'||e.key==='F')toggleFull();
+    if(e.key==='m'||e.key==='M')toggleSound();
+    if(e.key==='p'||e.key==='P'){e.preventDefault();window.print()}
+    if(e.key==='Escape')closeMenu();
+  });
+  fab.addEventListener('click',e=>{e.stopPropagation();const o=menu.classList.toggle('open');fab.classList.toggle('on',o)});
+  menu.addEventListener('click',e=>{
+    const g=e.target.closest('.navi');
+    if(g){show(+g.dataset.go);closeMenu();return;}
+    const b=e.target.closest('.act');if(!b)return;
+    const a=b.dataset.act;
+    if(a==='prev')show(i-1);
+    else if(a==='next')show(i+1);
+    else if(a==='sound')toggleSound();
+    else if(a==='edit'){toggleEdit();closeMenu();}
+    else if(a==='full')toggleFull();
+    else if(a==='print')window.print();
+  });
+  let sx=null;
+  addEventListener('touchstart',e=>sx=e.touches[0].clientX);
+  addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)show(i+(dx<0?1:-1));sx=null});
+  addEventListener('click',e=>{
+    resumeAudio();
+    if(editing)return;
+    if(e.target.closest('.fab')||e.target.closest('.menu'))return;
+    if(menu.classList.contains('open')){closeMenu();return;}
+    show(i+(e.clientX>innerWidth*.5?1:-1));
+  });
+  const slideFromHash=()=>{const n=parseInt((location.hash||'').slice(1),10);return (n>=1&&n<=slides.length)?n-1:0;};
+  window.addEventListener('hashchange',()=>{const n=slideFromHash();if(n!==i)show(n);});
+  show(slideFromHash());
+</script>
+</body>
+</html>
