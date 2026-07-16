@@ -2,7 +2,7 @@
   "schema_version": 1,
   "pack_name": "better-slides — Performance Styles",
   "source_repo": "hanley-tech/better-slides",
-  "style_count": 4,
+  "style_count": 6,
   "usage": {
     "selection": "Read this compact index first to shortlist styles from metadata.",
     "previews": "For title-slide previews, read only the preview.md files for the shortlisted candidates.",
@@ -43,6 +43,60 @@
       "avoid_for": "Dense reading decks, data-heavy internal reviews meant to be read async without a speaker.",
       "preview_md": "performance-styles/noir/preview.md",
       "design_md": "performance-styles/noir/design.md"
+    },
+    {
+      "slug": "obsidian",
+      "name": "Obsidian",
+      "tagline": "apple.com after dark — every slide true black with subtle depth, monochrome SF Pro, zero accent color. High-end through restraint and space.",
+      "mood": [
+        "premium",
+        "minimal",
+        "restrained",
+        "luxurious"
+      ],
+      "tone": [
+        "considered",
+        "elegant",
+        "understated",
+        "expensive"
+      ],
+      "formality": "high",
+      "register": "speaker-led",
+      "density": "low",
+      "scheme": "dark",
+      "motion": "a single calm fade-rise per slide (~0.9s); faint film grain; nothing else moves",
+      "sound": "minimal — a soft swoosh on a true section break at most; no applause, no music by default",
+      "best_for": "Keynotes and brand/vision talks that should feel expensive and considered; design-led, luxury/fashion, executive, or Apple-adjacent audiences. Reach for this over Noir when the look should be monochrome and restrained rather than theatrical with one accent.",
+      "avoid_for": "Hype/launch energy, data-dense reading decks, playful community talks.",
+      "preview_md": "performance-styles/obsidian/preview.md",
+      "design_md": "performance-styles/obsidian/design.md"
+    },
+    {
+      "slug": "cupertino",
+      "name": "Cupertino",
+      "tagline": "Photo-forward personal keynote — full-bleed imagery on the Obsidian monochrome base, a countdown of numbered lessons, one blue 'one more thing.' The 'N things I learned' story talk.",
+      "mood": [
+        "personal",
+        "premium",
+        "reflective",
+        "cinematic"
+      ],
+      "tone": [
+        "warm",
+        "considered",
+        "narrative",
+        "apple-adjacent"
+      ],
+      "formality": "medium-high",
+      "register": "speaker-led",
+      "density": "low",
+      "scheme": "dark",
+      "motion": "calm blur-in fade-rise; Ken Burns on full-bleed photos; per-lesson number punches in blurred then the headline clip-wipes beneath it; recap items stagger up",
+      "sound": "one soft cue per lesson number so the sound is the countdown; optional swoosh into the count; a gentle cue under 'one more thing'; no applause, no music by default",
+      "best_for": "'N things I learned from a chapter of my life/career' story talks — when you have real photos and a numbered list of takeaways. Reflections, career retrospectives, farewell/anniversary keynotes, founder or maker origin stories. Reach for this over Obsidian when the talk is photo-driven and personal rather than abstract.",
+      "avoid_for": "Abstract or imageless talks (use Obsidian), hype launches (Noir/Spotlight), data-dense reading decks meant to be read async.",
+      "preview_md": "performance-styles/cupertino/preview.md",
+      "design_md": "performance-styles/cupertino/design.md"
     },
     {
       "slug": "spotlight",
